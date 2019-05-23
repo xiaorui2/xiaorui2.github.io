@@ -460,7 +460,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/23/ReactNative长列表优化方案/" itemprop="url">ReactNative长列表优化方案</a></h1>
+                <a class="post-title-link" href="/2019/05/23/ReactNative长列表优化方案/" itemprop="url">React长列表优化方案</a></h1>
         
 
         <div class="post-meta">
@@ -482,6 +482,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端学习/" itemprop="url" rel="index">
+                    <span itemprop="name">前端学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -512,8 +534,10 @@
       
         
           
-          
-          
+          考虑问题我有一个列表，这个列表里面我需要存放10000条数据，我要使得这个列表进行滑动的时候比较流畅，也就是渲染的效果ok。
+对这个问题分析一下，我们知道DOM结构如果过大, 网页就会出现用户操作体验上的问题, 比如滚动, 点击操作，会导致渲染的不够及时情况发生。
+解决方案解决方案的话就是对于列表形态的数据展示的按需渲染。这种方式是指根据容器元素的高度以及列表项元素的高度来显示长列表数据中的某一个
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/05/23/ReactNative长列表优化方案/#more" rel="contents">
@@ -1417,8 +1441,9 @@ Html段落它是通过 &lt;p&gt;标签进行定义的
       
         
           
-          三个标准对象DateDate对象用来表示日期和时间。Date常用的一些函数：
-123456789101112131415var now = new Date();//获取系统当前时间now; now.getFullYear(); // 2019, 获得now这个Date的年份now.getMonth(); // 4, 获得now这个Date的月份，注意月份范围是0~11，4表示五月now.getD
+          JavaScript输出使用window.alert()12345678&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;&lt;script&gt;window.alert(5 + 6);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+
+使用innerHTML写入Html元素如需访问 HTML 元素，JavaScript
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1717,10 +1742,8 @@ Html段落它是通过 &lt;p&gt;标签进行定义的
       
         
           
-          Js基本语法
-在哪里引入Js代码？
-1）首先JavaScript代码可以直接嵌在网页的任何地方，不过通常我们都把JavaScript代码放到&lt;head&gt;中，我们看到网页的源码的时候被&lt;script&gt;...&lt;/script&gt;包含的代码就是JavaScript代码，它会直接被浏览器执行。
-2）单独的写一个 .js文件，然后在HTML中通过&lt;script src
+          Js基本语法在哪里引入Js代码？1）首先JavaScript代码可以直接嵌在网页的任何地方，不过通常我们都把JavaScript代码放到&lt;head&gt;中，我们看到网页的源码的时候被&lt;script&gt;...&lt;/script&gt;包含的代码就是JavaScript代码，它会直接被浏览器执行。
+2）单独的写一个 .js文件，然后在HTML中通过&lt;script src=&
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1830,7 +1853,7 @@ Html段落它是通过 &lt;p&gt;标签进行定义的
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

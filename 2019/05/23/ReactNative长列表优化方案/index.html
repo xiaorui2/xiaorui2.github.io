@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="React,">
 
 
 
@@ -79,15 +79,20 @@
 
 
 
-<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta name="description" content="考虑问题我有一个列表，这个列表里面我需要存放10000条数据，我要使得这个列表进行滑动的时候比较流畅，也就是渲染的效果ok。 对这个问题分析一下，我们知道DOM结构如果过大, 网页就会出现用户操作体验上的问题, 比如滚动, 点击操作，会导致渲染的不够及时情况发生。 解决方案解决方案的话就是对于列表形态的数据展示的按需渲染。这种方式是指根据容器元素的高度以及列表项元素的高度来显示长列表数据中的某一个">
+<meta name="keywords" content="React">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ReactNative长列表优化方案">
+<meta property="og:title" content="React长列表优化方案">
 <meta property="og:url" content="http://yoursite.com/2019/05/23/ReactNative长列表优化方案/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="考虑问题我有一个列表，这个列表里面我需要存放10000条数据，我要使得这个列表进行滑动的时候比较流畅，也就是渲染的效果ok。 对这个问题分析一下，我们知道DOM结构如果过大, 网页就会出现用户操作体验上的问题, 比如滚动, 点击操作，会导致渲染的不够及时情况发生。 解决方案解决方案的话就是对于列表形态的数据展示的按需渲染。这种方式是指根据容器元素的高度以及列表项元素的高度来显示长列表数据中的某一个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-23T09:20:53.922Z">
+<meta property="og:image" content="http://yoursite.com/2019/05/23/ReactNative长列表优化方案/1.png">
+<meta property="og:updated_time" content="2019-05-23T14:23:53.877Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ReactNative长列表优化方案">
+<meta name="twitter:title" content="React长列表优化方案">
+<meta name="twitter:description" content="考虑问题我有一个列表，这个列表里面我需要存放10000条数据，我要使得这个列表进行滑动的时候比较流畅，也就是渲染的效果ok。 对这个问题分析一下，我们知道DOM结构如果过大, 网页就会出现用户操作体验上的问题, 比如滚动, 点击操作，会导致渲染的不够及时情况发生。 解决方案解决方案的话就是对于列表形态的数据展示的按需渲染。这种方式是指根据容器元素的高度以及列表项元素的高度来显示长列表数据中的某一个">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/23/ReactNative长列表优化方案/1.png">
 
 
 
@@ -123,7 +128,7 @@
 
 
 
-  <title>ReactNative长列表优化方案 | 九八年生于晚秋</title>
+  <title>React长列表优化方案 | 九八年生于晚秋</title>
   
 
 
@@ -309,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ReactNative长列表优化方案</h1>
+          <h1 class="post-title" itemprop="name headline">React长列表优化方案</h1>
         
 
         <div class="post-meta">
@@ -331,6 +336,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端学习/" itemprop="url" rel="index">
+                    <span itemprop="name">前端学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -364,7 +391,19 @@
       
 
       
-        
+        <h1 id="考虑问题"><a href="#考虑问题" class="headerlink" title="考虑问题"></a>考虑问题</h1><p>我有一个列表，这个列表里面我需要存放10000条数据，我要使得这个列表进行滑动的时候比较流畅，也就是渲染的效果ok。</p>
+<p>对这个问题分析一下，我们知道<code>DOM</code>结构如果过大, 网页就会出现用户操作体验上的问题, 比如滚动, 点击操作，会导致渲染的不够及时情况发生。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>解决方案的话就是对于列表形态的数据展示的按需渲染。这种方式是指根据容器元素的高度以及列表项元素的高度来显示长列表数据中的某一个部分，而不是去完整地渲染长列表。通俗的说就是我就渲染我可见的区域的组件，也就是虚拟列表，它是一种根据滚动容器元素的可视区域来渲染长列表数据中某一个部分数据的技术。</p>
+<p>实现虚拟列表就是在处理用户滚动时，要改变列表在可视区域的渲染部分，其具体步骤如下结合图片理解一下：</p>
+<p>计算当前可见区域起始数据的 <code>startIndex</code></p>
+<p>计算当前可见区域结束数据的 <code>endIndex</code></p>
+<p>计算当前可见区域的数据，并渲染到页面中</p>
+<p>计算 <code>startIndex</code> 对应的数据在整个列表中的偏移位置 <code>startOffset</code>，并设置到列表上</p>
+<p>计算 <code>endIndex</code>对应的数据相对于可滚动区域最底部的偏移位置 <code>endOffset</code>，并设置到列表上。</p>
+<p><img src="1.png" alt></p>
+<p>在React上就是使用<code>react-window</code> 和 <code>react-virtualized</code>是热门的虚拟滚动库，而在<code>ReactNative</code>中，我们可以使用<code>Flatlist</code>和<code>Sectionlist</code>组件，这两个组件呢是继承于<code>VirtualizedLis</code>，这个组件的思想也就是维护活动项的有限渲染窗口并用适当大小的空白空间替换渲染窗口之外的所有项，大大提高了大型列表的内存消耗和性能。这样已经能满足大多数情况下的使用，但是这个有一个问题就是当我们更快地滚动时会暂时看到空白内容。我测试了一下，大部分的软件在滑动过快的时候也就会出现加载上的情况等待加载。</p>
+<p>所以使用<code>Flatlist</code>和<code>Sectionlist</code>组件能解决常用的长列表问题，至于<code>Flatlist</code>内容的更多优化，可以参考<a href="http://yangguang1029.github.io/2018/12/20/rn-improve-flatlist/" target="_blank" rel="noopener">http://yangguang1029.github.io/2018/12/20/rn-improve-flatlist/</a></p>
+
       
     </div>
     
@@ -378,6 +417,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+        </div>
       
 
       
@@ -452,8 +497,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -490,7 +544,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -522,6 +576,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#考虑问题"><span class="nav-number">1.</span> <span class="nav-text">考虑问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
