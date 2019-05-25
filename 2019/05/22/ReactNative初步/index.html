@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="搭建第一个ReactNative项目环境要求需要Node，Python2，Jdk，Android Studio，Android SDK。 注：学会通过Chocolatey（一种流行的Windows程序包管理器）安装Node和Python2以及Jdk。 配置环境变量添加ANDROID_HOME 在Windows控制面板中的“ 系统和安全”下打开“系统”窗格，然后单击“ 更改设置…”。打开“ 高级”选">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative（一）">
+<meta property="og:url" content="http://yoursite.com/2019/05/22/ReactNative初步/index.html">
+<meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="搭建第一个ReactNative项目环境要求需要Node，Python2，Jdk，Android Studio，Android SDK。 注：学会通过Chocolatey（一种流行的Windows程序包管理器）安装Node和Python2以及Jdk。 配置环境变量添加ANDROID_HOME 在Windows控制面板中的“ 系统和安全”下打开“系统”窗格，然后单击“ 更改设置…”。打开“ 高级”选">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/05/22/ReactNative初步/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/22/ReactNative初步/2.png">
+<meta property="og:updated_time" content="2019-05-25T09:57:59.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative（一）">
+<meta name="twitter:description" content="搭建第一个ReactNative项目环境要求需要Node，Python2，Jdk，Android Studio，Android SDK。 注：学会通过Chocolatey（一种流行的Windows程序包管理器）安装Node和Python2以及Jdk。 配置环境变量添加ANDROID_HOME 在Windows控制面板中的“ 系统和安全”下打开“系统”窗格，然后单击“ 更改设置…”。打开“ 高级”选">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/22/ReactNative初步/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/22/ReactNative初步/">
+
+
+
+
+
+  <title>ReactNative（一） | 九八年生于晚秋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九八年生于晚秋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/22/ReactNative初步/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-22T11:34:24+08:00">
+                2019-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端学习/" itemprop="url" rel="index">
+                    <span itemprop="name">前端学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="搭建第一个ReactNative项目"><a href="#搭建第一个ReactNative项目" class="headerlink" title="搭建第一个ReactNative项目"></a>搭建第一个<code>ReactNative</code>项目</h1><h2 id="环境要求"><a href="#环境要求" class="headerlink" title="环境要求"></a>环境要求</h2><p>需要<code>Node</code>，<code>Python2</code>，<code>Jdk</code>，<code>Android Studio</code>，<code>Android SDK</code>。</p>
+<p>注：学会通过<a href="https://chocolatey.org/" target="_blank" rel="noopener">Chocolatey</a>（一种流行的Windows程序包管理器）安装<code>Node</code>和<code>Python2</code>以及<code>Jdk</code>。</p>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>添加<code>ANDROID_HOME</code></p>
+<p>在Windows控制面板中的“ <strong>系统和安全”</strong>下打开“系统”窗格，然后单击“ <strong>更改设置…”</strong>。打开“ <strong>高级”</strong>选项卡，然后单击“ <strong>环境变量…”</strong>。单击<strong>New …</strong>以创建<code>ANDROID_HOME</code>指向<code>Android SDK</code>路径的新用户变量</p>
+<p><img src="1.png" alt></p>
+<p>将平台工具添加到<code>Path</code></p>
+<p>在Windows控制面板中的“ <strong>系统和安全”</strong>下打开“系统”窗格，然后单击“ <strong>更改设置…”</strong>。打开“ <strong>高级”</strong>选项卡，然后单击“ <strong>环境变量…”</strong>。选择<strong>Path</strong>变量，然后单击“ <strong>编辑”</strong>。单击“ <strong>新建”</strong>，将平台工具的路径添加到列表中。</p>
+<p>此文件夹的默认位置是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools</span><br></pre></td></tr></table></figure>
+
+<h2 id="跑Demo"><a href="#跑Demo" class="headerlink" title="跑Demo"></a>跑Demo</h2><p>利用<code>cmd</code>命令行界面生成一个名为<code>AwesomeProject</code>的新<code>React Native</code>项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init AwesomeProject</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>Android Studio</code>打开这个项目，并跑好虚拟机。</p>
+<p>然后在命令行运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd AwesomeProject</span><br><span class="line">react-native run-android</span><br></pre></td></tr></table></figure>
+
+<p>如果设置都是正确的话，你就能得到以下界面：（这样的话第一个<code>demo</code>就跑通了，要修改的话就在<code>App.js</code>文件修改即可，刷新的话使用<code>ctrl+m</code>或者双击<code>RR</code></p>
+<p><img src="2.png" alt></p>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="简单的组件介绍"><a href="#简单的组件介绍" class="headerlink" title="简单的组件介绍"></a>简单的组件介绍</h2><p>学习过<code>Html</code>的话会熟悉很多，ReactNative提供很多的内置组件像<code>&lt;Text&gt;</code>，<code>&lt;View&gt;</code>，<code>&lt;Button&gt;</code>这些，当然你也可以自己定义自己的组件，如下，这样的话我们就定义好了自己的组件<code>Greeting</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Greeting</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">  render()&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.instructions&#125;&gt;</span><br><span class="line">        &lt;Text&gt; Hello &#123;<span class="keyword">this</span>.props.name&#125;!<span class="xml"><span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>大多数组件在创建时可以使用不同的参数进行自定义。调用这些创建参数<code>props</code>。</p>
+<p>比方说利用组件<code>Image</code>创建图像，可以使用命名的道具<code>source</code>来控制它显示的图像。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">let</span> pic=&#123;</span><br><span class="line">      uri : <span class="string">'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        &lt;Text style=&#123;styles.welcome&#125;&gt;Hello World!<span class="xml"><span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line">        &lt;Image source=&#123;pic&#125; style=&#123;styles.iamge1&#125;/&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; App);</span></span><br></pre></td></tr></table></figure>
+
+<p>这个是内置组件自带的道具，那么要是我们自己定义的组件的话想用<code>props</code>也是可以的。如下</p>
+<p>自己定义的组件，通过在下面组件的调用的时候传入参数，利用this.props来调用显示。道具的概念就是对于组件使用不同的参数进行自定义的操作。像正常组件Text调用的style，Image调用source的这些都是道具也就是props。（个人感觉把道具和<code>props</code>连在一起理解会好一些）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Greeting</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">  render()&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.instructions&#125;&gt;</span><br><span class="line">        &lt;Text&gt; Hello &#123;<span class="keyword">this</span>.props.name&#125;!<span class="xml"><span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">export default class App extends Component &#123;</span></span><br><span class="line"><span class="regexp">	render() &#123;</span></span><br><span class="line"><span class="regexp">    return (</span></span><br><span class="line"><span class="regexp">      &lt;View style=&#123;&#123;alignItems: 'center', top: 50&#125;&#125;&gt;</span></span><br><span class="line"><span class="regexp">        &lt;Greeting name='Rexxar' /</span>&gt;</span><br><span class="line">        &lt;Greeting name=<span class="string">'Jaina'</span> /&gt;</span><br><span class="line">        &lt;Greeting name=<span class="string">'Valeera'</span> /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; App);</span></span><br></pre></td></tr></table></figure>
+
+<p>对于每个组件的话是有两个控制组件的参数：<code>props</code>和<code>state</code>。<code>props</code>由父项设置，它们在组件的整个生命周期内都是固定的。对于即将发生变化的数据，我们必须使用<code>state</code>，利用<code>setstate</code>来重新渲染。假设我们想要制作一直闪烁的文本的话代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Greeting</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props)&#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.state= &#123;<span class="attr">isShowingText</span> :<span class="literal">true</span>&#125;;</span><br><span class="line">    setInterval(<span class="function"><span class="params">()</span> =&gt;</span> (</span><br><span class="line">      <span class="keyword">this</span>.setState(<span class="function"><span class="params">previousState</span> =&gt;</span> (</span><br><span class="line">        &#123;<span class="attr">isShowingText</span>: !previousState.isShowingText&#125;</span><br><span class="line">      ))</span><br><span class="line">    ),<span class="number">1000</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  render()&#123;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">this</span>.state.isShowingText)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>(</span><br><span class="line">      &lt;Text&gt;&#123;<span class="keyword">this</span>.props.name&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">export default class App extends Component &#123;</span></span><br><span class="line"><span class="regexp">	render() &#123;</span></span><br><span class="line"><span class="regexp">    return (</span></span><br><span class="line"><span class="regexp">      &lt;View style=&#123;&#123;alignItems: 'center', top: 50&#125;&#125;&gt;</span></span><br><span class="line"><span class="regexp">        &lt;Greeting name='Rexxar' /</span>&gt;</span><br><span class="line">        &lt;Greeting name=<span class="string">'Jaina'</span> /&gt;</span><br><span class="line">        &lt;Greeting name=<span class="string">'Valeera'</span> /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; App);</span></span><br></pre></td></tr></table></figure>
+
+<p>但是在实际应用中，会调用Redux或者Mobx等状态容器来控制数据流。（还没用过，口嗨一下）</p>
+<h2 id="样式和组件大小"><a href="#样式和组件大小" class="headerlink" title="样式和组件大小"></a>样式和组件大小</h2><p>所有核心组件都接受名为的道具<code>style</code>，就是当一个组件需要写的道具过多的时候，就用样式来代替它。如下：（复制下教程的代码，自己写的因为堆积内容过多）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppRegistry, StyleSheet, Text, View &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</span><br><span class="line">  bigBlue: &#123;</span><br><span class="line">    color: <span class="string">'blue'</span>,</span><br><span class="line">    fontWeight: <span class="string">'bold'</span>,</span><br><span class="line">    fontSize: <span class="number">30</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  red: &#123;</span><br><span class="line">    color: <span class="string">'red'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">LotsOfStyles</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View&gt;</span><br><span class="line">        &lt;Text style=&#123;styles.red&#125;&gt;just red&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">        &lt;Text style=&#123;styles.bigBlue&#125;&gt;just bigBlue&lt;/</span>Text&gt;</span><br><span class="line">        &lt;Text style=&#123;[styles.bigBlue, styles.red]&#125;&gt;bigBlue, then red&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">        &lt;Text style=&#123;[styles.red, styles.bigBlue]&#125;&gt;red, then bigBlue&lt;/</span>Text&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; LotsOfStyles);</span></span><br></pre></td></tr></table></figure>
+
+<p>组件大小的话是用<code>width</code>和<code>height</code>样式来控制的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppRegistry, View &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedDimensionsBasics</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View&gt;</span><br><span class="line">        &lt;View style=&#123;&#123;<span class="attr">width</span>: <span class="number">50</span>, <span class="attr">height</span>: <span class="number">50</span>, <span class="attr">backgroundColor</span>: <span class="string">'powderblue'</span>&#125;&#125; /&gt;</span><br><span class="line">        &lt;View style=&#123;&#123;<span class="attr">width</span>: <span class="number">100</span>, <span class="attr">height</span>: <span class="number">100</span>, <span class="attr">backgroundColor</span>: <span class="string">'skyblue'</span>&#125;&#125; /&gt;</span><br><span class="line">        &lt;View style=&#123;&#123;<span class="attr">width</span>: <span class="number">150</span>, <span class="attr">height</span>: <span class="number">150</span>, <span class="attr">backgroundColor</span>: <span class="string">'steelblue'</span>&#125;&#125; /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; FixedDimensionsBasics);</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="利用Flexbox进行布局和Flex尺寸"><a href="#利用Flexbox进行布局和Flex尺寸" class="headerlink" title="利用Flexbox进行布局和Flex尺寸"></a>利用Flexbox进行布局和Flex尺寸</h2><p>组件可以使用<code>Flexbox</code>算法指定其子项的布局，常用<code>flexDirection</code>，<code>alignItems</code>以及<code>justifyContent</code>。不同的又有一些对应的参数值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	render()&#123;</span><br><span class="line">    <span class="keyword">return</span>(</span><br><span class="line">      &lt;View style=&#123;&#123;<span class="attr">flex</span>: <span class="number">1</span>,<span class="attr">flexDirection</span>: <span class="string">'column'</span>,<span class="attr">justifyContent</span>: <span class="string">'flex-end'</span>&#125;&#125;&gt;</span><br><span class="line">        &lt;View style=&#123;&#123;<span class="attr">flex</span>: <span class="number">1</span>, <span class="attr">backgroundColor</span>: <span class="string">'powderblue'</span>&#125;&#125; /&gt;</span><br><span class="line">        &lt;View style=&#123;&#123;<span class="attr">flex</span>: <span class="number">2</span>, <span class="attr">height</span>: <span class="number">50</span>, <span class="attr">backgroundColor</span>: <span class="string">'skyblue'</span>&#125;&#125; /&gt;</span><br><span class="line">        &lt;View style=&#123;&#123;<span class="attr">flex</span>: <span class="number">3</span>, <span class="attr">height</span>: <span class="number">50</span>, <span class="attr">backgroundColor</span>: <span class="string">'steelblue'</span>&#125;&#125; /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; App);</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看到第一个View有个flex的参数设置为1，它告诉组件填充所有可用空间，在具有相同父级的其他组件之间平均共享。孩子所占用的分量根据孩子的flex值进行相比分配，但是注意如果组件的父级具有大于0的维度，则组件只能展开以填充可用空间。如果父组件没有固定的<code>width</code>和<code>height</code>或<code>flex</code>，则父组件的维度为0，<code>flex</code>子组件将不可见。也就是如果父组件的flex为0了，或者只给了width或者heigth它的子组件是没办法显示的。</p>
+<h2 id="处理文本输入和处理接触"><a href="#处理文本输入和处理接触" class="headerlink" title="处理文本输入和处理接触"></a>处理文本输入和处理接触</h2><p>文本输入利用<code>TextInput</code>组件，它是一个允许用户输入文本的基本组件，它有<code>onChangeText</code>和<code>onSubmitEditing</code>这两个props。假设用户键入时，您将其单词翻译成其他语言。在这种新语言中，每个单词用<code>$$$</code>代替。（还不是很理解和这个函数的写法，后续学习补一下）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(props)&#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.state= &#123;<span class="attr">text</span>: <span class="string">''</span>&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  render()&#123;</span><br><span class="line">    <span class="keyword">return</span>(</span><br><span class="line">      &lt;View style=&#123;&#123;<span class="attr">padding</span>:<span class="number">10</span>&#125;&#125;&gt;</span><br><span class="line">        &lt;TextInput </span><br><span class="line">        style=&#123;&#123;<span class="attr">height</span>: <span class="number">40</span>&#125;&#125;</span><br><span class="line">        placeholder=<span class="string">"Type here to translate!"</span></span><br><span class="line">        onChangeText=&#123;(text) =&gt; <span class="keyword">this</span>.setState(&#123;text&#125;)&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">        &lt;Text style=&#123;&#123;<span class="attr">padding</span>: <span class="number">10</span>,<span class="attr">fontSize</span>: <span class="number">42</span>&#125;&#125;&gt;</span><br><span class="line">          &#123;<span class="keyword">this</span>.state.text.split(<span class="string">' '</span>).map(<span class="function">(<span class="params">word</span>) =&gt;</span> word &amp;&amp; <span class="string">'$$$'</span>).join(<span class="string">' '</span>)&#125;</span><br><span class="line">        &lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>View&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">AppRegistry.registerComponent(<span class="string">'AwesomeProject'</span>, () =&gt; App);</span><br></pre></td></tr></table></figure>
+
+<p>处理接触的话是利用<code>Button</code>这个组件还有一些处理常见的手势组件（没看），简单看一下接触的处理。可触摸的组件有多种返回类型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	onPressButton()&#123;</span><br><span class="line">    	Alert.alert(<span class="string">'you tapped the button'</span>);</span><br><span class="line"> 	 &#125;</span><br><span class="line">  	onLongPresssButton()&#123;</span><br><span class="line">   	 	Alert.alert(<span class="string">'you press the button longer'</span>);</span><br><span class="line"> 	 &#125;</span><br><span class="line">     render()&#123;</span><br><span class="line">    <span class="keyword">return</span>(</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        <span class="comment">//当用户按下按钮时，视图的背景将变暗。</span></span><br><span class="line">        &lt;TouchableHighlight onPress=&#123;<span class="keyword">this</span>.onPressButton&#125; underlayColor=<span class="string">'white'</span>&gt;</span><br><span class="line">          &lt;View style=&#123;styles.button&#125;&gt;</span><br><span class="line">            &lt;Text style=&#123;styles.buttonText&#125;&gt;TouchableHighlight&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">          &lt;/</span>View&gt;</span><br><span class="line">        &lt;<span class="regexp">/TouchableHighlight&gt;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/通过降低按钮的不透明度来提供反馈，从而允许在用户按下时看到背景</span></span><br><span class="line"><span class="regexp">        &lt;TouchableOpacity onPress=&#123;this.onPressButton&#125;&gt;</span></span><br><span class="line"><span class="regexp">            &lt;View style=&#123;styles.button&#125;&gt;</span></span><br><span class="line"><span class="regexp">              &lt;Text style=&#123;styles.buttonText&#125;&gt;TouchableOpacity&lt;/</span>Text&gt;</span><br><span class="line">            &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>TouchableOpacity&gt;</span><br><span class="line">        <span class="comment">//显示响应用户触摸的墨水表面反应涟漪</span></span><br><span class="line">        &lt;TouchableNativeFeedback</span><br><span class="line">            onPress=&#123;<span class="keyword">this</span>.onPressButton&#125;</span><br><span class="line">            background=&#123;Platform.OS === <span class="string">'android'</span> ? TouchableNativeFeedback.SelectableBackground() : <span class="string">''</span>&#125;&gt;</span><br><span class="line">            &lt;View style=&#123;styles.button&#125;&gt;</span><br><span class="line">              &lt;Text style=&#123;styles.buttonText&#125;&gt;TouchableNativeFeedback&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>View&gt;</span><br><span class="line">        &lt;<span class="regexp">/TouchableNativeFeedback&gt;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/处理点击手势但不希望显示任何反馈</span></span><br><span class="line"><span class="regexp">        &lt;TouchableWithoutFeedback onPress=&#123;this.onPressButton&#125;&gt;</span></span><br><span class="line"><span class="regexp">          &lt;View style=&#123;styles.button&#125;&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Text style=&#123;styles.buttonText&#125;&gt;TouchableWithoutFeedback&lt;/</span>Text&gt;</span><br><span class="line">          &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>TouchableWithoutFeedback&gt;</span><br><span class="line">        <span class="comment">//在之前的视图变暗的基础上加上了一个长按的操作</span></span><br><span class="line">        &lt;TouchableHighlight onPress=&#123;<span class="keyword">this</span>.onPressButton&#125; onLongPress=&#123;<span class="keyword">this</span>.onLongPresssButton&#125; underlayColor=<span class="string">"white"</span>&gt;</span><br><span class="line">          &lt;View style=&#123;styles.button&#125;&gt;</span><br><span class="line">            &lt;Text style=&#123;styles.buttonText&#125;&gt;Touchable <span class="keyword">with</span> Long Press&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">          &lt;/</span>View&gt;</span><br><span class="line">        &lt;<span class="regexp">/TouchableHighlight&gt;</span></span><br><span class="line"><span class="regexp">      &lt;/</span>View&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">AppRegistry.registerComponent(<span class="string">'AwesomeProject'</span>, () =&gt; App);</span><br></pre></td></tr></table></figure>
+
+<h2 id="滚动条和列表视图"><a href="#滚动条和列表视图" class="headerlink" title="滚动条和列表视图"></a>滚动条和列表视图</h2><p><code>ScrollView</code>一个通用的滚动容器，可以放置多个<code>component</code>或者 <code>views</code>，通过参数控制是横着还是竖着。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	<span class="comment">//实现一个界面放两个滚动条</span></span><br><span class="line"> 	render() &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View&gt;</span><br><span class="line">        &lt;ScrollView horizontal&gt;</span><br><span class="line">          &lt;Text style=&#123;&#123;<span class="attr">fontSize</span>:<span class="number">96</span>&#125;&#125;&gt;Scroll me plz&lt;<span class="regexp">/Text&gt; </span></span><br><span class="line"><span class="regexp">        &lt;/</span>ScrollView&gt;</span><br><span class="line"></span><br><span class="line">        &lt;ScrollView&gt;</span><br><span class="line">          &lt;Text style=&#123;&#123;<span class="attr">fontSize</span>:<span class="number">96</span>&#125;&#125;&gt;If you like&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">          &lt;Text style=&#123;&#123;fontSize:96&#125;&#125;&gt;Scrolling down&lt;/</span>Text&gt;</span><br><span class="line">          &lt;Text style=&#123;&#123;<span class="attr">fontSize</span>:<span class="number">96</span>&#125;&#125;&gt;What<span class="string">'s the best&lt;/Text&gt;</span></span><br><span class="line"><span class="string">          &lt;Text style=&#123;&#123;fontSize:96&#125;&#125;&gt;Framework around?&lt;/Text&gt;</span></span><br><span class="line"><span class="string">          &lt;Text style=&#123;&#123;fontSize:80&#125;&#125;&gt;React Native&lt;/Text&gt;</span></span><br><span class="line"><span class="string">        &lt;/ScrollView&gt;</span></span><br><span class="line"><span class="string">      &lt;/View&gt;</span></span><br><span class="line"><span class="string">    );</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">AppRegistry.registerComponent('</span>AwesomeProject<span class="string">', () =&gt; App);</span></span><br></pre></td></tr></table></figure>
+
+<p><code>React Native</code>提供了一套用于显示数据列表的组件：<code>FlatList</code>和<code>SectionList</code>。列表视图最常见的用途之一是显示从服务器获取的数据。</p>
+<p><code>FlatList</code>组件显示一个滚动列表，它唯一呈现当前在屏幕上显示的元素，而不是一次显示所有元素。它有两个道具：<code>data</code>和<code>renderItem</code>。<code>data</code>是列表的信息来源。<code>renderItem</code>从源中获取一个项目并返回要呈现的格式化组件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123;Component&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;FlatList, ScrollView, Platform, StyleSheet, Text, View, AppRegistry, Image, TextInput, Button, Alert, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">	render()&#123;</span><br><span class="line">    <span class="keyword">return</span>(</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        &lt;FlatList </span><br><span class="line">          data=&#123;[</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'Devin'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'Jackson'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'James'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'Joel'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'John'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'Jillian'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'Jimmy'</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">key</span>: <span class="string">'Julie'</span>&#125;,</span><br><span class="line">          ]&#125;</span><br><span class="line">		<span class="comment">//renderItem这个不是很懂，看懂了再解释</span></span><br><span class="line">          renderItem=&#123;(&#123;item&#125;) =&gt; <span class="xml"><span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.item&#125;</span>&gt;</span>&#123;item.key&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span>&#125;</span><br><span class="line">          /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; App);</span></span><br></pre></td></tr></table></figure>
+
+<p>如果将一组数据分解为逻辑部分，可能使用部分标题，那么就使用<code>SectionList</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppRegistry, SectionList, StyleSheet, Text, View &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">SectionListBasics</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        &lt;SectionList</span><br><span class="line">          sections=&#123;[</span><br><span class="line">            &#123;<span class="attr">title</span>: <span class="string">'D'</span>, <span class="attr">data</span>: [<span class="string">'Devin'</span>]&#125;,</span><br><span class="line">            &#123;<span class="attr">title</span>: <span class="string">'J'</span>, <span class="attr">data</span>: [<span class="string">'Jackson'</span>, <span class="string">'James'</span>, <span class="string">'Jillian'</span>, <span class="string">'Jimmy'</span>, <span class="string">'Joel'</span>, <span class="string">'John'</span>, <span class="string">'Julie'</span>]&#125;,</span><br><span class="line">          ]&#125;</span><br><span class="line">          renderItem=&#123;(&#123;item&#125;) =&gt; <span class="xml"><span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.item&#125;</span>&gt;</span>&#123;item&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span>&#125;</span><br><span class="line">          renderSectionHeader=&#123;(&#123;section&#125;) =&gt; <span class="xml"><span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.sectionHeader&#125;</span>&gt;</span>&#123;section.title&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span>&#125;</span><br><span class="line">          keyExtractor=&#123;(item, index) =&gt; index&#125;</span><br><span class="line">        /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">const styles = StyleSheet.create(&#123;</span></span><br><span class="line"><span class="regexp">  container: &#123;</span></span><br><span class="line"><span class="regexp">   flex: 1,</span></span><br><span class="line"><span class="regexp">   paddingTop: 22</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  sectionHeader: &#123;</span></span><br><span class="line"><span class="regexp">    paddingTop: 2,</span></span><br><span class="line"><span class="regexp">    paddingLeft: 10,</span></span><br><span class="line"><span class="regexp">    paddingRight: 10,</span></span><br><span class="line"><span class="regexp">    paddingBottom: 2,</span></span><br><span class="line"><span class="regexp">    fontSize: 14,</span></span><br><span class="line"><span class="regexp">    fontWeight: 'bold',</span></span><br><span class="line"><span class="regexp">    backgroundColor: 'rgba(247,247,247,1.0)',</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  item: &#123;</span></span><br><span class="line"><span class="regexp">    padding: 10,</span></span><br><span class="line"><span class="regexp">    fontSize: 18,</span></span><br><span class="line"><span class="regexp">    height: 44,</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">&#125;)</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('AwesomeProject', () =&gt; SectionListBasics);</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/21/Js语法熟悉/" rel="next" title="Js语法熟悉一">
+                <i class="fa fa-chevron-left"></i> Js语法熟悉一
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/22/Js语法熟悉1/" rel="prev" title="Js语法熟悉二">
+                Js语法熟悉二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rui Zhou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiaorui2" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建第一个ReactNative项目"><span class="nav-number">1.</span> <span class="nav-text">搭建第一个ReactNative项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境要求"><span class="nav-number">1.1.</span> <span class="nav-text">环境要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">1.2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跑Demo"><span class="nav-number">1.3.</span> <span class="nav-text">跑Demo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础知识"><span class="nav-number">2.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的组件介绍"><span class="nav-number">2.1.</span> <span class="nav-text">简单的组件介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样式和组件大小"><span class="nav-number">2.2.</span> <span class="nav-text">样式和组件大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用Flexbox进行布局和Flex尺寸"><span class="nav-number">2.3.</span> <span class="nav-text">利用Flexbox进行布局和Flex尺寸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理文本输入和处理接触"><span class="nav-number">2.4.</span> <span class="nav-text">处理文本输入和处理接触</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#滚动条和列表视图"><span class="nav-number">2.5.</span> <span class="nav-text">滚动条和列表视图</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rui Zhou</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
