@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JVM,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM知识点">
+<meta property="og:url" content="http://yoursite.com/2019/06/24/JVM知识点/index.html">
+<meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/3.png">
+<meta property="og:updated_time" content="2019-06-24T01:52:34.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM知识点">
+<meta name="twitter:description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/24/JVM知识点/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/24/JVM知识点/">
+
+
+
+
+
+  <title>JVM知识点 | 九八年生于晚秋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九八年生于晚秋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/24/JVM知识点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM知识点</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-24T08:52:50+08:00">
+                2019-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Java入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="JAVA虚拟机"><a href="#JAVA虚拟机" class="headerlink" title="JAVA虚拟机"></a>JAVA虚拟机</h1><h2 id="JAVA跨平台"><a href="#JAVA跨平台" class="headerlink" title="JAVA跨平台"></a>JAVA跨平台</h2><p>我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？</p>
+<p>Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后运行。也就是说，在不同平台上装上平台对应的JVM虚拟机后，就可以将Java字节码文件转换，然后运行我们的Java程序。</p>
+<p>Java编译后的结果是生成字节码，而不是机器码。字节码是不可以直接运行的，必须通过JVM再次翻译成机器码才可以运行。即使是将Java程序打包成可执行文件，也仍然需要JVM的支持才可以运行。跨平台的是Java程序，而不是JVM。JVM是用C/C++开发的，不能平台，不同的平台下JVM的版本是不同的。</p>
+<h2 id="JAVA虚拟机内存划分"><a href="#JAVA虚拟机内存划分" class="headerlink" title="JAVA虚拟机内存划分"></a>JAVA虚拟机内存划分</h2><p>在Java中，程序员把内存控制权利交给 Java 虚拟机而不用像c++为一个 new 操作去写对应的 delete/free 操作，因此不是很容易出现内存泄露和溢出的问题。</p>
+<p>Java 虚拟机在执行 Java 程序的过程中会把它管理的内存划分成若干个不同的数据区域：</p>
+<p><img src="1.png" alt></p>
+<p>其中线程私有的有：虚拟机栈，本地方法栈，程序计数器；线程共共享的有堆，方法区，直接内存。</p>
+<h3 id="JAVA堆"><a href="#JAVA堆" class="headerlink" title="JAVA堆"></a>JAVA堆</h3><p>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。同时它也是是垃圾收集器管理的主要区域，因此也被称作GC堆，Java堆还可以细分为：新生代和老年代：再细致一点有：Eden空间、From Survivor、To Survivor空间等。进一步划分的目的是更好地回收内存，或者更快地分配内存。</p>
+<p><img src="2.png" alt></p>
+<p>新生代分为：1个Eden区和2个Survivor区（分别叫from和to）。默认比例为8：1。参考<a href="https://blog.csdn.net/lojze_ly/article/details/49456255" target="_blank" rel="noopener">https://blog.csdn.net/lojze_ly/article/details/49456255</a></p>
+<p>一般情况下，新创建的对象都会被分配到Eden区，如果Eden区没有足够的空间时，虚拟机执行一次Minor GC。(一些大对象特殊处理：大对象直接进入老年代（大对象是指需要大量连续内存空间的对象）。这样做的目的是避免在Eden区和两个Survivor区之间发生大量的内存拷贝新生代采用复制算法收集内存),这些对象经过第一次Minor GC后，如果仍然存活，将会被移到Survivor区。对象在Survivor区中每熬过一次Minor GC，年龄就会增加1岁，当它的年龄增加到一定程度时，就会被移动到老年代中。</p>
+<p>在GC开始的时候，对象只会存在于Eden区和名为“From”的Survivor区，Survivor区“To”是空的。紧接着进行GC，Eden区中所有存活的对象都会被复制到“To”，而在“From”区中，仍存活的对象会根据他们的年龄值来决定去向。年龄达到一定值(年龄阈值，可以通过-XX:MaxTenuringThreshold来设置)的对象会被移动到年老代中，没有达到阈值的对象会被复制到“To”区域。经过这次GC后，Eden区和From区已经被清空。这个时候，“From”和“To”会交换他们的角色，也就是新的“To”就是上次GC前的“From”，新的“From”就是上次GC前的“To”。不管怎样，都会保证名为To的Survivor区域是空的。Minor GC会一直重复这样的过程，直到“To”区被填满，“To”区被填满之后，会将所有对象移动到年老代中。</p>
+<p>新生代和老年代的一些区别：新生代和老年代是针对于分代收集算法来定义的，新生代又分为Eden和Survivor两个区。加上老年代就这三个区。数据会首先分配到Eden区 当中（当然也有特殊情况，如果是大对象那么会直接放入到老年代（大对象是指需要大量连续内存空间的java对象）。），当Eden没有足够空间的时候就会 触发jvm发起一次Minor GC。如果对象经过一次Minor GC还存活，并且又能被Survivor空间接受，那么将被移动到Survivor空 间当中。并将其年龄设为1，对象在Survivor每熬过一次Minor GC，年龄就加1，当年龄达到一定的程度（默认为15）时，就会被晋升到老年代 中了，当然晋升老年代的年龄是可以设置的。其实新生代和老年代就是针对于对象做分区存储，更便于回收等等</p>
+<p>有关年轻代的几个参数：</p>
+<p>1.XX:NewSize和-XX:MaxNewSize</p>
+<p>用于设置年轻代的大小，建议设为整个堆大小的1/3或者1/4,两个值设为一样大。</p>
+<p>2.XX:SurvivorRatio</p>
+<p>用于设置Eden和其中一个Survivor的比值，这个值也比较重要。默认8:1；</p>
+<p>3.XX:+PrintTenuringDistribution</p>
+<p>这个参数用于显示每次Minor GC时Survivor区中各个年龄段的对象的大小。</p>
+<p>4-XX:InitialTenuringThreshol和-XX:MaxTenuringThreshold</p>
+<p>用于设置晋升到老年代的对象年龄的最小值和最大值，每个对象在坚持过一次Minor GC之后，年龄就加1。</p>
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>程序计数器的作用：字节码解释器通过改变程序计数器的值来选取下一条需要执行的字节码指令，从而实现代码的流程控制；在多线程的情况下，程序计数器用于记录当前线程执行的位置，从而当线程被切换回来的时候能够知道该线程上次运行到哪儿了。</p>
+<p>注意：程序计数器是唯不会出现 OutOfMemoryError 的内存区域，它的生命周期随着线程的创建而创建，随着线程的结束而死亡。</p>
+<h3 id="JAVA虚拟机栈"><a href="#JAVA虚拟机栈" class="headerlink" title="JAVA虚拟机栈"></a>JAVA虚拟机栈</h3><p>Java虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有局部变量表、操作数栈、动态链接、方法出口信息。<strong>每个方法从被调用，直到被执行完。对应着一个栈帧在虚拟机中从入栈到出栈的过程</strong></p>
+<p>Java 虚拟机栈会出现两种异常：StackOverFlowError 和 OutOfMemoryError。第一个是如果线程请求的栈深度大于虚拟机所允许的深度抛出的错误，第二个则是虚拟机在动态扩展栈时无法申请到足够的内存空间抛出的异常。</p>
+<p>通常说的栈就是指局部变量表部分，存放编译期间可知的8种基本数据类型，及对象引用和指令地址。局部变量表是在编译期间完成分配，当进入一个方法时，这个栈中的局部变量分配内存大小是确定的。</p>
+<p>jvm 的局部变量表是做什么的？</p>
+<p>存储局部变量、函数调用时传递参数，很多字节码指令都是对局部变量表和操作数栈进行操作的。</p>
+<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>该区域与虚拟机栈所发挥的作用非常相似，只是虚拟机栈为虚拟机执行 Java 方法服务，而本地方法栈则为使用到的本地操作系统（Native）方法服务，和平台有关的方法。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据，它有一个别名叫做 Non-Heap（非堆）也常称为永久代，垃圾收集行为在这个区域是比较少出现的，但并非数据进入方法区后就“永久存在”了。</p>
+<h1 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h1><h2 id="什么是类的加载"><a href="#什么是类的加载" class="headerlink" title="什么是类的加载"></a>什么是类的加载</h2><p>类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的数据结构的接口。</p>
+<h2 id="类加载的过程"><a href="#类加载的过程" class="headerlink" title="类加载的过程"></a>类加载的过程</h2><p>类加载主要分为以下五个步骤：加载，验证，准备，解析，初始化。　　　</p>
+<p>加载：程序运行之前jvm会把编译完成的.class二进制文件加载到内存，供程序使用，用到的就是类加载器classLoader。</p>
+<p>验证：保证类加载的准确性，看是否是javac 编译的class 文件。</p>
+<p>准备：为类的静态变量分配内存，将其初始化为默认值。</p>
+<p>解析：把类中的符号引用转化为直接引用。</p>
+<p>初始化：为类的静态变量赋予正确的初始值，上述的准备阶段为静态变量赋予的是虚拟机默认的初始值，此处赋予的才是程序编写者为变量分配的真正的初始值。</p>
+<h2 id="类加载基于的机制"><a href="#类加载基于的机制" class="headerlink" title="类加载基于的机制"></a>类加载基于的机制</h2><p>Java类加载器基于三个机制：委托、可见性和单一性。委托就是将加载一个类的请求交给父类加载器，如果没有父类加载器或者父类加载器不给它加载再加载它，可见性是父类加载器不能看到子类的加载的类，但是子类的加载能看到父类的加载的类。单一性是指仅加载一个类一次，这是由委托机制确保子类加载器不会再次加载父类加载器加载过的类。</p>
+<p>为什么要双亲委派？</p>
+<p>保证java类库中的类不受用户类影响，防止用户自定义一个类库中的同名类，引起问题。</p>
+<p>我们常见的有三种加载器：Bootstrap类加载器（加载java核心类库）、Extension类加载器（加载 Java 的扩展库）和System类加载器（Java 应用的类路径来加载 Java 类）</p>
+<p>注意：使用不同的类加载器，你可以从不同的源地址加载同一个类，它们被视为不同的类。</p>
+<p>类加载器并不需要等到某个类被“首次主动使用”时再加载它，JVM规范允许类加载器在预料某个类将要被使用时就预先加载它，如果在预先加载的过程中遇到了.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误（LinkageError错误）如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误</p>
+<p>几个类加载器的层次关系：</p>
+<p><img src="3.png" alt></p>
+<h2 id="自己写个String能加载吗"><a href="#自己写个String能加载吗" class="headerlink" title="自己写个String能加载吗"></a>自己写个String能加载吗</h2><p>加载过程中会先检查类是否被已加载，检查顺序是自底向上，从Custom ClassLoader到BootStrap ClassLoader逐层检查，只要某个classloader已加载就视为已加载此类，保证此类只所有ClassLoader加载一次。而加载的顺序是自顶向下，也就是说当发现这个类没有的时候会先去让自己的父类去加载，父类没有再让儿子去加载，那么在这个例子中我们自己写的String应该是被Bootstrap ClassLoader加载了，所以App ClassLoader就不会再去加载我们写的String类了，导致我们写的String类是没有被加载的。但在应用的时候，需要用自己的类加载器去加载，否则，系统的类加载器永远只是去加载 jre.jar 包中的那个 java.lang.String。双亲委派机制是可以打破的， 所以，这些类都是可以重写的。 但是JVM出于安全的考虑， 你自己写的类 ， 不能用java.* 开头， 否则都不会被加载。 懂了吧， 总结一下就是： 可以写， 但是包名要改。</p>
+<h1 id="类初始化时机"><a href="#类初始化时机" class="headerlink" title="类初始化时机"></a>类初始化时机</h1><p>只有当对类的主动使用的时候才会导致类的初始化，类的主动使用包括以下六种：</p>
+<ul>
+<li>创建类的实例，也就是new的方式</li>
+<li>访问某个类或接口的静态变量，或者对该静态变量赋值</li>
+<li>调用类的静态方法</li>
+<li>反射（如 <code>Class.forName(“com.shengsiyuan.Test”)</code>）</li>
+<li>初始化某个类的子类，则其父类也会被初始化</li>
+<li>Java虚拟机启动时被标明为启动类的类（ <code>JavaTest</code>），直接使用 <code>java.exe</code>命令来运行某个主类</li>
+</ul>
+<h1 id="Java虚拟机结束生命周期"><a href="#Java虚拟机结束生命周期" class="headerlink" title="Java虚拟机结束生命周期"></a>Java虚拟机结束生命周期</h1><p>在如下几种情况下，Java虚拟机将结束生命周期：</p>
+<ul>
+<li><p>执行了 <code>System.exit()</code>方法</p>
+</li>
+<li><p>程序正常执行结束</p>
+</li>
+<li><p>程序在执行过程中遇到了异常或错误而异常终止</p>
+</li>
+<li><p>由于操作系统出现错误而导致Java虚拟机进程终止</p>
+</li>
+</ul>
+<h1 id="JVM初始化步骤"><a href="#JVM初始化步骤" class="headerlink" title="JVM初始化步骤"></a>JVM初始化步骤</h1><ul>
+<li><p>假如这个类还没有被加载和连接，则程序先加载并连接该类</p>
+</li>
+<li><p>假如该类的直接父类还没有被初始化，则先初始化其直接父类</p>
+</li>
+<li><p>假如类中有初始化语句，则系统依次执行这些初始化语句</p>
+</li>
+</ul>
+<h1 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h1><p>对象的创建的过程：</p>
+<p>类加载检查—&gt;分配内存—&gt;初始化零值—&gt;设置对象头—&gt;执行 init 。</p>
+<p>类加载检查： 虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过。如果没有，那必须先执行相应的类加载过程。</p>
+<p>分配内存：类加载检查通过后，接下来虚拟机将为新生对象分配内存。分配方式有：指针碰撞 和 空闲列表两种。在实际开发过程中，创建对象是很频繁的事情，作为虚拟机来说，必须要保证线程是安全的。</p>
+<p>初始化零值：虚拟机将分配到的内存空间都初始化为零值。</p>
+<p>设置对象头：虚拟机要对对象进行必要的设置，例如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的哈希吗、对象的 GC 分代年龄等信息。 这些信息存放在对象头中。</p>
+<p>执行 init ：在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始，所以要执行程序写的 init 方法。</p>
+<h1 id="GC算法与垃圾回收"><a href="#GC算法与垃圾回收" class="headerlink" title="GC算法与垃圾回收"></a>GC算法与垃圾回收</h1><h2 id="为什么需要垃圾回收以及什么时候GC"><a href="#为什么需要垃圾回收以及什么时候GC" class="headerlink" title="为什么需要垃圾回收以及什么时候GC"></a>为什么需要垃圾回收以及什么时候GC</h2><p>首先因为内存是有限的，在不断的分配内存空间而不回收的话内存迟早都会被消耗完，所以垃圾回收是必须的。</p>
+<p>触发GC 的条件：</p>
+<p>1.GC在优先级最低的线程中运行，一般在应用程序空闲即没有应用线程在运行时被调用。</p>
+<p>2.Java堆内存不足时，GC会被调用。</p>
+<p>触发Full GC：调用Sytem.GC()；老年代空间不足时；GC担保失败。</p>
+<h2 id="对象存活判断"><a href="#对象存活判断" class="headerlink" title="对象存活判断"></a>对象存活判断</h2><p>判断对象是否存活一般有两种方式：</p>
+<ul>
+<li>引用计数：每个对象有一个引用计数属性，新增一个引用时计数加1，引用释放时计数减1，计数为0时可以回收。此方法简单，无法解决对象相互循环引用的问题。</li>
+<li>可达性分析（Reachability Analysis）：从GC Roots开始向下搜索，搜索所走过的路径称为引用链。当一个对象到GC Roots没有任何引用链相连时，则证明此对象是不可用的，不可达对象。能够作为GC Roots对象的有：虚拟机栈中引用的对象，方法区中的类静态属性引用的对象，方法区中常量引用的对象，本地方法栈中JNI引用的对象。</li>
+</ul>
+<h2 id="GC算法"><a href="#GC算法" class="headerlink" title="GC算法"></a>GC算法</h2><ul>
+<li><p>标记—清除：程序暂停运行，启动GC，GC从堆或静态存储区开始遍历所有对象，判断对象是否“活”的对象，如果是活不删除，反之删除。判断是否“活”就是判断该对象是否有被其他对象引用，从链上去查找。当是活对象时，会给对象给个标记符号，死对象则不标记，遍历完后，第二次遍历时，只保留标记的对象，把所有没标记的对象都删除。</p>
+</li>
+<li><p>停止—复制：程序暂停运行，启动GC，GC从堆或静态存储区开始遍历所有对象，判断对象是否“活”的对象，如果是活不删除，反之删除。判断是否“活”就是判断该对象是否有被其他对象引用，从链上去查找。当是活对象时，GC会从另外堆里开避一个大空间，然后将活对象复制一份到新空间里，在复制时按着紧密排列，同时更新所有引用地址为新的地址，不活对象原封不动。遍历完后，再遍历一次，这次是将不活的对象彻底给删除。</p>
+<p>优点：所有对象能够重新紧密排列，不会出现内存碎片，这对以后创建对象能提供更快的效率。</p>
+<p>缺点：占用的内存空间大，要原对象的2倍空间；这种模式无论如何所有活的对象都要复制一份，假设遍历到最后，对象很稳定，只出现少量垃圾对象或者根本没垃圾对象，这时已经做了复制工作，浪费了资源。</p>
+</li>
+<li><p>标记—整理：标记-清除算法一样，不过不是直接对可回收对象进行清理，而是让所有存活对象都向一端移动，然后直接清理掉边界以外的内存。</p>
+</li>
+<li><p>分代收集：根据各块的特点采用最适当的收集算法。大批对象死去、少量对象存活的（新生代），使用复制算法，复制成本低；对象存活率高、没有额外空间进行分配担保的（老年代），采用标记-清理算法或者标记-整理算法。</p>
+</li>
+</ul>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><ul>
+<li><p>CMS 垃圾收集器：获取最短回收停顿时间为目标的收集器。使用标记 - 清除算法。</p>
+<p>初始标记(标记GCRoots能直接关联到的对象，时间很短)-&gt; 并发标记(进行可达性分析过程，时间很长)-&gt; 重新标记-&gt;并发清除(回收内存空间，时间很长)</p>
+</li>
+<li><p>G1收集器</p>
+<p>并行和并发：使用多个CPU来缩短Stop The World停顿时间，与用户线程并发执行</p>
+<p>分代收集：独立管理整个堆，但是能够采用不同的方式去处理新创建对象和已经存活了一段时间、熬过多次GC的旧对象，以获取更好的收集效果</p>
+<p>空间整合：基于标记 - 整理算法，无内存碎片产生。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/24/剑指Offer刷题（持续更新）/" rel="next" title="剑指Offer刷题（持续更新）">
+                <i class="fa fa-chevron-left"></i> 剑指Offer刷题（持续更新）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/24/Css盒模型，布局以及定位/" rel="prev" title="Css盒模型，布局以及定位">
+                Css盒模型，布局以及定位 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rui Zhou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiaorui2" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA虚拟机"><span class="nav-number">1.</span> <span class="nav-text">JAVA虚拟机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA跨平台"><span class="nav-number">1.1.</span> <span class="nav-text">JAVA跨平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA虚拟机内存划分"><span class="nav-number">1.2.</span> <span class="nav-text">JAVA虚拟机内存划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA堆"><span class="nav-number">1.2.1.</span> <span class="nav-text">JAVA堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.2.2.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA虚拟机栈"><span class="nav-number">1.2.3.</span> <span class="nav-text">JAVA虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.2.4.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.2.5.</span> <span class="nav-text">方法区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载"><span class="nav-number">2.</span> <span class="nav-text">类加载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">2.1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载的过程"><span class="nav-number">2.2.</span> <span class="nav-text">类加载的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载基于的机制"><span class="nav-number">2.3.</span> <span class="nav-text">类加载基于的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自己写个String能加载吗"><span class="nav-number">2.4.</span> <span class="nav-text">自己写个String能加载吗</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类初始化时机"><span class="nav-number">3.</span> <span class="nav-text">类初始化时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机结束生命周期"><span class="nav-number">4.</span> <span class="nav-text">Java虚拟机结束生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM初始化步骤"><span class="nav-number">5.</span> <span class="nav-text">JVM初始化步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象的创建"><span class="nav-number">6.</span> <span class="nav-text">对象的创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC算法与垃圾回收"><span class="nav-number">7.</span> <span class="nav-text">GC算法与垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要垃圾回收以及什么时候GC"><span class="nav-number">7.1.</span> <span class="nav-text">为什么需要垃圾回收以及什么时候GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象存活判断"><span class="nav-number">7.2.</span> <span class="nav-text">对象存活判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC算法"><span class="nav-number">7.3.</span> <span class="nav-text">GC算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集器"><span class="nav-number">7.4.</span> <span class="nav-text">垃圾收集器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rui Zhou</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

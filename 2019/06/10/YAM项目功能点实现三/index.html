@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Algorithm,">
+  <meta name="keywords" content="项目,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Two SumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not use the">
-<meta name="keywords" content="Algorithm">
+<meta name="description" content="功能需求实现userId和View的一对多，以及保证线程安全，在ViewRenderManager中修改addRender，Remove的实现修改一个人对应的View。 实现首先之前的存储是利用HashMap存储，一个userId对应一个View： 123456789public class RenderInfo &amp;#123;    public int rotation;    public S">
+<meta name="keywords" content="项目">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode1">
-<meta property="og:url" content="http://yoursite.com/2019/05/26/LeetCode1/index.html">
+<meta property="og:title" content="YAM项目功能点实现三">
+<meta property="og:url" content="http://yoursite.com/2019/06/10/YAM项目功能点实现三/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="Two SumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not use the">
+<meta property="og:description" content="功能需求实现userId和View的一对多，以及保证线程安全，在ViewRenderManager中修改addRender，Remove的实现修改一个人对应的View。 实现首先之前的存储是利用HashMap存储，一个userId对应一个View： 123456789public class RenderInfo &amp;#123;    public int rotation;    public S">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-07T05:49:26.428Z">
+<meta property="og:updated_time" content="2019-06-10T03:31:32.152Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode1">
-<meta name="twitter:description" content="Two SumGiven an array of integers, return indices of the two numbers such that they add up to a specific target. You may assume that each input would have exactly one solution, and you may not use the">
+<meta name="twitter:title" content="YAM项目功能点实现三">
+<meta name="twitter:description" content="功能需求实现userId和View的一对多，以及保证线程安全，在ViewRenderManager中修改addRender，Remove的实现修改一个人对应的View。 实现首先之前的存储是利用HashMap存储，一个userId对应一个View： 123456789public class RenderInfo &amp;#123;    public int rotation;    public S">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/26/LeetCode1/">
+  <link rel="canonical" href="http://yoursite.com/2019/06/10/YAM项目功能点实现三/">
 
 
 
 
 
-  <title>LeetCode1 | 九八年生于晚秋</title>
+  <title>YAM项目功能点实现三 | 九八年生于晚秋</title>
   
 
 
@@ -295,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/26/LeetCode1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/10/YAM项目功能点实现三/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rui Zhou">
@@ -312,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LeetCode1</h1>
+          <h1 class="post-title" itemprop="name headline">YAM项目功能点实现三</h1>
         
 
         <div class="post-meta">
@@ -324,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T21:15:06+08:00">
-                2019-05-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-10T08:52:50+08:00">
+                2019-06-10
               </time>
             
 
@@ -347,8 +347,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
+                  <a href="/categories/前端学习/" itemprop="url" rel="index">
+                    <span itemprop="name">前端学习</span>
                   </a>
                 </span>
 
@@ -389,15 +389,24 @@
       
 
       
-        <h1 id="Two-Sum"><a href="#Two-Sum" class="headerlink" title="Two Sum"></a>Two Sum</h1><p>Given an array of integers, return <strong>indices</strong> of the two numbers such that they add up to a specific target.</p>
-<p>You may assume that each input would have <strong>exactly</strong> one solution, and you may not use the <em>same</em> element twice.</p>
-<p><strong>Example:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given nums = [2, 7, 11, 15], target = 9,</span><br><span class="line">Because nums[0] + nums[1] = 2 + 7 = 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure>
+        <h1 id="功能需求"><a href="#功能需求" class="headerlink" title="功能需求"></a>功能需求</h1><p>实现<code>userId</code>和<code>View</code>的一对多，以及保证线程安全，在<code>ViewRenderManager</code>中修改<code>addRender</code>，<code>Remove</code>的实现修改一个人对应的<code>View</code>。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>首先之前的存储是利用<code>HashMap</code>存储，一个<code>userId</code>对应一个<code>View</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RenderInfo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> rotation;</span><br><span class="line">    <span class="keyword">public</span> SurfaceViewRenderer view;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RenderInfo</span><span class="params">(<span class="keyword">int</span> rotation, SurfaceViewRenderer view)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.rotation = rotation;</span><br><span class="line">        <span class="keyword">this</span>.view = view;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> Map&lt;String, RenderInfo&gt; renderers = <span class="keyword">new</span> HashMap&lt;String, RenderInfo&gt;();</span><br></pre></td></tr></table></figure>
 
-<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>这个找到两个数，使得相加和为<code>target</code>。最简单的两重循环找到这个符合题意的值。</p>
-<p>也可以一遍扫过去，每次找<code>target-nums[i]</code>值是否出现过，出现了就返回，不然就存到数组中。</p>
-<h1 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;number[]&#125; nums</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; target</span></span><br><span class="line"><span class="comment"> * @return &#123;number[]&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> twoSum = <span class="function"><span class="keyword">function</span>(<span class="params">nums, target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> len=nums.length;</span><br><span class="line">    <span class="keyword">var</span> i,j;</span><br><span class="line">    <span class="keyword">var</span> hash=[];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">        j=target-nums[i];</span><br><span class="line">        <span class="keyword">if</span>(hash[j]!==<span class="literal">undefined</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> [i,hash[j]];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            hash[nums[i]]=i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>那么我需要实现一个<code>userId</code>对应多个<code>View</code>，那么我肯定需要拿一个数据结构存储这多个<code>View</code>并且保证线程安全，可以选择<code>ConcurrentHashMap</code>代替<code>HashMap</code>，然后用<code>Vector</code>去存储这多个<code>View</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Map&lt;String, Vector&gt; renderers = <span class="keyword">new</span> ConcurrentHashMap&lt;String, Vector&gt;();</span><br></pre></td></tr></table></figure>
 
+<p>我们在<code>VideoRendererManager</code>里写增删，然后再外面封装一层<code>YoumeManager</code>实现增删改，最后在<code>YoumeViewManager</code>写业务逻辑时候再调用函数实现功能点。</p>
+<p>那我们先修改<code>VideoRendererManager</code>层：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 添加渲染源,添加的时候如果这个userId已经存在，就添加到对应的Vector里面，如果不存在</span></span><br><span class="line"><span class="comment">* 话就新生成一个Vector，然后put到ConcurrentHashMap里面就可以了。</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> view</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> RenderInfo <span class="title">addRender</span><span class="params">(String userId, SurfaceViewRenderer view)</span> </span>&#123;</span><br><span class="line">   <span class="comment">//int renderId = api.createRender(userId);</span></span><br><span class="line">   RenderInfo info = <span class="keyword">new</span> RenderInfo(<span class="number">0</span>, view);</span><br><span class="line">   Vector&lt;RenderInfo&gt; renderInfos = renderers.get(userId);</span><br><span class="line">   <span class="keyword">if</span>(renderInfos != <span class="keyword">null</span>)&#123;</span><br><span class="line">   		renderInfos.add(info);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>&#123;</span><br><span class="line">   		Vector&lt;RenderInfo&gt; renderInfos1 = <span class="keyword">new</span> Vector&lt;RenderInfo&gt;();</span><br><span class="line">        renderInfos1.add(info);</span><br><span class="line">        renderers.put(userId,renderInfos1);</span><br><span class="line">   &#125;</span><br><span class="line">   Log.d(TAG, <span class="string">"addRender userId:"</span>+userId);</span><br><span class="line">   <span class="keyword">return</span> info;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* get渲染源，以前的话只需要get出来那个userId，所以返回SurfaceViewRenderer就可以了</span></span><br><span class="line"><span class="comment">* 现在因为一个userId对应多个View，所以应该返回Vector&lt;SurfaceViewRenderer&gt;，然后</span></span><br><span class="line"><span class="comment">* 由于从ConcurrentHashMap里面取出来的是RenderInfo，所以应该把View从RenderInfo</span></span><br><span class="line"><span class="comment">* 取出来放到Vector中再返回</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Vector&lt;SurfaceViewRenderer&gt; <span class="title">getRender</span><span class="params">(String userId)</span> </span>&#123;</span><br><span class="line">    Vector&lt;RenderInfo&gt; renderInfos = renderers.get(userId);</span><br><span class="line">    Vector&lt;SurfaceViewRenderer&gt; surfaceViewRenderers = <span class="keyword">new</span> 					Vector&lt;SurfaceViewRenderer&gt;();</span><br><span class="line">    <span class="keyword">if</span>(renderInfos != <span class="keyword">null</span>)&#123;</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;renderInfos.size();i++)&#123;</span><br><span class="line">        surfaceViewRenderers.add(renderInfos.get(i).view);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> surfaceViewRenderers;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 删除的时候，因为每个人有多个View，所以删除的时候要删除对应的userId的对应的那个</span></span><br><span class="line"><span class="comment">* RenderInfo，当然如果这个userId对应的View要是为空的时候就应该把这个userId</span></span><br><span class="line"><span class="comment">* ConcurrentHashMap里面删除，</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteRender</span><span class="params">(String userId,RenderInfo renderInfo)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//int ret = api.deleteRender(renderId);</span></span><br><span class="line">    <span class="keyword">if</span>(renderInfo == <span class="keyword">null</span>) &#123;</span><br><span class="line">      renderers.remove(userId);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">      Vector&lt;RenderInfo&gt; renderInfos = renderers.get(userId);</span><br><span class="line">      <span class="keyword">if</span>(renderInfos != <span class="keyword">null</span>) &#123;</span><br><span class="line">        renderInfos.remove(renderInfo);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">同理在渲染的时候之前是直接渲染对应的那个View，现在的话我们需要把这个userId对应的Vector取出来，然后渲染这个Vector。</span><br></pre></td></tr></table></figure>
+
+<p>这样的话最底层的数据修改就完成了，现在修改<code>YoumeManager</code>层：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> VideoRendererManager.<span class="function">RenderInfo <span class="title">addRenderInfo</span><span class="params">(<span class="keyword">final</span> String userid)</span> </span>&#123;</span><br><span class="line">    SurfaceViewRenderer sView = <span class="keyword">new</span> SurfaceViewRenderer(context);</span><br><span class="line">    <span class="keyword">return</span> VideoRendererManager.getInstance().addRender(userid,sView);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteRenderInfo</span> <span class="params">(String userid, VideoRendererManager.RenderInfo renderInfo)</span></span>&#123;</span><br><span class="line">    VideoRendererManager.getInstance().deleteRender(userid,renderInfo);</span><br><span class="line">    <span class="keyword">if</span>(renderInfo != <span class="keyword">null</span> &amp;&amp; renderInfo.view != <span class="keyword">null</span>)&#123;</span><br><span class="line">      renderInfo.view.release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再修改<code>YoumeViewManager</code>层：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ReactProp</span>(name = <span class="string">"options"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOptions</span><span class="params">(<span class="keyword">final</span> YoumeVideoView videoView, <span class="keyword">final</span> ReadableMap options)</span> </span>&#123;</span><br><span class="line">    String userID = options.hasKey(<span class="string">"userID"</span>) ? options.getString(<span class="string">"userID"</span>) : <span class="string">""</span>;</span><br><span class="line">    <span class="comment">//停止在最后一帧画面</span></span><br><span class="line">    <span class="keyword">boolean</span> pause = options.hasKey(<span class="string">"pause"</span>) ? options.getBoolean(<span class="string">"pause"</span>) : <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">//隐藏视频组件显示，如果全部都隐藏了，同时会屏蔽视频流接受</span></span><br><span class="line">    <span class="keyword">boolean</span> hide = options.hasKey(<span class="string">"hide"</span>) ? options.getBoolean(<span class="string">"hide"</span>) : <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">//在组件销毁时自动屏蔽视频接受</span></span><br><span class="line">    <span class="keyword">boolean</span> autoMask = options.hasKey(<span class="string">"autoMask"</span>) ? options.getBoolean(<span class="string">"autoMask"</span>) : <span class="keyword">false</span>;</span><br><span class="line">    Log.d(REACT_COMPONENT_NAME, <span class="string">"setOptions:"</span>+currentCount+ <span class="string">" "</span> + userID + <span class="string">" pause:"</span> + pause + <span class="string">" hide:"</span> + hide);</span><br><span class="line">    <span class="keyword">if</span> (userID == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">/** 根据业务逻辑，当我们需要改变userId的时候有几种情况，第一个是change，第二个</span></span><br><span class="line"><span class="comment">    * 是add，add的话我们就直接调用YoumeManager层的addRenderInfo函数，然后把对应</span></span><br><span class="line"><span class="comment">    * 的View绑定到对应的videoView（正在渲染的View）上就可以了。change的话我们正常</span></span><br><span class="line"><span class="comment">	* 的逻辑就是我把这个对应的userId的对应的View删了，然后把新的View添加到这个</span></span><br><span class="line"><span class="comment">	* userId上去就可以了，当然还需要把之前的View从当前渲染的videoView上取消绑定以</span></span><br><span class="line"><span class="comment">	* 及把新的View绑定到哦当前渲染的videoView上。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">if</span> (videoView.surfaceView != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!userID.equals(videoView.userid)) &#123;</span><br><span class="line">        YoumeManager.getInstance().deleteRenderInfo(videoView.userid, videoView.renderInfo);</span><br><span class="line">        videoView.removeView();</span><br><span class="line">        videoView.renderInfo = YoumeManager.getInstance().addRenderInfo(userID);</span><br><span class="line">        videoView.addView(videoView.renderInfo, userID);</span><br><span class="line">        setZOrderMediaOverlay(videoView, videoView.zOrderMediaOverlay);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      videoView.renderInfo = YoumeManager.getInstance().addRenderInfo(userID);</span><br><span class="line">      videoView.addView(videoView.renderInfo, userID);</span><br><span class="line">    &#125;</span><br><span class="line">    videoView.setPause(pause);</span><br><span class="line">    videoView.setHide(hide);</span><br><span class="line">    api.maskVideoByUserId(userID, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">    videoView.setAutoMask(autoMask);</span><br><span class="line">    <span class="keyword">if</span>(videoView.neetSetZOrder)&#123;</span><br><span class="line">      videoView.neetSetZOrder = <span class="keyword">false</span>;</span><br><span class="line">      setZOrderMediaOverlay(videoView, videoView.zOrderMediaOverlay);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span><span class="comment">//销毁实例</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDropViewInstance</span><span class="params">(YoumeVideoView videoView)</span> </span>&#123;</span><br><span class="line">    Log.d(REACT_COMPONENT_NAME, <span class="string">"onDropViewInstance："</span>+ currentCount + <span class="string">" "</span>+ (videoView.userid != <span class="keyword">null</span> ? videoView.userid:<span class="string">""</span>));</span><br><span class="line">    <span class="keyword">if</span>(videoView.userid != <span class="keyword">null</span>) &#123;</span><br><span class="line">      YoumeManager.getInstance().deleteRenderInfo(videoView.userid, videoView.renderInfo);</span><br><span class="line"></span><br><span class="line">      Vector&lt;SurfaceViewRenderer&gt; renderInfos = VideoRendererManager.getInstance().getRender(videoView.userid);</span><br><span class="line">      <span class="keyword">if</span>(videoView.autoMask &amp;&amp;(renderInfos == <span class="keyword">null</span> || renderInfos.size() == <span class="number">0</span>)) &#123;</span><br><span class="line">        api.maskVideoByUserId(videoView.userid, <span class="keyword">true</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.onDropViewInstance(videoView);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样的话，我们的任务就解决了。</p>
 
       
     </div>
@@ -415,7 +424,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+            <a href="/tags/项目/" rel="tag"># 项目</a>
           
         </div>
       
@@ -428,8 +437,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/25/Hexo博客多台电脑/" rel="next" title="Hexo博客多台电脑">
-                <i class="fa fa-chevron-left"></i> Hexo博客多台电脑
+              <a href="/2019/06/08/ES6熟悉/" rel="next" title="ES6熟悉">
+                <i class="fa fa-chevron-left"></i> ES6熟悉
               </a>
             
           </div>
@@ -438,8 +447,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/26/LeetCode5/" rel="prev" title="LeetCode5">
-                LeetCode5 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/10/YAM项目功能点实现四/" rel="prev" title="YAM项目功能点实现四">
+                YAM项目功能点实现四 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -517,7 +526,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -528,7 +537,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -539,7 +548,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -581,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Two-Sum"><span class="nav-number">1.</span> <span class="nav-text">Two Sum</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AC代码"><span class="nav-number">3.</span> <span class="nav-text">AC代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#功能需求"><span class="nav-number">1.</span> <span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li></ol></div>
             
 
           </div>
