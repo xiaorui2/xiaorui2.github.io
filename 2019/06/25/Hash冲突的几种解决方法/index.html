@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Hash冲突,">
 
 
 
@@ -79,14 +79,18 @@
 
 
 
-<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="九八年生于晚秋">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+<meta name="description" content="开放定值法： 也叫再散列法，当关键字key的哈希地址p=H（key）出现冲突时，以p为基础，产生另一个哈希地址p1，如果p1仍然冲突，再以p为基础，产生另一个哈希地址p2，…，直到找出一个不冲突的哈希地址pi，将相应元素存入其中。 通常都是用以下公式计算：Hi=（H（key）+di）% m   i=1，2，…，n 其中H（key）为哈希函数，m 为表长，di称为增量序列。增量序列的取值方式不同，">
+<meta name="keywords" content="Hash冲突">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hash冲突的几种解决方法">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/Hash冲突的几种解决方法/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="开放定值法： 也叫再散列法，当关键字key的哈希地址p=H（key）出现冲突时，以p为基础，产生另一个哈希地址p1，如果p1仍然冲突，再以p为基础，产生另一个哈希地址p2，…，直到找出一个不冲突的哈希地址pi，将相应元素存入其中。 通常都是用以下公式计算：Hi=（H（key）+di）% m   i=1，2，…，n 其中H（key）为哈希函数，m 为表长，di称为增量序列。增量序列的取值方式不同，">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-25T03:59:12.084Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="九八年生于晚秋">
+<meta name="twitter:title" content="Hash冲突的几种解决方法">
+<meta name="twitter:description" content="开放定值法： 也叫再散列法，当关键字key的哈希地址p=H（key）出现冲突时，以p为基础，产生另一个哈希地址p1，如果p1仍然冲突，再以p为基础，产生另一个哈希地址p2，…，直到找出一个不冲突的哈希地址pi，将相应元素存入其中。 通常都是用以下公式计算：Hi=（H（key）+di）% m   i=1，2，…，n 其中H（key）为哈希函数，m 为表长，di称为增量序列。增量序列的取值方式不同，">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2019/">
+  <link rel="canonical" href="http://yoursite.com/2019/06/25/Hash冲突的几种解决方法/">
 
 
 
 
 
-  <title>归档 | 九八年生于晚秋</title>
+  <title>Hash冲突的几种解决方法 | 九八年生于晚秋</title>
   
 
 
@@ -141,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -277,391 +281,188 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/25/Hash冲突的几种解决方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">Hash冲突的几种解决方法</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-25T11:50:51+08:00">
+                2019-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 30 篇日志。 继续努力。
-      </span>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Java入门</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/25/Hash冲突的几种解决方法/" itemprop="url">
-              
-                <span itemprop="name">Hash冲突的几种解决方法</span>
-              
-            </a>
-        
-      </h2>
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-25T11:50:51+08:00" content="2019-06-25">
-          06-25
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/25/Volatile关键字/" itemprop="url">
-              
-                <span itemprop="name">Volatile关键字</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-25T11:17:36+08:00" content="2019-06-25">
-          06-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/24/HashMap-HashTable-CourrentHashMap/" itemprop="url">
-              
-                <span itemprop="name">HashMap,HashTable,CourrentHashMap</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-24T15:25:32+08:00" content="2019-06-24">
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <ul>
+<li><p>开放定值法：</p>
+<p>也叫再散列法，当关键字<code>key</code>的哈希地址<code>p=H（key）</code>出现冲突时，以<code>p</code>为基础，产生另一个哈希地址<code>p1</code>，如果<code>p1</code>仍然冲突，再以<code>p</code>为基础，产生另一个哈希地址<code>p2，…，</code>直到找出一个不冲突的哈希地址<code>pi</code>，将相应元素存入其中。</p>
+<p>通常都是用以下公式计算：<code>Hi=（H（key）+di）% m   i=1，2，…，n</code></p>
+<p>其中<code>H（key）</code>为哈希函数，<code>m</code> 为表长，<code>di</code>称为增量序列。增量序列的取值方式不同，相应的再散列方式也不同。主要有三种：线性探测再散列（冲突发生时，顺序查看表中下一单元，直到找出一个空单元或查遍全表），二次探测再散列（冲突发生时，在表的左右进行跳跃式探测，直到找到空单元），伪随机探测再散列。</p>
+</li>
+<li><p>链地址法：</p>
+<p>这种方法的基本思想是将所有哈希地址为<code>i</code>的元素构成一个称为同义词链的单链表，并将单链表的头指针存在哈希表的第<code>i</code>个单元中，因而查找、插入和删除主要在同义词链中进行。链地址法适用于经常进行插入和删除的情况。像之前看到的<code>HashMap</code>就是利用这种方法解决Hash冲突的。</p>
+</li>
+<li><p>再哈希法：</p>
+<p>多写几个哈希函数，算出来一个<code>hashcode</code>重复的就用另一个哈希函数算，直到算出来不一样。</p>
+</li>
+<li><p>建立一个公共溢出区域，就是把冲突的都放在另一个地方，不在表里面。</p>
+</li>
+</ul>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/24/Css盒模型，布局以及定位/" itemprop="url">
-              
-                <span itemprop="name">Css盒模型，布局以及定位</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-24T14:27:19+08:00" content="2019-06-24">
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/24/JVM知识点/" itemprop="url">
-              
-                <span itemprop="name">JVM知识点</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-24T08:52:50+08:00" content="2019-06-24">
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/24/剑指Offer刷题（持续更新）/" itemprop="url">
-              
-                <span itemprop="name">剑指Offer刷题（持续更新）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-24T08:51:45+08:00" content="2019-06-24">
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/24/LeetCode刷题（持续更新）/" itemprop="url">
-              
-                <span itemprop="name">LeetCode刷题（持续更新）</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-24T08:49:46+08:00" content="2019-06-24">
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/10/YAM项目功能点实现六/" itemprop="url">
-              
-                <span itemprop="name">YAM项目功能点实现六</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-10T10:41:08+08:00" content="2019-06-10">
-          06-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/10/YAM项目功能点实现五/" itemprop="url">
-              
-                <span itemprop="name">YAM项目功能点实现五</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-10T10:40:54+08:00" content="2019-06-10">
-          06-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/10/YAM项目功能点实现四/" itemprop="url">
-              
-                <span itemprop="name">YAM项目功能点实现四</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-06-10T08:53:05+08:00" content="2019-06-10">
-          06-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hash冲突/" rel="tag"># Hash冲突</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/25/Volatile关键字/" rel="next" title="Volatile关键字">
+                <i class="fa fa-chevron-left"></i> Volatile关键字
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2019/page/2/">2</a><a class="page-number" href="/archives/2019/page/3/">3</a><a class="extend next" rel="next" href="/archives/2019/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -669,6 +470,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -917,6 +722,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

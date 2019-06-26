@@ -89,8 +89,9 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/3.png">
-<meta property="og:updated_time" content="2019-06-24T01:52:34.463Z">
+<meta property="og:updated_time" content="2019-06-25T03:56:11.304Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM知识点">
 <meta name="twitter:description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
@@ -400,9 +401,11 @@
 <p>Java 虚拟机在执行 Java 程序的过程中会把它管理的内存划分成若干个不同的数据区域：</p>
 <p><img src="1.png" alt></p>
 <p>其中线程私有的有：虚拟机栈，本地方法栈，程序计数器；线程共共享的有堆，方法区，直接内存。</p>
-<h3 id="JAVA堆"><a href="#JAVA堆" class="headerlink" title="JAVA堆"></a>JAVA堆</h3><p>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。同时它也是是垃圾收集器管理的主要区域，因此也被称作GC堆，Java堆还可以细分为：新生代和老年代：再细致一点有：Eden空间、From Survivor、To Survivor空间等。进一步划分的目的是更好地回收内存，或者更快地分配内存。</p>
+<h3 id="JAVA堆"><a href="#JAVA堆" class="headerlink" title="JAVA堆"></a>JAVA堆</h3><p>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。同时它也是是垃圾收集器管理的主要区域，因此也被称作GC堆，Java堆还可以细分为：新生代和老年代：再细致一点有：Eden空间、From Survivor、To Survivor空间等。进一步划分的目的是更好地回收内存，或者更快地分配内存。(分代的唯一理由就是优化GC性能)</p>
 <p><img src="2.png" alt></p>
-<p>新生代分为：1个Eden区和2个Survivor区（分别叫from和to）。默认比例为8：1。参考<a href="https://blog.csdn.net/lojze_ly/article/details/49456255" target="_blank" rel="noopener">https://blog.csdn.net/lojze_ly/article/details/49456255</a></p>
+<p>新生代分为：1个Eden区和2个Survivor区（分别叫from和to）。默认比例为8：1。我们通过图再看一下：</p>
+<p><img src="4.png" alt></p>
+<p>因为年轻代中的对象基本都是朝生夕死的(80%以上)，所以在年轻代的垃圾回收算法使用的是复制算法，复制算法的基本思想就是将内存分为两块，每次只用其中一块，当这一块内存用完，就将还活着的对象复制到另外一块上面。复制算法不会产生内存碎片。</p>
 <p>一般情况下，新创建的对象都会被分配到Eden区，如果Eden区没有足够的空间时，虚拟机执行一次Minor GC。(一些大对象特殊处理：大对象直接进入老年代（大对象是指需要大量连续内存空间的对象）。这样做的目的是避免在Eden区和两个Survivor区之间发生大量的内存拷贝新生代采用复制算法收集内存),这些对象经过第一次Minor GC后，如果仍然存活，将会被移到Survivor区。对象在Survivor区中每熬过一次Minor GC，年龄就会增加1岁，当它的年龄增加到一定程度时，就会被移动到老年代中。</p>
 <p>在GC开始的时候，对象只会存在于Eden区和名为“From”的Survivor区，Survivor区“To”是空的。紧接着进行GC，Eden区中所有存活的对象都会被复制到“To”，而在“From”区中，仍存活的对象会根据他们的年龄值来决定去向。年龄达到一定值(年龄阈值，可以通过-XX:MaxTenuringThreshold来设置)的对象会被移动到年老代中，没有达到阈值的对象会被复制到“To”区域。经过这次GC后，Eden区和From区已经被清空。这个时候，“From”和“To”会交换他们的角色，也就是新的“To”就是上次GC前的“From”，新的“From”就是上次GC前的“To”。不管怎样，都会保证名为To的Survivor区域是空的。Minor GC会一直重复这样的过程，直到“To”区被填满，“To”区被填满之后，会将所有对象移动到年老代中。</p>
 <p>新生代和老年代的一些区别：新生代和老年代是针对于分代收集算法来定义的，新生代又分为Eden和Survivor两个区。加上老年代就这三个区。数据会首先分配到Eden区 当中（当然也有特殊情况，如果是大对象那么会直接放入到老年代（大对象是指需要大量连续内存空间的java对象）。），当Eden没有足够空间的时候就会 触发jvm发起一次Minor GC。如果对象经过一次Minor GC还存活，并且又能被Survivor空间接受，那么将被移动到Survivor空 间当中。并将其年龄设为1，对象在Survivor每熬过一次Minor GC，年龄就加1，当年龄达到一定的程度（默认为15）时，就会被晋升到老年代 中了，当然晋升老年代的年龄是可以设置的。其实新生代和老年代就是针对于对象做分区存储，更便于回收等等</p>
@@ -626,7 +629,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -648,7 +651,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
