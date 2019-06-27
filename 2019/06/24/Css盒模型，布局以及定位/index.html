@@ -88,7 +88,7 @@
 <meta property="og:description" content="盒模型什么是盒模型CSS盒模型是网页布局的基础 ——每个元素被表示为一个矩形的方框，框的内容、内边距、边界和外边距像洋葱的膜那样，一层包着一层构建起来。浏览器渲染网页布局时，它会算出每个框的内容要用什么样式，周围的洋葱层有多大，以及框相对于其它框放在哪里。 盒模型的属性文档的每个元素被构造成文档布局内的一个矩形框，框每层的大小都可以使用一些特定的CSS属性调整。相关属性如下:  width 和 h">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/Css盒模型，布局以及定位/1.png">
-<meta property="og:updated_time" content="2019-06-24T07:43:28.325Z">
+<meta property="og:updated_time" content="2019-06-27T01:27:12.930Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Css盒模型，布局以及定位">
 <meta name="twitter:description" content="盒模型什么是盒模型CSS盒模型是网页布局的基础 ——每个元素被表示为一个矩形的方框，框的内容、内边距、边界和外边距像洋葱的膜那样，一层包着一层构建起来。浏览器渲染网页布局时，它会算出每个框的内容要用什么样式，周围的洋葱层有多大，以及框相对于其它框放在哪里。 盒模型的属性文档的每个元素被构造成文档布局内的一个矩形框，框每层的大小都可以使用一些特定的CSS属性调整。相关属性如下:  width 和 h">
@@ -416,6 +416,28 @@
 </li>
 </ul>
 <p>默认状态下display属性值，块级元素<code>display: block</code> ，行内元素<code>display: inline</code></p>
+<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><p><code>CSS</code>页面布局技术允许我们拾取网页中的元素，并且控制它们相对正常布局流、周边元素、父容器或者主视口/窗口的位置。会涉及到浮动，定位，css表格，弹性盒子，网格等。</p>
+<h2 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h2><p>浮动技术允许元素浮动到另外一个元素的左侧或右侧，而不是默认的一个堆叠另一个。float 的主要用途是布置出多个列并且浮动文字以环绕图片。</p>
+<p><code>float</code>属性有四个可能的值：</p>
+<ul>
+<li><code>left</code> — 将元素浮动到左侧。</li>
+<li><code>right</code> — 将元素浮动到右侧。</li>
+<li><code>none</code> — 默认值, 不浮动。</li>
+<li>inherit — 继承父元素的浮动属性。</li>
+</ul>
+<p>清除浮动：<code>clear</code>可以取三个值：</p>
+<ul>
+<li><code>left</code>：停止任何活动的左浮动</li>
+<li><code>right</code>：停止任何活动的右浮动</li>
+<li><code>both</code>：停止任何活动的左右浮动</li>
+</ul>
+<h2 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h2><p>定位允许我们将一个元素从它在页面的原始位置准确地移动到另外一个位置。有四种主要的定位类型需要我们了解：</p>
+<ul>
+<li>静态定位是每个元素默认的属性——它表示“将元素放在文档布局流的默认位置——没有什么特殊的地方”。</li>
+<li>相对定位允许我们相对元素在正常的文档流中的位置移动它——包括将两个元素叠放在页面上。这对于微调和精准设计非常有用。</li>
+<li>绝对定位将元素完全从页面的正常布局流中移出，类似将它单独放在一个图层中. 我们可以将元素相对于页面的 <code>&lt;html&gt;</code> 元素边缘固定，或者相对于离元素最近的被定位的祖先元素。绝对定位在创建复杂布局效果时非常有用，例如通过标签显示和隐藏的内容面板或者通过按钮控制滑动到屏幕中的信息面板.</li>
+<li>固定定位与绝对定位非常类似，除了它是将一个元素相对浏览器视口固定，而不是相对另外一个元素。 在创建类似页面滚动总是处于页面上方的导航菜单时非常有用。</li>
+</ul>
 
       
     </div>
@@ -599,7 +621,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#盒模型"><span class="nav-number">1.</span> <span class="nav-text">盒模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是盒模型"><span class="nav-number">1.1.</span> <span class="nav-text">什么是盒模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#盒模型的属性"><span class="nav-number">1.2.</span> <span class="nav-text">盒模型的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#width-和-height"><span class="nav-number">1.2.1.</span> <span class="nav-text">width 和 height</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#padding"><span class="nav-number">1.2.2.</span> <span class="nav-text">padding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#border"><span class="nav-number">1.2.3.</span> <span class="nav-text">border</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#margin"><span class="nav-number">1.2.4.</span> <span class="nav-text">margin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#溢流"><span class="nav-number">1.3.</span> <span class="nav-text">溢流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景裁剪"><span class="nav-number">1.4.</span> <span class="nav-text">背景裁剪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#盒类型"><span class="nav-number">1.5.</span> <span class="nav-text">盒类型</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#盒模型"><span class="nav-number">1.</span> <span class="nav-text">盒模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是盒模型"><span class="nav-number">1.1.</span> <span class="nav-text">什么是盒模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#盒模型的属性"><span class="nav-number">1.2.</span> <span class="nav-text">盒模型的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#width-和-height"><span class="nav-number">1.2.1.</span> <span class="nav-text">width 和 height</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#padding"><span class="nav-number">1.2.2.</span> <span class="nav-text">padding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#border"><span class="nav-number">1.2.3.</span> <span class="nav-text">border</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#margin"><span class="nav-number">1.2.4.</span> <span class="nav-text">margin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#溢流"><span class="nav-number">1.3.</span> <span class="nav-text">溢流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景裁剪"><span class="nav-number">1.4.</span> <span class="nav-text">背景裁剪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#盒类型"><span class="nav-number">1.5.</span> <span class="nav-text">盒类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#布局"><span class="nav-number">2.</span> <span class="nav-text">布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#浮动"><span class="nav-number">2.1.</span> <span class="nav-text">浮动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定位"><span class="nav-number">2.2.</span> <span class="nav-text">定位</span></a></li></ol></li></ol></div>
             
 
           </div>
