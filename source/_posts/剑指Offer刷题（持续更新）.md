@@ -212,6 +212,105 @@ public class Solution {
 }
 ```
 
+# 题目四 重建二叉树
+
+## 题目描述
+
+输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列`{1,2,4,7,3,5,6,8}`和中序遍历序列`{4,7,2,1,5,3,8,6}`，则重建二叉树并返回。
+
+## 思路
+
+之前写过这样的思路，就是根据前序和中序排列的特性找到`root`，不断进行递归就可以了。`c++`版是直接拿了别人的，个人不建议这么写，可以看`Java`版的会容易理解一点
+
+![](1.png)
+
+## AC代码
+
+`c++`版：
+
+```c++
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    struct TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> in) {
+        if (pre.size() == 0 || pre.size() != in.size()) {
+            return NULL;
+        }
+        vector<int> pre_left;
+        vector<int> pre_right;
+        vector<int> in_left;
+        vector<int> in_right;
+        TreeNode *root = new TreeNode(pre.at(0));
+        // 查找根在中序数组中的位置
+        int rootIndex = 0;
+        for (int i = 0; i < in.size(); ++i) {
+            if (in.at(i) == pre.at(0)) {
+                rootIndex = i;
+                break;
+            }
+        }
+        // 左子树部分
+        for (int i = 0; i < rootIndex; ++i) {
+            in_left.push_back(in.at(i));
+            
+            if (i + 1 < pre.size()) {
+                pre_left.push_back(pre.at(i + 1));
+            }
+        }
+        // 右子树部分
+        for (int i = rootIndex + 1; i < in.size(); ++i) {
+            in_right.push_back(in.at(i));
+            pre_right.push_back(pre.at(i));
+        }
+        root->left = reConstructBinaryTree(pre_left, in_left);
+        root->right = reConstructBinaryTree(pre_right, in_right);
+        return root;
+    }
+};
+```
+
+`Java`版：
+
+```java
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        TreeNode root = funre(pre,0,pre.length-1,in,0,in.length-1);
+        return root;
+    }
+    
+    public TreeNode funre(int[] pre,int startPre,int endPre,int[] in,int startIn,int endIn){
+        if(startPre>endPre||startIn>endIn){
+            return null;
+        }
+        TreeNode root = new TreeNode(pre[startPre]);
+        for(int i=startIn;i<=endIn;i++){
+            if(in[i] == pre[startPre]){
+                root.left = funre(pre,startPre+1,startPre+i-startIn,in,startIn,i-1);
+                root.right = funre(pre,startPre+i-startIn+1,endPre,in,i+1,endIn);
+            }
+        }
+        return root;
+    }
+}
+```
+
 # 题目五 用两个栈实现队列
 
 ## 题目描述
@@ -284,7 +383,7 @@ public class Solution {
 
 ## 题目描述
 
-把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非减排序的数组的一个旋转，输出旋转数组的最小元素。 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非减排序的数组的一个旋转，输出旋转数组的最小元素。 例如数组`{3,4,5,1,2}`为`{1,2,3,4,5}`的一个旋转，该数组的最小值为1。 `NOTE`：给出的所有元素都大于0，若数组大小为0，请返回0。
 
 ## 思路
 
@@ -374,49 +473,6 @@ public class Solution {
         for(int i=2;i<=n;i++)
             a[i]=a[i-1]+a[i-2];
         return a[n];  
-    }
-}
-```
-
-# 题目七 跳台阶
-
-## 题目描述
-
-一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）。
-
-## 思路
-
-每层台阶可由下一层或者下两层跳上来，就是斐波那契数列递归求解即可。
-
-## AC代码
-
-`c++`版：
-
-```c++
-class Solution {
-public:
-    int jumpFloor(int number) {
-        if(number == 1)
-            return 1;
-        else if(number == 2)
-            return 2;
-        else 
-            return jumpFloor(number-1)+jumpFloor(number-2);
-    }
-};
-```
-
-`Java`版：
-
-```java
-public class Solution {
-    public int JumpFloor(int target) {
-        if(target == 1)
-            return 1;
-        else if(target == 2)
-            return 2;
-        else 
-            return JumpFloor(target-1)+JumpFloor(target-2);
     }
 }
 ```
@@ -530,14 +586,14 @@ public class Solution {
 
 ## 思路
 
-n=1 ：只有横放一个矩形一种解决办法 
-n=2 ：有横放一个矩形，竖放两个矩形两种解决办法 
-n=3 ：n=2的基础上加1个横向，n=1的基础上加2个竖向 
-n=4 ：n=3的基础上加1个横向，n=2的基础上加2个竖向 
+`n=1` ：只有横放一个矩形一种解决办法 
+`n=2` ：有横放一个矩形，竖放两个矩形两种解决办法 
+`n=3` ：`n=2`的基础上加1个横向，n=1的基础上加2个竖向 
+`n=4`：`n=3`的基础上加1个横向，n=2的基础上加2个竖向 
 
-...
+`...`
 
-n=n ：n = f(n-1) + f(n-2)
+`n=n` ：`n = f(n-1) + f(n-2)`
 
 ## AC代码
 
@@ -619,7 +675,7 @@ public class Solution {
 
 ## 题目描述
 
-给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+给定一个`double`类型的浮点数`base`和`int`类型的整数`exponent`。求`base`的`exponent`次方。
 
 ## 思路
 
@@ -741,6 +797,440 @@ public class Solution {
     }
 }
 ```
+
+# 题目十四 链表中倒数第k个结点
+
+## 题目描述
+
+输入一个链表，输出该链表中倒数第`k`个结点。
+
+## 思路
+
+解题思路就和给你一个有环的链表让你找入口，我们选择用两个指针，两个一个走快一点一个走慢一点然后它必会重合就是那个入口，这个也一样，这里使用两个指针实现一次遍历，第一个指针先走`k-1`步，第二个指针一直不动；然后两个指针同时移动，知道第一个指针遍历完成。因为两个指针间隔为`k-1`，所以第二个指针指向的节点即为倒数第`k`个节点。
+
+同样的题还有求链表的中间节点，我们也可以定义两个指针，同时从链表的头节点出发，一个指针一次走一步，另一个指针一次走两步。当走得快的指针走到链表的末尾时，走得慢的指针正好在链表的中间。
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+    ListNode* p=pListHead;
+    ListNode* q=pListHead;
+    int i=0;
+    for(;p!=NULL;i++)
+    {
+        if(i>=k)
+            q=q->next;
+        p=p->next;
+    }
+    if(i<k)
+        return NULL;
+    else
+        return q;
+    }
+};
+```
+
+`Java`版：
+
+```java
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        ListNode p=head;
+        ListNode q=head;
+        int i=0;
+        for(;p!=null;i++)
+        {
+            if(i>=k)
+                q=q.next;
+            p=p.next;
+        }
+        if(i<k)
+            return null;
+        else
+            return q;
+    }
+}
+```
+
+# 题目十五 反转链表
+
+## 题目描述
+
+输入一个链表，反转链表后，输出新链表的表头。
+
+## 思路
+
+两种思路一个是递归，一个是遍历。分别用`c++`和`Java`写的。
+
+递归：
+我们使其先走到链表的末尾，确保每次回溯时都返回最后一个节点的指针。同时从倒数第二个结点开始反序。
+`head.next.next = head;`是指使当前节点的下一个节点指向自己
+`head.next = null`断开与下一个节点的联系，完成真正的反序操作。
+
+遍历：
+
+一遍遍历，保存三个指针，`pre`，`now`，`aft`，用`aft`保存下一个节点，防止链表断开后，无法继续后移然后每次`now`的`next`指向`pre`实现反序，然后`now`和`pre`同时后移一步即可，直到`now`指向空为止，说明链表已完成反序操作。
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        if(pHead == NULL || pHead->next == NULL){
+            return pHead;
+        }
+        ListNode *reverseHead = ReverseList(pHead->next);
+        pHead->next->next = pHead;
+        pHead->next = NULL;
+        return reverseHead;
+    }
+};
+```
+
+`Java`版：
+
+```java
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode now = head;
+        ListNode aft = null;
+        while(now != null){
+            aft = now.next;
+            now.next=pre;
+            pre = now;
+            now = aft;
+        }
+        return pre;
+    }
+}
+```
+
+# 题目十六 合并两个排序的链表
+
+## 题目描述
+
+输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+
+## 思路
+
+同上两种思路一个是递归，一个是遍历。分别用`Java`和`c++`写的。
+
+递归：
+新建个链表，每次两个链表当中选一个小值复制过去，那么现在是不是就是合并两个链表（其中有一个已经赋值过去了，就是之前的`.next`，然后递归就可以了。
+
+遍历：
+
+新建一个链表，我们先把第一个值复制过去，然后当两个链表都存在的时候，谁值小就把谁链接到新链表后面然后后移一个，直到两个当中某一个为空了，最后把两个链表剩余的直接链接上去就可以了。
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* Merge(ListNode* p1, ListNode* p2){
+        if(p1 == NULL)
+            return p2;
+        if(p2 == NULL)
+            return p1;
+        ListNode *ans = new ListNode(0);
+        ListNode *temp = NULL;
+        if(p1->val <= p2->val){
+            ans->next = p1;
+            p1 = p1->next;
+        }else{
+            ans->next = p2;
+            p2 = p2->next;
+        }
+        temp = ans->next;
+        while(p1 != NULL && p2 != NULL){
+            if(p1->val <= p2->val){
+                temp->next = p1;
+                temp = p1;
+                p1 = p1->next;
+            }else{
+                temp->next = p2;
+                temp = p2;
+                p2 = p2->next;
+            }
+        }
+        if(p1 != NULL){
+            temp->next = p1;
+        }
+        if(p2 != NULL){
+            temp->next = p2;
+        }
+        return ans->next;
+    }
+};
+```
+
+`Java`版：
+
+```java
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode Merge(ListNode l1,ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+ 
+        ListNode head = null;
+        if (l1.val <= l2.val){
+            head = l1;
+            head.next = Merge(l1.next, l2);
+        } else {
+            head = l2;
+            head.next = Merge(l1, l2.next);
+        }
+        return head;
+    }
+}
+```
+
+# 题目十八 二叉树的镜像
+
+## 题目描述
+
+操作给定的二叉树，将其变换为源二叉树的镜像
+
+## 思路
+
+递归。
+
+先把特殊情况去了，然后对于每个节点，把左右节点调换一下，然后子节点递归调用即可。
+
+递归：
+新建个链表，每次两个链表当中选一个小值复制过去，那么现在是不是就是合并两个链表（其中有一个已经赋值过去了，就是之前的`.next`，然后递归就可以了。
+
+遍历：
+
+新建一个链表，我们先把第一个值复制过去，然后当两个链表都存在的时候，谁值小就把谁链接到新链表后面然后后移一个，直到两个当中某一个为空了，最后把两个链表剩余的直接链接上去就可以了。
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    void Mirror(TreeNode *pRoot) {
+        if((pRoot==NULL) || (pRoot->left == NULL && pRoot->right == NULL)){
+            return ;
+        }
+        TreeNode *temp = NULL;
+		temp = pRoot->right;
+		pRoot->right = pRoot->left;
+		pRoot->left = temp;
+        if(pRoot->left){
+            Mirror(pRoot->left);
+        }
+        if(pRoot->right){
+            Mirror(pRoot->right);
+        }
+    }
+};
+```
+
+`Java`版：
+
+```java
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public void Mirror(TreeNode pRoot) {
+        if((pRoot == null) || (pRoot.left == null && pRoot.right == null)){
+            return ;
+        }
+        TreeNode temp = null;
+		temp = pRoot.right;
+		pRoot.right = pRoot.left;
+		pRoot.left = temp;
+        if(pRoot.left != null){
+            Mirror(pRoot.left);
+        }
+        if(pRoot.right != null){
+            Mirror(pRoot.right);
+        }
+    }
+}
+```
+
+# 题目二十 包含min函数的栈
+
+## 题目描述
+
+定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的`min`函数（时间复杂度应为`O（1）`）。
+
+## 思路
+
+两个栈维护，一个维护正常的栈元素，一个维护`min`值栈，
+
+那什么时候放到`min`值栈呢？
+
+第一个是`min`值栈为空必须要放
+
+第二个就是我现在放进来的值比我所有的元素值也就是`min`值栈的首元素。
+
+当然了在`pop`的时候如果把最小值`pop`了，`min`值栈也要进行对应的`pop`操作
+
+先把特殊情况去了，然后对于每个节点，把左右节点调换一下，然后子节点递归调用即可。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    stack<int>s1;//存储元素
+    stack<int>s2;//存储最小值
+    void push(int value) {
+        s1.push(value);
+        if(s2.empty())
+            s2.push(value);
+        else if(value < s2.top())
+            s2.push(value);
+    }
+    void pop() {
+        if(s1.top() == s2.top())
+            s2.pop();
+        s1.pop();
+    }
+    int top() {
+        return s1.top();
+    }
+    int min() {
+        return s2.top();
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.Stack;
+
+public class Solution {
+
+    Stack<Integer> s1 = new Stack<Integer>();
+    Stack<Integer> s2 = new Stack<Integer>();
+    public void push(int node) {
+        s1.push(node);
+        if(s2.empty())
+            s2.push(node);
+        else if(node < s2.peek())
+            s2.push(node);
+    }
+
+    public void pop() {
+        if(s1.peek() == s2.peek())
+            s2.pop();
+        s1.pop();
+    }
+
+    public int top() {
+        return s1.peek();
+    }
+
+    public int min() {
+        return s2.peek();
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
