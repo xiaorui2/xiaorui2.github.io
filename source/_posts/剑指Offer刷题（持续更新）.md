@@ -1135,6 +1135,100 @@ public class Solution {
 }
 ```
 
+# 题目十九 顺时针打印矩阵
+
+## 题目描述
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+
+## 思路
+
+画下图就知道，因为每次起点都是在`（a,a）`点，所以保证每次`n > flag\*2 && m > flag\*2`，然后就是四次循环跑就可以了。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    vector<int> printMatrix(vector<vector<int> > matrix) {
+        int n = matrix.size();
+        vector<int> ans;
+        if(n == 0) {
+            return ans;
+        }
+        int m = matrix[0].size();
+        int flag = 0;
+        while(n > flag*2 && m > flag*2) {
+            int endX = m-flag-1;
+			int endY = n-flag-1;
+            for(int i=flag;i<=endX;i++) {
+                ans.push_back(matrix[flag][i]);
+            }
+            if(flag < endY) {
+				for (int i=flag+1;i<=endY;i++) {
+					ans.push_back(matrix[i][endX]);
+				}
+			}
+			if(flag < endX && flag < endY) {
+				for (int i=endX-1;i>=flag;i--) {
+					ans.push_back(matrix[endY][i]);
+				}
+			}
+			if(flag < endX && flag < endY-1) {
+				for (int i=endY-1;i>=flag+1;i--) {
+					ans.push_back(matrix[i][flag]);
+				}
+			}
+			flag++;
+        }
+        return ans;
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        int n = matrix.length;
+        ArrayList<Integer> ans =  new ArrayList<Integer>();
+        if(n == 0) {
+            return ans;
+        }
+        int m = matrix[0].length;
+        int flag = 0;
+        while(n > flag*2 && m > flag*2) {
+            int endX = m-flag-1;
+			int endY = n-flag-1;
+            for(int i=flag;i<=endX;i++) {
+                ans.add(matrix[flag][i]);
+            }
+            if(flag < endY) {
+				for (int i=flag+1;i<=endY;i++) {
+					ans.add(matrix[i][endX]);
+				}
+			}
+			if(flag < endX && flag < endY) {
+				for (int i=endX-1;i>=flag;i--) {
+					ans.add(matrix[endY][i]);
+				}
+			}
+			if(flag < endX && flag < endY-1) {
+				for (int i=endY-1;i>=flag+1;i--) {
+					ans.add(matrix[i][flag]);
+				}
+			}
+			flag++;
+        }
+        return ans;
+    }
+}
+```
+
 # 题目二十 包含min函数的栈
 
 ## 题目描述
@@ -1214,6 +1308,381 @@ public class Solution {
 
     public int min() {
         return s2.peek();
+    }
+}
+```
+
+# 题目二十一 栈的压入、弹出序列
+
+## 题目描述
+
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列`1,2,3,4,5`是某栈的压入顺序，序列`4,5,3,2,1`是该压栈序列对应的一个弹出序列，但`4,3,5,1,2`就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+
+## 思路
+
+这个比较简单，就是模拟一次就行，按放进的顺序往里放元素，然后碰到出栈元素就执行`pop`，注意这里一个`while`循环，因为可能`pop`了下一个还是出栈元素 ，到最后看这个栈是不是空的就行了。
+
+那什么时候放到`min`值栈呢？
+
+第一个是`min`值栈为空必须要放
+
+第二个就是我现在放进来的值比我所有的元素值也就是`min`值栈的首元素。
+
+当然了在`pop`的时候如果把最小值`pop`了，`min`值栈也要进行对应的`pop`操作
+
+先把特殊情况去了，然后对于每个节点，把左右节点调换一下，然后子节点递归调用即可。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+        stack<int> s;
+        int len1 = pushV.size();
+        int len2 = popV.size();
+        int i = 0;
+        int j = 0;
+        while(i < len1 && j < len2) {
+            s.push(pushV[i]);
+            i++;
+            while(!s.empty() && s.top() == popV[j]) {
+                s.pop();
+                j++;
+            }
+        }
+        if(s.empty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.Stack;
+
+public class Solution {
+    public boolean IsPopOrder(int [] pushA,int [] popA) {
+        Stack<Integer> s = new Stack();
+        int len1 = pushA.length;
+        int len2 = popA.length;
+        int i = 0;
+        int j = 0;
+        while(i < len1 && j < len2) {
+            s.push(pushA[i]);
+            i++;
+            while(!s.empty() && s.peek() == popA[j]) {
+                s.pop();
+                j++;
+            }
+        }
+        if(s.empty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+```
+
+# 题目二十二 从上往下打印二叉树
+
+## 题目描述
+
+从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+
+## 思路
+
+二叉树的层次遍历
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<int> PrintFromTopToBottom(TreeNode* root) {
+        vector<int> ans;
+        queue<TreeNode*> q;
+        if(root ==NULL)
+            return ans;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* tempNode = q.front();
+            q.pop();
+            ans.push_back(tempNode->val);
+            if (tempNode->left!=NULL)
+                q.push(tempNode->left);
+            if (tempNode->right!=NULL)
+                q.push(tempNode->right);
+        }
+        return ans;
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        Queue<TreeNode> myQueue = new LinkedList<>();
+        if(root == null)
+            return ans;
+        myQueue.offer(root);
+        while(!myQueue.isEmpty()){
+            TreeNode tempNode = myQueue.poll();
+            ans.add(tempNode.val);
+            if (tempNode.left!=null)
+                myQueue.offer(tempNode.left);
+            if (tempNode.right!=null)
+                myQueue.offer(tempNode.right);
+        }
+        return ans;
+    }
+}
+```
+
+# 题目二十三 二叉搜索树的后序遍历序列
+
+## 题目描述
+
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+
+## 思路
+
+如果一个数组是一个二叉搜索树的后序遍历结果，那么这个数组有以下特征：数组的最后一个元素是（子）树的根节点，前面的部分可以分为两个部分，前一部分的元素都小于最后一个元素值，后一部分都大于数组最后一个元素值，我们首先需要找到这个临界值，在判断前一部分的元素是否都小于数组末尾的值，接着分别对数组前两部分处理，（递归定义）。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+    bool judge(vector<int> &sequence, int l, int r) {
+        if (l >= r) {
+            return true;
+        }
+        int i = r - 1;
+        while (i >= l && sequence[i] > sequence[r]) {
+            i--;
+        }
+        for (int j = i; j >= l; j--) {
+            if (sequence[j] > sequence[r]) {
+                return false;
+            }
+        }
+        return judge(sequence, l, i) && judge(sequence, i + 1, r - 1);
+    }
+public:
+    bool VerifySquenceOfBST(vector<int> sequence) {
+        int len = sequence.size();
+        if (len == 0) {
+            return false;
+        } else {
+            return judge(sequence, 0, len - 1);
+        }
+    }
+};
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        if (sequence == null || sequence.length <= 0) {
+            return false;
+        }
+        return verifySequenceOfBST(sequence, 0, sequence.length - 1);
+    }
+    public static boolean verifySequenceOfBST(int[] sequence, int start, int end) {
+        if (start >= end) {
+            return true;
+        }
+        int index = start;
+        while (index < end - 1 && sequence[index] < sequence[end]) {
+            index++;
+        }
+        int right = index;
+        while (index < end - 1 && sequence[index] > sequence[end]) {
+            index++;
+        }
+        if (index != end - 1) {
+            return false;
+        }
+        index = right;
+        return verifySequenceOfBST(sequence, start, index - 1) && verifySequenceOfBST(sequence, index, end - 1);
+    }
+}
+```
+
+# 题目二十八 数组中出现次数超过一半的数字
+
+## 题目描述
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+
+## 思路
+
+有两种想法，一次遍历找到出现次数最多的那个数字，再遍历一下找到这个数出现的次数看是否满足。
+
+或者一次遍历，用map存储对应的数字出现的次数，然后判断这个值是否满足题意。
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<int> PrintFromTopToBottom(TreeNode* root) {
+        vector<int> ans;
+        queue<TreeNode*> q;
+        if(root ==NULL)
+            return ans;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* tempNode = q.front();
+            q.pop();
+            ans.push_back(tempNode->val);
+            if (tempNode->left!=NULL)
+                q.push(tempNode->left);
+            if (tempNode->right!=NULL)
+                q.push(tempNode->right);
+        }
+        return ans;
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.HashMap;
+
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        if (array == null || array.length == 0)
+            return 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int count;
+        int len = array.length;
+        for (int i = 0;i < len;i++) {
+            if (!map.containsKey(array[i])) {
+                map.put(array[i], 1);
+            } else {
+                count = map.get(array[i]);
+                map.put(array[i], ++count);
+            }
+            if (map.get(array[i]) > array.length / 2) {
+                return array[i];
+            }
+        }
+        return 0;
+    }
+}
+```
+
+# 题目二十九 最小的K个数
+
+## 题目描述
+
+输入`n`个整数，找出其中最小的`K`个数。例如输入`4,5,1,6,2,7,3,8`这8个数字，则最小的4个数字是`1,2,3,4,`。
+
+## 思路
+
+有两种想法，直接`sort`一遍，取前k个数即可。
+
+或者呢可以用冒泡排序的思想，我么知道冒泡排序是一个`O(n^2)`的算法，它是每次把一个数排序到最前面保证前面数有序，然后一直到整个数组有序，那么我们只需要循环`k`次就行了在这里面，保证前k个数最小的就满足题意了。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        vector<int> v;
+        if(k<=0 || input.size()<=0 || k>input.size())
+            return v;
+        sort(input.begin(), input.end());
+        int i = 0;
+        while(i < k) {
+            v.push_back(input[i]);
+            i++;
+        }
+        return v;
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        if(input == null)
+            return null;
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        if(k > input.length)
+            return ans;
+        int temp;
+        for(int i = 0; i < k; i++){
+            for(int j = i + 1; j < input.length; j++){
+                if(input[i] > input[j]){
+                    temp = input[i];
+                    input[i] = input[j];
+                    input[j] = temp;
+                }
+            }
+            ans.add(input[i]);
+        }
+        return ans;
     }
 }
 ```
