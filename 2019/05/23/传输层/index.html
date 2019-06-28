@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/05/23/传输层/6.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/23/传输层/7.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/23/传输层/8.png">
-<meta property="og:updated_time" content="2019-05-25T09:57:59.132Z">
+<meta property="og:updated_time" content="2019-06-28T03:33:30.371Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="运输层">
 <meta name="twitter:description" content="运输层概念运输层是位于应用层和网络层之间，为运行在不同主机上的应用进程提供直接的通信服务起着至关重要的作用，主要要理解的就是我们常用的UDP和TCP协议。通常我们知道的TCP它是一个可靠的传输连接，而UDP是一个不可靠的传输连接。 无连接运输：UDPUDP做的事它是基于Internet IP协议，做了（传输层都要做的功能）复用 / 分用，简单的错误检测。它是无连接的，UDP发送方和接收方之间不需要">
@@ -450,6 +450,55 @@
 <h1 id="客户端和服务器最多能发送和接收多少TCP连接数？"><a href="#客户端和服务器最多能发送和接收多少TCP连接数？" class="headerlink" title="客户端和服务器最多能发送和接收多少TCP连接数？"></a>客户端和服务器最多能发送和接收多少TCP连接数？</h1><p>对于服务器，每一个<code>TCP</code>连接都要占一个文件描述符，一旦这个文件描述符使用完了，就会返回错误。我们知道操作系统上端口号1024以下是系统保留的，从1024-65535是用户使用的。由于每个<code>TCP</code>连接都要占一个端口号，所以我们最多可以有60000多个并发连接？但是事实并不是这样。</p>
 <p>我们还知道对于<code>TCP</code>连接是由：原<code>IP</code>，原端口，目的<code>IP</code>，目的端口。但是监听<code>server</code>端<code>TCP</code>连接4元组中只有<code>remote ip</code>（也就是<code>client ip</code>）和<code>remote port</code>（客户端<code>port</code>）是可变的，因为它是固定在本地的端口上去监听，所以最大<code>TCP</code>连接为：客户端<code>ip</code>数×客户端<code>port</code>数.</p>
 <p>而对于客户端，网络通信过程中服务端监听一个固定的端口,客户端主动发起连接请求后要经过三次握手才能与服务器建立起一个<code>TCP</code>连接.客户端每次发起一个<code>TCP</code>连接时,系统会随机选取一个空闲的端口,该端口是独占的不能与其他<code>TCP</code>连接共享,因此理论上一台机器有多少空闲的端口,就能对外发起多少个<code>TCP</code>连接。根据<code>TCP/IP</code>协议,端口<code>port</code>使用16位无符号整数<code>unsigned short</code>来存储,因此本地端口一共有2^16=65536个,即0-65535,其中0~1023是预留端口,0有特殊含义不能使用,1024以下端口都是超级管理员用户(如<code>root</code>)才可以使用,因此就算使用<code>root</code>权限,一台机器最多能使用的端口也只有65535个。但是一台机器最多只能利用28232个端口.</p>
+<h1 id="TCP粘包"><a href="#TCP粘包" class="headerlink" title="TCP粘包"></a>TCP粘包</h1><p><code>TCP</code>粘包是指发送方发送的若干包数据到接收方接收时粘成一包，从接收缓冲区看，后一包数据的头紧接着前一包数据的尾。出现粘包现象的原因是多方面的，它既可能由发送方造成，也可能由接收方造成。</p>
+<h2 id="什么是保护消息边界和流"><a href="#什么是保护消息边界和流" class="headerlink" title="什么是保护消息边界和流?"></a>什么是保护消息边界和流?</h2><p>保护消息边界，就是指传输协议把数据当作一条独立的消息在网上传输，接收端只能接收独立的消息。也就是说存在保护消息边界，接收端一次只能接收发送端发出的一个数据包。而面向流则是指无保护消息保护边界的，如果发送端连续发送数据，接收端有可能在一次接收动作中，会接收两个或者更多的数据包。</p>
+<p>例如，我们连续发送三个数据包，大小分别是<code>2k，4k ，8k,</code>这三个数据包，都已经到达了接收端的网络堆栈中，如果使用<code>UDP</code>协议，不管我们使用多大的接收缓冲区去接收数据，我们必须有三次接收动作，才能够把所有的数据包接收完.而使用<code>TCP</code>协议，我们只要把接收的缓冲区大小设置在<code>14k</code>以上，我们就能够一次把所有的数据包接收下来，只需要有一次接收动作。</p>
+<p>因此这就是因为<code>UDP</code>协议的保护消息边界使得每一个消息都是独立的。而流传输却把数据当作一串数据流，他不认为数据是一个一个的消息。所以有很多人在使用<code>tcp</code>协议通讯的时候，并不清楚<code>tcp</code>是基于流的传输，当连续发送数据的时候，他们时常会认识<code>tcp</code>会丢包。其实不然，因为当他们使用的缓冲区足够大时，他们有可能会一次接收到两个甚至更多的数据包，而往往只解析检查了第一个数据包。</p>
+<h2 id="粘包出现原因"><a href="#粘包出现原因" class="headerlink" title="粘包出现原因"></a>粘包出现原因</h2><p>简单得说，在流传输中出现，<code>UDP</code>不会出现粘包，因为它有消息边界(参考<code>Window</code>网络编程)</p>
+<ul>
+<li>发送端需要等缓冲区满才发送出去，造成粘包</li>
+<li>接收方不及时接收缓冲区的包，造成多个包接收</li>
+</ul>
+<h2 id="什么时候需要考虑粘包问题"><a href="#什么时候需要考虑粘包问题" class="headerlink" title="什么时候需要考虑粘包问题"></a>什么时候需要考虑粘包问题</h2><p>如果利用<code>tcp</code>每次发送数据，就与对方建立连接，然后双方发送完一段数据后，就关闭连接，这样就不会出现粘包问题。</p>
+<p>如果发送数据无结构，如文件传输，这样发送方只管发送，接收方只管接收存储就<code>ok</code>，也不用考虑粘包3如果双方建立连接，需要在连接后一段时间内发送不同结构数据，就需要考虑了。</p>
+<h2 id="如何避免粘包"><a href="#如何避免粘包" class="headerlink" title="如何避免粘包"></a>如何避免粘包</h2><ul>
+<li>对于发送方引起的粘包现象，用户可通过编程设置来避免，<code>TCP</code>提供了强制数据立即传送的操作指令<code>push</code>，<code>TCP</code>软件收到该操作指令后，就立即将本段数据发送出去，而不必等待发送缓冲区满；</li>
+<li>对于接收方引起的粘包，则可通过优化程序设计、精简接收进程工作量、提高接收进程优先级等措施，使其及时接收数据，从而尽量避免出现粘包现象；</li>
+<li>由接收方控制，将一包数据按结构字段，人为控制分多次接收，然后合并，通过这种手段来避免粘包。</li>
+</ul>
+<h2 id="网络通讯的封包和拆包"><a href="#网络通讯的封包和拆包" class="headerlink" title="网络通讯的封包和拆包"></a>网络通讯的封包和拆包</h2><h3 id="为什么基于TCP的通讯程序需要进行封包和拆包"><a href="#为什么基于TCP的通讯程序需要进行封包和拆包" class="headerlink" title="为什么基于TCP的通讯程序需要进行封包和拆包"></a>为什么基于TCP的通讯程序需要进行封包和拆包</h3><p>TCP是个”流”协议，所谓流，就是没有界限的一串数据，大家可以想想河里的流水，是连成一片的，其间是没有分界线的。但一般通讯程序开发是需要定义一个个相互独立的数据包的，比如用于登陆的数据包，用于注销的数据包。由于TCP”流”的特性以及网络状况，在进行数据传输时会出现以下几种情况。</p>
+<p>假设我们连续调用两次send分别发送两段数据data1和data2,在接收端有以下几种接收情况(当然不止这几种情况,这里只列出了有代表性的情况).</p>
+<ul>
+<li>先接收到data1,然后接收到data2.</li>
+<li>先接收到data1的部分数据,然后接收到data1余下的部分以及data2的全部.</li>
+<li>先接收到了data1的全部数据和data2的部分数据,然后接收到了data2的余下的数据.</li>
+<li>一次性接收到了data1和data2的全部数据.</li>
+</ul>
+<p>对于A这种情况正是我们需要的,不再做讨论.对于B,C,D的情况就是大家经常说的”粘包”,就需要我们把接收到的数据进行拆包，拆成一个个独立的数据包，为了拆包就必须在发送端进行封包。</p>
+<p>另：对于UDP来说就不存在拆包的问题,因为UDP是个”数据包”协议,也就是两段数据间是有界限的，在接收端要么接收不到数据要么就是接收一个完整的一段数据，不会少接收也不会多接收。</p>
+<p>为什么会出现B.C.D的情况</p>
+<ul>
+<li>由Nagle算法造成的发送端的粘包:Nagle算法是一种改善网络传输效率的算法.简单的说,当我们提交一段数据给TCP发送时,TCP并不立刻发送此段数据,而是等待一小段时间,看看在等待期间是否还有要发送的数据,若有则会一次把这两段数据发送出去.这是对Nagle算法一个简单的解释,详细的请看相关书籍. C和D的情况就有可能是Nagle算法造成的.</li>
+<li>接收端接收不及时造成的接收端粘包:TCP会把接收到的数据存在自己的缓冲区中,然后通知应用层取数据.当应用层由于某些原因不能及时的把TCP的数据取出来,就会造成TCP缓冲区中存放了几段数据.</li>
+</ul>
+<h3 id="封包"><a href="#封包" class="headerlink" title="封包"></a>封包</h3><p>封包就是给一段数据加上包头,这样一来数据包就分为包头和包体两部分内容了(以后讲过滤非法包时封包会加入”包尾”内容)。包头其实上是个大小固定的结构体，其中有个结构体成员变量表示包体的长度，这是个很重要的变量，其他的结构体成员可根据需要自己定义。根据包头长度固定以及包头中含有包体长度的变量就能正确的拆分出一个完整的数据包。</p>
+<h3 id="拆包"><a href="#拆包" class="headerlink" title="拆包"></a>拆包</h3><p>对于拆包目前我最常用的是以下两种方式：</p>
+<ul>
+<li>动态缓冲区暂存方式。之所以说缓冲区是动态的是因为当需要缓冲的数据长度超出缓冲区的长度时会增大缓冲区长度。</li>
+<li>利用底层的缓冲区来进行拆包</li>
+</ul>
+<h3 id="Nagle-算法"><a href="#Nagle-算法" class="headerlink" title="Nagle 算法"></a>Nagle 算法</h3><p>它是用于处理小报文段（微小分组）的发送问题。可以减少网络中微小分组的数量，比如客户端需要依次向服务器发送大小为<code>1,2,3,1,2</code>字节的5个分组。在没有开启<code>nagle</code>算法的情况下，这些小分组会被依次发送（不需要等待上一个小分组的应答，因为没启动<code>Nagle</code>），总共发送的报文段（分组）个数为5</p>
+<p>当开启<code>Nagle</code> 算法时，客户端首先发送大小为1字节的第一个分组，随后其它分组到达发送缓冲区，由于上一个分组的应答还没有收到，所以<code>TCP</code>会先缓存新来的这4个小分组，并将其重新分组，组成一个大小为<code>8(2+3+1+2)</code>字节的”较大的”小分组。当第一个小分组的应答收到后，客户端将这个8字节的分组发送。总共发送的报文段（分组）个数为2。可以看到，当传输数据存在大量交互数据时，<code>Nagle</code> 算法可以有效减少网络中的报文段个数。</p>
+<p><code>Nagle</code> 基本定义是任意时刻，最多只能有一个未被确认的小段。所谓“小段”，指的是小于<code>MSS</code>尺寸的数据块，所谓“未被确认”，是指一个数据块发送出去后，没有收到对方发送的<code>ACK</code>确认该数据已收到。</p>
+<p><code>Nagle</code> 算法的规则：</p>
+<ul>
+<li>如果包长度达到<code>MSS</code>，则允许发送；</li>
+<li>如果该包含有<code>FIN</code>，则允许发送；</li>
+<li>设置了<code>TCP_NODELAY</code>选项，则允许发送；</li>
+<li>未设置<code>TCP_CORK</code>选项时，若所有发出去的小数据包（包长度小于<code>MSS</code>）均被确认，则允许发送；</li>
+<li>上述条件都未满足，但发生了超时（一般为200ms），则立即发送。</li>
+</ul>
+<p>虽然<code>Nagle</code> 算法可以减少网络中小分组的个数，但是对于那些需要实时预览的通讯程序而言，客户端可能需要不断发送更新数据并得到服务器的响应，这种情况下<code>Nagle</code> 算法会造成客户端明显的延迟，所以需要禁用<code>Nagle</code> 算法。将套接字描述符设置<code>TCP_NODELAY</code>选项可以禁止<code>Nagle</code> 算法。配合<code>Nagle</code> 的还有延迟确认和累积确认机制这些可以再看看。</p>
 
       
     </div>
@@ -563,7 +612,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -574,7 +623,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -585,7 +634,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -627,7 +676,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#运输层概念"><span class="nav-number">1.</span> <span class="nav-text">运输层概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无连接运输：UDP"><span class="nav-number">2.</span> <span class="nav-text">无连接运输：UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP做的事"><span class="nav-number">2.1.</span> <span class="nav-text">UDP做的事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP为什么存在"><span class="nav-number">2.2.</span> <span class="nav-text">UDP为什么存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在UDP上实现可靠数据传输"><span class="nav-number">2.3.</span> <span class="nav-text">如何在UDP上实现可靠数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP的数据格式和校验和"><span class="nav-number">2.4.</span> <span class="nav-text">UDP的数据格式和校验和</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可靠的数据传输原理"><span class="nav-number">3.</span> <span class="nav-text">可靠的数据传输原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么叫可靠？"><span class="nav-number">3.1.</span> <span class="nav-text">什么叫可靠？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可靠的数据传输协议"><span class="nav-number">3.2.</span> <span class="nav-text">可靠的数据传输协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本结构"><span class="nav-number">3.2.1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可靠信道上的可靠数据传输和产生位错误的信道上的可靠数据传输"><span class="nav-number">3.2.2.</span> <span class="nav-text">可靠信道上的可靠数据传输和产生位错误的信道上的可靠数据传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从可靠数据传输流水线可靠数据传输"><span class="nav-number">3.2.3.</span> <span class="nav-text">从可靠数据传输流水线可靠数据传输</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#滑动窗口协议"><span class="nav-number">3.3.</span> <span class="nav-text">滑动窗口协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1比特滑动窗口协议（停等协议）"><span class="nav-number">3.3.1.</span> <span class="nav-text">1比特滑动窗口协议（停等协议）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回退N帧协议"><span class="nav-number">3.3.2.</span> <span class="nav-text">回退N帧协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择重传协议"><span class="nav-number">3.3.3.</span> <span class="nav-text">选择重传协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有连接运输：TCP"><span class="nav-number">4.</span> <span class="nav-text">有连接运输：TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP特点"><span class="nav-number">4.1.</span> <span class="nav-text">TCP特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP报文段结构"><span class="nav-number">4.2.</span> <span class="nav-text">TCP报文段结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP实现可靠数据传输"><span class="nav-number">4.3.</span> <span class="nav-text">TCP实现可靠数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速重传机制"><span class="nav-number">4.4.</span> <span class="nav-text">快速重传机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP流量控制"><span class="nav-number">4.5.</span> <span class="nav-text">TCP流量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP拥塞控制"><span class="nav-number">4.6.</span> <span class="nav-text">TCP拥塞控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#慢启动和拥塞避免"><span class="nav-number">4.6.1.</span> <span class="nav-text">慢启动和拥塞避免</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速恢复与快速重传配合使用"><span class="nav-number">4.6.2.</span> <span class="nav-text">快速恢复与快速重传配合使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP连接管理"><span class="nav-number">5.</span> <span class="nav-text">TCP连接管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP的三次握手"><span class="nav-number">5.1.</span> <span class="nav-text">TCP的三次握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP的四次挥手"><span class="nav-number">5.2.</span> <span class="nav-text">TCP的四次挥手</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么TCP采用随机初始序列号"><span class="nav-number">6.</span> <span class="nav-text">为什么TCP采用随机初始序列号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#客户端和服务器最多能发送和接收多少TCP连接数？"><span class="nav-number">7.</span> <span class="nav-text">客户端和服务器最多能发送和接收多少TCP连接数？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#运输层概念"><span class="nav-number">1.</span> <span class="nav-text">运输层概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无连接运输：UDP"><span class="nav-number">2.</span> <span class="nav-text">无连接运输：UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP做的事"><span class="nav-number">2.1.</span> <span class="nav-text">UDP做的事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP为什么存在"><span class="nav-number">2.2.</span> <span class="nav-text">UDP为什么存在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在UDP上实现可靠数据传输"><span class="nav-number">2.3.</span> <span class="nav-text">如何在UDP上实现可靠数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP的数据格式和校验和"><span class="nav-number">2.4.</span> <span class="nav-text">UDP的数据格式和校验和</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可靠的数据传输原理"><span class="nav-number">3.</span> <span class="nav-text">可靠的数据传输原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么叫可靠？"><span class="nav-number">3.1.</span> <span class="nav-text">什么叫可靠？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可靠的数据传输协议"><span class="nav-number">3.2.</span> <span class="nav-text">可靠的数据传输协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本结构"><span class="nav-number">3.2.1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可靠信道上的可靠数据传输和产生位错误的信道上的可靠数据传输"><span class="nav-number">3.2.2.</span> <span class="nav-text">可靠信道上的可靠数据传输和产生位错误的信道上的可靠数据传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从可靠数据传输流水线可靠数据传输"><span class="nav-number">3.2.3.</span> <span class="nav-text">从可靠数据传输流水线可靠数据传输</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#滑动窗口协议"><span class="nav-number">3.3.</span> <span class="nav-text">滑动窗口协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1比特滑动窗口协议（停等协议）"><span class="nav-number">3.3.1.</span> <span class="nav-text">1比特滑动窗口协议（停等协议）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回退N帧协议"><span class="nav-number">3.3.2.</span> <span class="nav-text">回退N帧协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择重传协议"><span class="nav-number">3.3.3.</span> <span class="nav-text">选择重传协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有连接运输：TCP"><span class="nav-number">4.</span> <span class="nav-text">有连接运输：TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP特点"><span class="nav-number">4.1.</span> <span class="nav-text">TCP特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP报文段结构"><span class="nav-number">4.2.</span> <span class="nav-text">TCP报文段结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP实现可靠数据传输"><span class="nav-number">4.3.</span> <span class="nav-text">TCP实现可靠数据传输</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速重传机制"><span class="nav-number">4.4.</span> <span class="nav-text">快速重传机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP流量控制"><span class="nav-number">4.5.</span> <span class="nav-text">TCP流量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP拥塞控制"><span class="nav-number">4.6.</span> <span class="nav-text">TCP拥塞控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#慢启动和拥塞避免"><span class="nav-number">4.6.1.</span> <span class="nav-text">慢启动和拥塞避免</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快速恢复与快速重传配合使用"><span class="nav-number">4.6.2.</span> <span class="nav-text">快速恢复与快速重传配合使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP连接管理"><span class="nav-number">5.</span> <span class="nav-text">TCP连接管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP的三次握手"><span class="nav-number">5.1.</span> <span class="nav-text">TCP的三次握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP的四次挥手"><span class="nav-number">5.2.</span> <span class="nav-text">TCP的四次挥手</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么TCP采用随机初始序列号"><span class="nav-number">6.</span> <span class="nav-text">为什么TCP采用随机初始序列号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#客户端和服务器最多能发送和接收多少TCP连接数？"><span class="nav-number">7.</span> <span class="nav-text">客户端和服务器最多能发送和接收多少TCP连接数？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP粘包"><span class="nav-number">8.</span> <span class="nav-text">TCP粘包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是保护消息边界和流"><span class="nav-number">8.1.</span> <span class="nav-text">什么是保护消息边界和流?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#粘包出现原因"><span class="nav-number">8.2.</span> <span class="nav-text">粘包出现原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候需要考虑粘包问题"><span class="nav-number">8.3.</span> <span class="nav-text">什么时候需要考虑粘包问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何避免粘包"><span class="nav-number">8.4.</span> <span class="nav-text">如何避免粘包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络通讯的封包和拆包"><span class="nav-number">8.5.</span> <span class="nav-text">网络通讯的封包和拆包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么基于TCP的通讯程序需要进行封包和拆包"><span class="nav-number">8.5.1.</span> <span class="nav-text">为什么基于TCP的通讯程序需要进行封包和拆包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封包"><span class="nav-number">8.5.2.</span> <span class="nav-text">封包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拆包"><span class="nav-number">8.5.3.</span> <span class="nav-text">拆包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nagle-算法"><span class="nav-number">8.5.4.</span> <span class="nav-text">Nagle 算法</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

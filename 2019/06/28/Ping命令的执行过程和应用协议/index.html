@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Ping,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ICMP协议ICMP是“Internet Control Message Ptotocol”的缩写。它是TCP/IP协议族的一个子协议，用于在IP主机、路由器之间传递控制消息。 控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用。在网络中经常会使用到ICMP协议。例如经常用于检查网络不通的ping命令，这个pi">
+<meta name="keywords" content="Ping">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ping命令的执行过程和应用协议以及ARP协议">
+<meta property="og:url" content="http://yoursite.com/2019/06/28/Ping命令的执行过程和应用协议/index.html">
+<meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="ICMP协议ICMP是“Internet Control Message Ptotocol”的缩写。它是TCP/IP协议族的一个子协议，用于在IP主机、路由器之间传递控制消息。 控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用。在网络中经常会使用到ICMP协议。例如经常用于检查网络不通的ping命令，这个pi">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/28/Ping命令的执行过程和应用协议/1.png">
+<meta property="og:updated_time" content="2019-06-28T03:52:51.453Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ping命令的执行过程和应用协议以及ARP协议">
+<meta name="twitter:description" content="ICMP协议ICMP是“Internet Control Message Ptotocol”的缩写。它是TCP/IP协议族的一个子协议，用于在IP主机、路由器之间传递控制消息。 控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用。在网络中经常会使用到ICMP协议。例如经常用于检查网络不通的ping命令，这个pi">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/28/Ping命令的执行过程和应用协议/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/28/Ping命令的执行过程和应用协议/">
+
+
+
+
+
+  <title>Ping命令的执行过程和应用协议以及ARP协议 | 九八年生于晚秋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九八年生于晚秋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/28/Ping命令的执行过程和应用协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ping命令的执行过程和应用协议以及ARP协议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-28T10:59:55+08:00">
+                2019-06-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ICMP协议"><a href="#ICMP协议" class="headerlink" title="ICMP协议"></a>ICMP协议</h1><p><code>ICMP</code>是<code>“Internet Control Message Ptotocol”</code>的缩写。它是<code>TCP/IP</code>协议族的一个子协议，用于在<code>IP</code>主机、路由器之间传递控制消息。</p>
+<p>控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用。在网络中经常会使用到<code>ICMP</code>协议。例如经常用于检查网络不通的<code>ping</code>命令，这个<code>ping</code>的过程实际上就是<code>ICMP</code>协议工作的过程。还有跟踪路由的<code>trancert</code>命令也是基于<code>ICMP</code>协议的。</p>
+<h1 id="Ping命令"><a href="#Ping命令" class="headerlink" title="Ping命令"></a>Ping命令</h1><h2 id="ping-exe的原理"><a href="#ping-exe的原理" class="headerlink" title="ping.exe的原理"></a>ping.exe的原理</h2><p>向指定的<code>IP</code>地址发送一定长度的数据包，按照约定，若指定<code>IP</code>地址存在的话，会返回同样大小的数据包，当然，若在特定时间内没有返回，就是“超时”，会被认为指定的<code>IP</code>地址不存在。由于<code>ping</code>使用的是<code>ICMP</code>协议，有些防火墙软件会屏蔽<code>ICMP</code>协议，所以有时候<code>ping</code>的结果只能作为参考，<code>ping</code>不通并不一定说明对方<code>IP</code>不存在。</p>
+<h2 id="Ping命令过程"><a href="#Ping命令过程" class="headerlink" title="Ping命令过程"></a>Ping命令过程</h2><p>机器<code>A</code> <code>ping</code> 机器<code>B</code></p>
+<h3 id="同一网段"><a href="#同一网段" class="headerlink" title="同一网段"></a>同一网段</h3><ul>
+<li><code>ping</code>通知系统建立一个固定格式的<code>ICMP</code>请求数据包</li>
+<li><code>ICMP</code>协议打包这个数据包和机器<code>B</code>的<code>IP</code>地址转交给<code>IP</code>协议层（一组后台运行的进程，与<code>ICMP</code>类似）</li>
+<li><code>IP</code>层协议将以机器<code>B</code>的<code>IP</code>地址为目的地址，本机<code>IP</code>地址为源地址，加上一些其他的控制信息，构建一个IP数据包</li>
+<li>获取机器<code>B</code>的<code>MAC</code>地址</li>
+</ul>
+<p><code>IP</code>层协议通过机器<code>B</code>的<code>IP</code>地址和自己的子网掩码，发现它跟自己属同一网络，就直接在本网络查找这台机器的<code>MAC</code>。</p>
+<p>若两台机器之前有过通信，在机器<code>A</code>的<code>ARP</code>缓存表应该有<code>B</code>机<code>IP</code>与其<code>MAC</code>的映射关系；若没有，则发送<code>ARP</code>请求广播，得到机器<code>B</code>的<code>MAC</code>地址，一并交给数据链路层</p>
+<p>数据链路层构建一个数据帧，目的地址是<code>IP</code>层传过来的<code>MAC</code>地址，源地址是本机的<code>MAC</code>地址，再附加一些控制信息，依据以太网的介质访问规则，将他们传送出去<br>机器B收到这个数据帧后，先检查目的地址，和本机<code>MAC</code>地址对比</p>
+<p>符合，接收。接收后检查该数据帧，将<code>IP</code>数据包从帧中提取出来，交给本机的<code>IP</code>协议层协议。<code>IP</code>层检查后，将有用的信息提取交给<code>ICMP</code>协议，后者处理后，马上构建一个<code>ICMP</code>应答包，发送给主机<code>A</code>，其过程和主机<code>A</code>发送<code>ICMP请求包到主机</code>B<code>类似（这时候主机</code>B<code>已经知道了主机</code>A<code>的</code>MAC<code>地址，不需再发</code>ARP`请求）；不符合，丢弃。</p>
+<h3 id="不同网段"><a href="#不同网段" class="headerlink" title="不同网段"></a>不同网段</h3><ul>
+<li><code>ping</code>通知系统建立一个固定格式的<code>ICMP</code>请求数据包</li>
+<li><code>ICMP</code>协议打包这个数据包和机器<code>B</code>的<code>IP</code>地址转交给<code>IP</code>协议层（一组后台运行的进程，与<code>ICMP</code>类似）</li>
+<li><code>IP</code>层协议将以机器<code>B</code>的<code>IP</code>地址为目的地址，本机<code>IP</code>地址为源地址，加上一些其他的控制信息，构建一个<code>IP</code>数据包</li>
+<li>获取主机<code>B</code>的<code>MAC</code>地址</li>
+</ul>
+<p><code>IP</code>协议通过计算发现主机<code>B</code>与自己不在同一网段内，就直接交给路由处理，就是将路由的<code>MAC</code>取过来，至于怎么得到路由的<code>MAC</code>地址，和之前一样，先在<code>ARP</code>缓存表中寻找，找不到可以利用广播。路由得到这个数据帧之后，再跟主机<code>B</code>联系，若找不到，就向主机<code>A</code>返回一个超时信息。</p>
+<h2 id="Ping结果"><a href="#Ping结果" class="headerlink" title="Ping结果"></a>Ping结果</h2><ul>
+<li><code>Request timed out</code>：对方与自己不在同一网段内，通过路由也无法到达；对方已关机，或者网络上没有这个地址；对方存在，不过设置了<code>ICMP</code>数据包过滤；错误设置IP地址</li>
+<li><code>Destination host Unreachable</code>：自己未设定默认路由，对方跟自己不在同已网段。</li>
+<li><code>Bad ip address</code>：没有连接到<code>DNS</code>服务器，无法解析<code>IP</code>，也可能是<code>IP</code>不存在</li>
+<li><code>Source quench received</code>：对方或中途服务器繁忙而无法应答</li>
+<li><code>Ping 127.0.0.1</code>：如果<code>ping</code>不通，则表明本地址<code>TCP/IP</code>协议不能正常工作</li>
+</ul>
+<h1 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h1><h2 id="什么是ARP协议？"><a href="#什么是ARP协议？" class="headerlink" title="什么是ARP协议？"></a>什么是ARP协议？</h2><p>网络层以上的协议用<code>IP</code>地址来标识网络接口，但以太数据帧传输时，以物理地址来标识网络接口。因此我们需要进行<code>IP</code>地址与物理地址之间的转化。对于<code>IPv4</code>来说，我们使用<code>ARP</code>地址解析协议来完成<code>IP</code>地址与物理地址的转化（<code>IPv6</code>使用邻居发现协议进行<code>IP</code>地址与物理地址的转化，它包含在<code>ICMPv6</code>中）.<code>ARP</code>协议提供了网络层地址（<code>IP</code>地址）到物理地址（<code>mac</code>地址）之间的动态映射。<code>ARP</code>协议 是地址解析的通用协议。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><ul>
+<li><p>每个主机都会在自己的 <code>ARP</code> 缓冲区中建立一个 <code>ARP</code> 列表，以表示 <code>IP</code> 地址和 <code>MAC</code> 地址（以太网地址）之间的对应关系。</p>
+</li>
+<li><p>主机（网络接口）新加入网络时（也可能只是<code>MAC</code> 地址发生变化，接口重启等）， 会发送免费ARP报文把自己IP地址与Mac地址的映射关系广播给其他主机。</p>
+</li>
+<li><p>网络上的主机接收到免费<code>ARP</code>报文时，会更新自己的<code>ARP</code>缓冲区。将新的映射关系更新到自己的ARP表中。</p>
+</li>
+<li><p>某个主机需要发送报文时，首先检查 <code>ARP</code> 列表中是否有对应 <code>IP</code> 地址的目的主机的 <code>MAC</code> 地址，如果有，则直接发送数据，如果没有，就向本网段的所有主机发送 <code>ARP</code> 数据包，该数据包包括的内容有：源主机 <code>IP</code> 地址，源主机 <code>MAC</code> 地址，目的主机的 <code>IP</code> 地址等。</p>
+</li>
+<li><p>当本网络的所有主机收到该 <code>ARP</code> 数据包时：</p>
+<p>​    首先检查数据包中的<code>IP</code> 地址是否是自己的 <code>IP</code> 地址，如果不是，则忽略该数据包。</p>
+<p>​    如果是，则首先从数据包中取出源主机的 <code>IP</code>和 <code>MAC</code> 地址写入到 <code>ARP</code> 列表中，如果已经存在，则覆盖。</p>
+<p>​    然后将自己的 <code>MAC</code>地址写入<code>ARP</code>响应包中告诉源主机自己是它想要找的<code>MAC</code>地址。</p>
+</li>
+<li><p>源主机收到 <code>ARP</code> 响应包后。将目的主机的 <code>IP</code> 和 <code>MAC</code> 地址写入 <code>ARP</code> 列表，并利用此信息发送数据。如果源主机一直没有收到 <code>ARP</code> 响应数据包，表示 <code>ARP</code>查询失败。</p>
+</li>
+</ul>
+<h2 id="获取目的端的MAC地址-在一个以太网中-步骤"><a href="#获取目的端的MAC地址-在一个以太网中-步骤" class="headerlink" title="获取目的端的MAC地址(在一个以太网中)步骤"></a>获取目的端的MAC地址(在一个以太网中)步骤</h2><ul>
+<li>发送<code>ARP</code>请求的以太网数据帧给以太网上的每个主机，即广播(以太网源地址填全1)。<code>ARP</code>请求帧中包含了目的主机的<code>IP</code>地址。 </li>
+<li>目的主机收到了该<code>ARP</code>请求之后，会发送一个<code>ARP</code>应答，里面包含了目的主机的<code>MAC</code>地址。 </li>
+</ul>
+<h2 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h2><p><img src="1.png" alt></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ping/" rel="tag"># Ping</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/27/Redis/" rel="next" title="Redis">
+                <i class="fa fa-chevron-left"></i> Redis
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rui Zhou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiaorui2" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP协议"><span class="nav-number">1.</span> <span class="nav-text">ICMP协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ping命令"><span class="nav-number">2.</span> <span class="nav-text">Ping命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ping-exe的原理"><span class="nav-number">2.1.</span> <span class="nav-text">ping.exe的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ping命令过程"><span class="nav-number">2.2.</span> <span class="nav-text">Ping命令过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#同一网段"><span class="nav-number">2.2.1.</span> <span class="nav-text">同一网段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同网段"><span class="nav-number">2.2.2.</span> <span class="nav-text">不同网段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ping结果"><span class="nav-number">2.3.</span> <span class="nav-text">Ping结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP协议"><span class="nav-number">3.</span> <span class="nav-text">ARP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是ARP协议？"><span class="nav-number">3.1.</span> <span class="nav-text">什么是ARP协议？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作流程"><span class="nav-number">3.2.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取目的端的MAC地址-在一个以太网中-步骤"><span class="nav-number">3.3.</span> <span class="nav-text">获取目的端的MAC地址(在一个以太网中)步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#报文格式"><span class="nav-number">3.4.</span> <span class="nav-text">报文格式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rui Zhou</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

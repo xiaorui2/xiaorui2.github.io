@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="React,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="React组件&amp;amp;propsReact编写组件主要是有两种方式：函数组件和class组件。一般声明组件的时候都会申明为首字母大写。 定义组件最简单的方式就是编写JavaScript函数： 123function Welcome(props) &amp;#123;  return &amp;lt;h1&amp;gt;Hello, &amp;#123;props.name&amp;#125;&amp;lt;/h1&amp;gt;;&amp;#125;  还可">
+<meta name="keywords" content="React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React学习二（知识点总结）">
+<meta property="og:url" content="http://yoursite.com/2019/06/27/React知识点/index.html">
+<meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="React组件&amp;amp;propsReact编写组件主要是有两种方式：函数组件和class组件。一般声明组件的时候都会申明为首字母大写。 定义组件最简单的方式就是编写JavaScript函数： 123function Welcome(props) &amp;#123;  return &amp;lt;h1&amp;gt;Hello, &amp;#123;props.name&amp;#125;&amp;lt;/h1&amp;gt;;&amp;#125;  还可">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/27/React知识点/1.png">
+<meta property="og:updated_time" content="2019-06-27T10:44:02.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React学习二（知识点总结）">
+<meta name="twitter:description" content="React组件&amp;amp;propsReact编写组件主要是有两种方式：函数组件和class组件。一般声明组件的时候都会申明为首字母大写。 定义组件最简单的方式就是编写JavaScript函数： 123function Welcome(props) &amp;#123;  return &amp;lt;h1&amp;gt;Hello, &amp;#123;props.name&amp;#125;&amp;lt;/h1&amp;gt;;&amp;#125;  还可">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/27/React知识点/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/27/React知识点/">
+
+
+
+
+
+  <title>React学习二（知识点总结） | 九八年生于晚秋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九八年生于晚秋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/27/React知识点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React学习二（知识点总结）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-27T17:39:48+08:00">
+                2019-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端学习/" itemprop="url" rel="index">
+                    <span itemprop="name">前端学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="React组件-amp-props"><a href="#React组件-amp-props" class="headerlink" title="React组件&amp;props"></a>React组件&amp;props</h1><p><code>React</code>编写组件主要是有两种方式：函数组件和<code>class</code>组件。一般声明组件的时候都会申明为首字母大写。</p>
+<p>定义组件最简单的方式就是编写<code>JavaScript</code>函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function Welcome(props) &#123;</span><br><span class="line">  return &lt;h1&gt;Hello, &#123;props.name&#125;&lt;/h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还可以使用<code>ES6</code>的 <code>class</code>来定义组件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Welcome extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;h1&gt;Hello, &#123;this.props.name&#125;&lt;/h1&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意有一点：<code>React</code>是一个直接操作数据的声名式框架，它不会直接操作<code>DOM</code>，它是通过虚拟<code>DOM</code>来实现最后的渲染的，会帮我们节约掉大量操作<code>DOM</code>的代码。</p>
+<h2 id="子组件和父组件的通信方式"><a href="#子组件和父组件的通信方式" class="headerlink" title="子组件和父组件的通信方式"></a>子组件和父组件的通信方式</h2><p>父组件想传递信息到子组件是利用<code>props</code>，<code>state</code>属性来实现</p>
+<p>子组件想传递给父组件信息的话是通过调用父组件传递给子组件的方法间接的传递信息</p>
+<h2 id="子组件和父组件之间通信是单向数据流"><a href="#子组件和父组件之间通信是单向数据流" class="headerlink" title="子组件和父组件之间通信是单向数据流"></a>子组件和父组件之间通信是单向数据流</h2><p>这个也就是为什么组件无论是使用函数声明还是通过<code>class</code>声明，都决不能修改自身的<code>props</code>。因为这个属性是父组件传递给子组件的。这是为了保证当数据出现错误的时候能很容易的找到出错的地方在哪。</p>
+<h1 id="React虚拟DOM"><a href="#React虚拟DOM" class="headerlink" title="React虚拟DOM"></a>React虚拟DOM</h1><p>在<code>React</code>中，<code>render</code>执行的结果得到的并不是真正的<code>DOM</code>节点，结果仅仅是轻量级的<code>JavaScript</code>对象，我们称之为<code>virtual DOM</code>。 虚拟<code>DOM</code>是<code>React</code>的一大亮点，具有<code>batching</code>(批处理)和高效的<code>Diff</code>算法。</p>
+<p>这个批处理优化基于：<code>setState</code>是异步的，当多个变化很相近的时候就放到一起来去生成虚拟<code>DOM</code>。</p>
+<p>它也是使得跨端应用得到实现的重要原因。</p>
+<h2 id="React修改数据之后的流程"><a href="#React修改数据之后的流程" class="headerlink" title="React修改数据之后的流程"></a>React修改数据之后的流程</h2><ul>
+<li><code>state</code>数据</li>
+<li><code>JSX</code>模板</li>
+<li>数据+模板生成虚拟<code>DOM</code>（损耗了性能）：<code>[&#39;div&#39;,{id: &#39;abc&#39;},&#39;hello world!&#39;]</code></li>
+<li>用虚拟DOM的结构生成真实DOM来显示：<code>&lt;div id=&#39;abc&#39;&gt;&#39;hello world!&#39;&lt;/div&gt;</code></li>
+<li><code>state</code>发生改变</li>
+<li>数据+模板生成新的虚拟<code>DOM</code></li>
+<li>比较原始虚拟<code>DOM</code>和新的虚拟<code>DOM</code>的区别</li>
+<li>直接操作<code>DOM</code>，更改内容</li>
+</ul>
+<p><code>JSX</code>模板变成真实<code>DOM</code>的过程：<code>JSX</code> -&gt; <code>React.createElement</code> -&gt; <code>js</code>对象 -&gt; 真实的<code>DOM</code>。</p>
+<h2 id="DIFF算法"><a href="#DIFF算法" class="headerlink" title="DIFF算法"></a>DIFF算法</h2><p> 两个树的完全的<code>diff</code>算法是一个时间复杂度为 <code>O(n3)</code>的问题。 但是在前端中，你会很少跨层地移动<code>DOM</code>元素，所以真实的<code>DOM</code>算法会对同一个层级的元素进行对比。</p>
+<p><img src="1.png" alt></p>
+<p><code>div</code>只会和同一层级的<code>div</code>对比，第二层级的只会和第二层级对比。 这样算法复杂度就可以达到<code>O(n)</code>.</p>
+<p>利用深度优先遍历，记录差异然后把差异引用到真正的<code>DOM</code>树上。</p>
+<h1 id="React的生命周期函数"><a href="#React的生命周期函数" class="headerlink" title="React的生命周期函数"></a>React的生命周期函数</h1><p>React的生命周期分为三个阶段：</p>
+<ul>
+<li>挂载阶段</li>
+<li>更新阶段</li>
+<li>卸载阶段</li>
+</ul>
+<h2 id="constructor（组件构造函数）"><a href="#constructor（组件构造函数）" class="headerlink" title="constructor（组件构造函数）"></a>constructor（组件构造函数）</h2><p>如果没有显示定义它，我们会拥有一个默认的构造函数。在构造函数里面我们一般会做两件事：</p>
+<ul>
+<li>初始化<code>state</code>对象</li>
+<li>给自定义方法绑定<code>this</code></li>
+</ul>
+<h2 id="render"><a href="#render" class="headerlink" title="render"></a>render</h2><p><code>React</code>中最核心的方法，一个组件中必须要有这个方法</p>
+<p>返回的类型有以下几种：</p>
+<ul>
+<li>原生的<code>DOM</code>，如<code>div</code></li>
+<li><code>React</code>组件</li>
+<li><code>Fragment</code>（片段）</li>
+<li><code>Portals</code>（插槽）</li>
+<li>字符串和数字，被渲染成<code>text</code>节点</li>
+<li><code>Boolean</code>和<code>null</code>，不会渲染任何东西</li>
+</ul>
+<h2 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h2><p>组件装载之后调用，此时我们可以获取到DOM节点并操作，，比如对<code>canvas</code>，<code>svg</code>的操作，服务器请求，订阅都可以写在这个里面，但是记得在<code>componentWillUnmount</code>中取消订阅</p>
+<h2 id="shouldComponentUpdate"><a href="#shouldComponentUpdate" class="headerlink" title="shouldComponentUpdate"></a>shouldComponentUpdate</h2><p>函数原型<code>shouldComponentUpdate(nextProps, nextState)</code>，有两个参数<code>nextProps</code>和<code>nextState</code>，表示新的属性和变化之后的<code>state</code>，返回一个布尔值，<code>true</code>表示会触发重新渲染，<code>false</code>表示不会触发重新渲染，默认返回<code>true</code>。</p>
+<h2 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate"></a>componentDidUpdate</h2><p>组件改变之后调用，有三个参数<code>prevProps</code>，<code>prevState</code>，<code>snapshot</code>，表示之前的<code>props</code>，之前的<code>state</code>，和<code>snapshot</code>。第三个参数是<code>getSnapshotBeforeUpdate</code>返回的。在这个函数里我们可以操作<code>DOM</code>，和发起服务器请求，还可以<code>setState</code>，但是注意一定要用if语句控制，否则会导致无限循环</p>
+<h2 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h2><p>当我们的组件被卸载或者销毁了就会调用，我们可以在这个函数里去清除一些定时器，取消网络请求，清理无效的<code>DOM</code>元素等垃圾清理工作</p>
+<p>注意不要在这个函数里去调用<code>setState</code>，因为组件不会重新渲染了。</p>
+<p>之前还有<code>componentWillMount()</code>和<code>componentDidMount()</code>是组件即将被渲染到页面之前触发和组件已经被渲染到页面中后触发，这个在现在的版本已经被去除了。使用<code>HOOK</code>能很方便的代替生命周期函数。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/25/Hash冲突的几种解决方法/" rel="next" title="Hash冲突的几种解决方法">
+                <i class="fa fa-chevron-left"></i> Hash冲突的几种解决方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/27/Redis/" rel="prev" title="Redis">
+                Redis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rui Zhou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiaorui2" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React组件-amp-props"><span class="nav-number">1.</span> <span class="nav-text">React组件&amp;props</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#子组件和父组件的通信方式"><span class="nav-number">1.1.</span> <span class="nav-text">子组件和父组件的通信方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子组件和父组件之间通信是单向数据流"><span class="nav-number">1.2.</span> <span class="nav-text">子组件和父组件之间通信是单向数据流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#React虚拟DOM"><span class="nav-number">2.</span> <span class="nav-text">React虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React修改数据之后的流程"><span class="nav-number">2.1.</span> <span class="nav-text">React修改数据之后的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DIFF算法"><span class="nav-number">2.2.</span> <span class="nav-text">DIFF算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#React的生命周期函数"><span class="nav-number">3.</span> <span class="nav-text">React的生命周期函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#constructor（组件构造函数）"><span class="nav-number">3.1.</span> <span class="nav-text">constructor（组件构造函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#render"><span class="nav-number">3.2.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#componentDidMount"><span class="nav-number">3.3.</span> <span class="nav-text">componentDidMount</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">3.4.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">3.5.</span> <span class="nav-text">componentDidUpdate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">3.6.</span> <span class="nav-text">componentWillUnmount</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rui Zhou</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
