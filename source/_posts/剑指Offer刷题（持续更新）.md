@@ -1550,6 +1550,110 @@ public class Solution {
 }
 ```
 
+# 题目二十四 二叉树中和为某一值的路径
+
+## 题目描述
+
+输入一颗二叉树的跟节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。(注意: 在返回值的list中，数组长度大的数组靠前)
+
+## 思路
+
+首先我们知道这题肯定要用`dfs`，当一次遍历完成后，如果输入整数值恰好等于节点值之和，则输出这条路径并且回退一个节点；如果不等于则直接回退一个节点，即回退到当前节点的父节点，如果该父节点有右孩子，则继续遍历，否则继续回退。考虑回退到根节点，此时如果它有右孩子，则继续遍历，否则整个DFS结束。需要注意的是不论路径的值是否等于输入整数值，都要回退，也就是使用remove函数移除路径上的最后一个节点。
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<vector<int> >result;
+    vector<int> ans;
+    void dfs(TreeNode* root,int expectNumber) {
+        ans.push_back(root->val);
+        if(root->val == expectNumber && root->left == NULL && root->right == NULL) {
+            result.push_back(ans);
+        }
+        else {
+            if(root->left)
+                dfs(root->left, expectNumber-root->val);
+            if(root->right)
+                dfs(root->right, expectNumber-root->val);
+        }
+        ans.pop_back();
+    }
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+        if(root != NULL){
+            dfs(root, expectNumber);
+        }
+        return result;
+    }
+};
+```
+
+`Java`版：
+
+```java
+import java.util.ArrayList;
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();;
+    ArrayList<Integer> ans = new ArrayList<Integer>();;
+    /*public dfs(TreeNode root,int expectNumber) {
+        ans.add(root.val);
+        if(root.val == expectNumber && root.left == null && root.right == null) {
+            result.add(ans);
+        }
+        else {
+            if(root.left != null)
+                dfs(root.left, expectNumber-root.val);
+            if(root.right != null)
+                dfs(root.right, expectNumber-root.val);
+        }
+        ans.remove(ans.size()-1);
+    }*/
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        if(root != null){
+            ans.add(root.val);
+            if(root.val == target && root.left == null && root.right == null) {
+                result.add(new ArrayList<Integer>(ans));
+            }
+            else {
+                if(root.left != null)
+                    FindPath(root.left, target-root.val);
+                if(root.right != null)
+                    FindPath(root.right, target-root.val);
+            }
+            ans.remove(ans.size()-1);
+        }
+        return result;
+    }
+}
+```
+
+# 
+
 # 题目二十八 数组中出现次数超过一半的数字
 
 ## 题目描述
@@ -1686,6 +1790,651 @@ public class Solution {
     }
 }
 ```
+
+# 题目三十 连续子数组的最大和
+
+## 题目描述
+
+HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。给一个数组，返回它的最大连续子序列的和，你会不会被他忽悠住？(子向量的长度至少是1)
+
+## 思路
+
+可以用递归去做，可以看我的LeetCode字节跳动专题有一样的。
+
+这个是`O(n)`的解法，思路是对于一个数组中的一个数x，若是x的左边的数加起来非负，那么加上x能使得值变大，这样我们认为x之前的数的和对整体和是有贡献的。如果前几项加起来是负数，则认为有害于总和。
+我们用cur记录当前值, 用max记录最大值，如果cur<0,则舍弃之前的数，让cur等于当前的数字，否则，cur = cur+当前的数字。若cur和大于max更新max。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    int FindGreatestSumOfSubArray(vector<int> array) {
+        if(array.size() == 0)
+            return 0;
+        int cur = array[0], max = array[0];
+        for(int i=1; i<array.size(); i++){
+            cur = cur > 0 ? cur + array[i] : array[i];
+            if(max < cur)
+                max = cur;
+        }
+        return max;
+    }
+};
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public int FindGreatestSumOfSubArray(int[] array) {
+        if(array.length == 0)
+            return 0;
+        int cur = array[0], max = array[0];
+        for(int i=1; i<array.length; i++){
+            cur = cur > 0 ? cur + array[i] : array[i];
+            if(max < cur)
+                max = cur;
+        }
+        return max;
+    }
+}
+```
+
+# 题目三十一 整数中1出现的次数（从1到n整数中1出现的次数）
+
+## 题目描述
+
+求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数（从1 到 n 中1出现的次数）。
+
+## 思路
+
+暴力循环一下，对于每个数都判断一下，应该有更好的解法，暂时没想到。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    int NumberOf1Between1AndN_Solution(int n){
+        int count = 0;
+        for(int i=0; i<=n; i++){
+            int temp = i;
+            while(temp != 0){
+                if(temp%10 == 1){
+                    count++;
+                }
+                temp /= 10;
+            }
+        }
+        return count;
+    }
+};
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public int NumberOf1Between1AndN_Solution(int n) {
+        int count = 0;
+        for(int i=0; i<=n; i++){
+            int temp = i;
+            while(temp != 0){
+                if(temp%10 == 1){
+                    count++;
+                }
+                temp /= 10;
+            }
+        }
+        return count;
+    }
+}
+```
+
+# 题目三十三 丑数
+
+## 题目描述
+
+把只包含质因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含质因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+
+## 思路
+
+某个丑数肯定是前面丑数的`2,3,5`倍数。只需要从前往后生成即可。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    int min(int a,int b,int c){
+        int minn=(a<b)?a:b;
+        return (minn<c)?minn:c;
+    }
+    int GetUglyNumber_Solution(int index) {
+        if(index<=0)
+            return 0;
+        int a[index];
+        a[0]=1;
+        int cnt1=0;
+        int cnt2=0;
+        int cnt3=0;
+        for(int i=1;i<index;i++){
+            int minn=min(a[cnt1]*2,a[cnt2]*3,a[cnt3]*5);
+            a[i]=minn;
+            while(a[cnt1]*2<=minn)
+                cnt1++;
+            while(a[cnt2]*3<=minn)
+                cnt2++;
+            while(a[cnt3]*5<=minn)
+                cnt3++;
+        }
+        return a[index-1];
+    }
+};
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public int min(int a,int b,int c){
+        int min=(a<b)?a:b;
+        return (min<c)?min:c;
+    }
+    public int GetUglyNumber_Solution(int index) {
+        if(index<=0)
+            return 0;
+        int[] a=new int[index];
+        a[0]=1;
+        int cnt1=0;
+        int cnt2=0;
+        int cnt3=0;
+        for(int i=1;i<index;i++){
+            int min=min(a[cnt1]*2,a[cnt2]*3,a[cnt3]*5);
+            a[i]=min;
+            while(a[cnt1]*2<=min)
+                cnt1++;
+            while(a[cnt2]*3<=min)
+                cnt2++;
+            while(a[cnt3]*5<=min)
+                cnt3++;
+        }
+        return a[index-1];
+    }
+}
+```
+
+# 题目三十四 第一个只出现一次的字符
+
+## 题目描述
+
+在一个字符串(0<=字符串长度<=10000，全部由字母组成)中找到第一个只出现一次的字符,并返回它的位置, 如果没有则返回 -1（需要区分大小写）.
+
+## 思路
+
+设立一个hashMap，将每个字母出现的次数进行统计。若要找出第一个，就要对string从头开始再次遍历一遍找到其在hashMap中的value值为1，则返回其下标
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+import java.util.HashMap;
+    public class Solution {
+        public int FirstNotRepeatingChar(String str) {
+
+            int index = -1;
+            if (str == null || str == "") {
+                return index;
+            }
+            HashMap<Character, Integer> statisticsMap = new HashMap<Character, Integer>();
+            for (int i = 0; i < str.length(); i++) {
+                Character tempChar = str.charAt(i);
+                if (statisticsMap.get(tempChar) == null) {
+                    statisticsMap.put(tempChar, 1);
+                } else {
+                    int tempCount = statisticsMap.get(tempChar) + 1;
+                    statisticsMap.remove(tempChar);
+                    statisticsMap.put(tempChar, tempCount);
+                }
+            }
+            for (int i = 0; i < str.length(); i++) {
+                Character tempChar1 = str.charAt(i);
+                if (statisticsMap.get(tempChar1) == 1) {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
+        }
+    }
+```
+
+# 题目三十五 数组中的逆序对
+
+## 题目描述
+
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
+
+## 思路
+
+利用归并排序或者树状数组，暂时写了个Java的。
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public int InversePairs(int [] array) {
+        int len = array.length;
+        if(array== null || len <= 0){
+            return 0;
+        }
+        return mergeSort(array, 0, len-1);
+    }
+    public int mergeSort(int [] array, int start, int end){
+        if(start == end)
+            return 0;
+        int mid = (start + end) / 2;
+        int left_count = mergeSort(array, start, mid);
+        int right_count = mergeSort(array, mid + 1, end);
+        int i = mid, j = end;
+        int [] copy = new int[end - start + 1];
+        int copy_index = end - start;
+        int count = 0;
+        while(i >= start && j >= mid + 1){
+            if(array[i] > array[j]){
+                copy[copy_index--] = array[i--];
+                count += j - mid;
+                if(count > 1000000007){
+                    count %= 1000000007;
+                }
+            }else{
+                copy[copy_index--] = array[j--];
+            }
+        }
+        while(i >= start){
+            copy[copy_index--] = array[i--];
+        }
+        while(j >= mid + 1){
+            copy[copy_index--] = array[j--];
+        }
+        i = 0;
+        while(start <= end) {
+            array[start++] = copy[i++];
+        }
+        return (left_count+right_count+count)%1000000007;
+    }
+}
+```
+
+# 题目三十六 两个链表的第一个公共结点
+
+## 题目描述
+
+输入两个链表，找出它们的第一个公共结点。
+
+## 思路
+
+一个`while`循环，当不是共同结点的时候，两个链表都往后面移动
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* FindFirstCommonNode( ListNode* headA, ListNode* headB) {
+        if(headA==NULL || headB==NULL)
+            return NULL;
+        ListNode *ans1=headA,*ans2=headB;
+        while(ans1!=ans2)
+        {
+            if(ans1==NULL)
+                ans1=headB;
+            else
+                ans1=ans1->next;
+            if(ans2==NULL)
+                ans2=headA;
+            else
+                ans2=ans2->next;
+        }
+        return ans1;
+    }
+};
+```
+
+`Java`版：
+
+```java
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode FindFirstCommonNode(ListNode headA, ListNode headB) {
+        if(headA==null || headB==null)
+            return null;
+        ListNode ans1=headA,ans2=headB;
+        while(ans1!=ans2)
+        {
+            if(ans1==null)
+                ans1=headB;
+            else
+                ans1=ans1.next;
+            if(ans2==null)
+                ans2=headA;
+            else
+                ans2=ans2.next;
+        }
+        return ans1;
+    }
+}
+```
+
+# 题目三十七 数字在排序数组中出现的次数
+
+## 题目描述
+
+统计一个数字在排序数组中出现的次数。
+
+## 思路
+
+一遍循环，因为是有序的数组，所以一直找到第一个大于`k`的数值就跳出循环，`==`的时候记录数量
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    int GetNumberOfK(vector<int> data ,int k) {
+        int len=data.size();
+        int ans=0;
+        for(int i=0;i<len;i++){
+            if(data[i]==k){
+                ans++;
+            }
+            if(data[i]>k)
+                break;
+        }
+        return ans;
+    }
+};
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public int GetNumberOfK(int [] array , int k) {
+       int len=array.length;
+        int ans=0;
+        for(int i=0;i<len;i++){
+            if(array[i]==k){
+                ans++;
+            }
+            if(array[i]>k)
+                break;
+        }
+        return ans;
+    }
+}
+```
+
+# 题目三十八 二叉树的深度
+
+## 题目描述
+
+输入一棵二叉树，求该树的深度。从根结点到叶结点依次经过的结点（含根、叶结点）形成树的一条路径，最长路径的长度为树的深度。
+
+## 思路
+
+如果一棵树只有一个结点，它的深度为1，如果根节点只有左子树而没有右子树，那么树的深度应该是其左子树的深度+1.同样如果根节点只有右子树而没有左子树，那么树的深度应该是其右子树+1.如果既有左子树又有右子树，那概述的深度就是左、右子树的深度的较大值加1.。
+
+所以我们可以用递归来实现代码
+
+## AC代码
+
+`c++`版：
+
+```c++
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    int ans=0;
+    void dfs(TreeNode* root,int height){
+        if(root->left){
+            dfs(root->left,height+1);
+        }
+        if(root->right){
+            dfs(root->right,height+1);
+        }
+        if(root->left==NULL && root->right==NULL){
+            ans=max(ans,height);
+        }
+    }
+    int TreeDepth(TreeNode* pRoot){
+        if(pRoot == NULL)
+            return 0;
+        dfs(pRoot,1);
+        return ans;
+    }
+};
+```
+
+`Java`版：
+
+```java
+
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public int TreeDepth(TreeNode root) {
+        if(root == null)
+			return 0;
+		int nLeft = TreeDepth(root.left);
+		int nRight = TreeDepth(root.right);
+		return (nLeft > nRight)?(nLeft+1):(nRight+1);
+    }
+}
+```
+
+# 题目三十九 平衡二叉树
+
+## 题目描述
+
+输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+
+## 思路
+
+首先如果某二叉树中任意结点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+而我们已经做了二叉树的深度，遍历树的每个结点的时候，调用函数TreeDepth得到它的左右子树的深度。如果每个结点的左右子树的深度相差不超过1，按照定义它就是一棵平衡的二叉树
+
+或者呢可以用冒泡排序的思想，我么知道冒泡排序是一个`O(n^2)`的算法，它是每次把一个数排序到最前面保证前面数有序，然后一直到整个数组有序，那么我们只需要循环`k`次就行了在这里面，保证前k个数最小的就满足题意了。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    int depth(TreeNode* root){
+        if(root==NULL)
+            return 0;
+        int left=depth(root->left);
+        int right=depth(root->right);
+        return (left>right)?(left+1):(right+1);
+    }
+    bool IsBalanced_Solution(TreeNode* root) {
+        if(root==NULL)
+            return true;
+        int left=depth(root->left);
+        int right=depth(root->right);
+        if(abs(left-right)>1)
+            return false;
+        bool booleft=IsBalanced_Solution(root->left);
+        bool booright=IsBalanced_Solution(root->right);
+        return booleft&&booright;
+    }
+};
+```
+
+`Java`版：
+
+```java
+public class Solution {
+    public boolean IsBalanced_Solution(TreeNode root) {
+        if(root ==null)
+			return true;
+		int left = TreeDepth(root.leftNode);
+		int right = TreeDepth(root.rightNode);
+		int diff = left - right;
+		if(diff > 1 || diff <-1)
+			return false;
+		return isBalanced(root.leftNode) && isBalanced(root.rightNode);
+    }
+    public int TreeDepth(TreeNode root) {
+        if(root == null)
+			return 0;
+		int nLeft = TreeDepth(root.left);
+		int nRight = TreeDepth(root.right);
+		return (nLeft > nRight)?(nLeft+1):(nRight+1);
+    }
+}
+```
+
+# 题目四十 数组中只出现一次的数字
+
+## 题目描述
+
+一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。
+
+## 思路
+
+首先是异或运算的一个性质：任何一个数字异或它自己都等于 0。也就是说， 如果我们从头到尾依次异或数组中的每一个数字，那么最终的结果刚好是那个只出现一次的数字，因为那些成对出现两次的数字全部在异或中抵消了，同样应用这个思路，分为三步：
+
+- 从头到尾依次异或数组中的每一个数字，那么最终得到的结果就是两个只出现一次的数字的异或结果。因为其他数字都出现了两次，在异或中全部抵消了。由于这两个数字肯定不一样，那么异或的结果肯定不为 0，也就是说在这个结果数字的二进制表示中至少就有一位为 1 。
+- 我们在结果数字中找到第一个为 1 的位的位置，记为第 n 位。现在我们以第 n 位是不是 １ 为标准把原数组中的数字分成两个子数组，第一个子数组中每个数字的第 n 位都是 1，而第二个子数组中每个数字的第 n 位都是 0。由于我们分组的标准是数字中的某一位是 1 还是 0 ， 那么出现了两次的数字肯定被分配到同一个子数组。因为两个相同的数字的任意一位都是相同的，我们不可能把两个相同的数字分配到两个子数组中去，于是我们已经把原数组分成了两个子数组。
+- 每个子数组都包含一个只出现一次的数字，而其他数字都出现了两次。我们已经知道如何在数组中找出唯一一个只出现一次数字
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    bool IsBit(int num,int index){
+        num=num>>index;
+        return (num&1);
+    }
+    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+        int size=data.size();
+        int temp=data[0];
+        for(int i=1;i<size;i++)
+           temp=temp^data[i];
+        if(temp==0)
+           return ;
+        int index=0;
+        while((temp&1)==0){
+           temp=temp>>1;
+           ++index;
+        }
+        *num1=*num2=0;
+        for(int i=0;i<size;i++){
+           if(IsBit(data[i],index))
+               *num1^=data[i];
+           else
+               *num2^=data[i];
+        }
+    }
+};
+```
+
+`Java`版：
+
+```java
+//num1,num2分别为长度为1的数组。传出参数
+//将num1[0],num2[0]设置为返回结果
+public class Solution {
+    public void FindNumsAppearOnce(int[] array, int num1[], int num2[]) {
+        int diff = 0;
+        for (int num : array) diff ^= num;
+        // 得到最右一位
+        diff &= -diff;
+        for (int num : array) {
+            if ((num & diff) == 0) num1[0] ^= num;
+            else num2[0] ^= num;
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
 
 
 

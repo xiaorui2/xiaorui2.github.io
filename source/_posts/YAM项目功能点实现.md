@@ -2,7 +2,7 @@
 title: YAM项目功能点实现一
 date: 2019-05-27 22:01:13
 tags: 项目
-categories: 前端学习
+categories: 前端项目
 ---
 
 # 项目运行步骤
