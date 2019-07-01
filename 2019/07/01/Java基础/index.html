@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="== 和 equals 的区别是什么？直接使用==操作符，比较的是两个字符串的引用地址，并不是比较内容，比较内容请用equals()。 ==对于基本类型来说是值比较，对于引用类型来说是比较的是引用；而 equals 默认情况下是引用比较，只是很多类重新了equals方法，比如String、Integer 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。 StringJava">
+<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础">
+<meta property="og:url" content="http://yoursite.com/2019/07/01/Java基础/index.html">
+<meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="== 和 equals 的区别是什么？直接使用==操作符，比较的是两个字符串的引用地址，并不是比较内容，比较内容请用equals()。 ==对于基本类型来说是值比较，对于引用类型来说是比较的是引用；而 equals 默认情况下是引用比较，只是很多类重新了equals方法，比如String、Integer 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。 StringJava">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/07/01/Java基础/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/01/Java基础/2.png">
+<meta property="og:updated_time" content="2019-07-01T10:02:54.164Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基础">
+<meta name="twitter:description" content="== 和 equals 的区别是什么？直接使用==操作符，比较的是两个字符串的引用地址，并不是比较内容，比较内容请用equals()。 ==对于基本类型来说是值比较，对于引用类型来说是比较的是引用；而 equals 默认情况下是引用比较，只是很多类重新了equals方法，比如String、Integer 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。 StringJava">
+<meta name="twitter:image" content="http://yoursite.com/2019/07/01/Java基础/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/01/Java基础/">
+
+
+
+
+
+  <title>Java基础 | 九八年生于晚秋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九八年生于晚秋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/01/Java基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-01T15:15:49+08:00">
+                2019-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Java入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="和-equals-的区别是什么？"><a href="#和-equals-的区别是什么？" class="headerlink" title="== 和 equals 的区别是什么？"></a>== 和 equals 的区别是什么？</h1><p>直接使用<code>==</code>操作符，比较的是两个字符串的引用地址，并不是比较内容，比较内容请用<code>equals()</code>。</p>
+<p><code>==</code>对于基本类型来说是值比较，对于引用类型来说是比较的是引用；而 <code>equals</code> 默认情况下是引用比较，只是很多类重新了<code>equals</code>方法，比如<code>String</code>、<code>Integer</code> 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。</p>
+<h1 id="String"><a href="#String" class="headerlink" title="String"></a>String</h1><p><code>Java</code> 中<code>String</code>是一个不可变类，即创建一个<code>String</code>对象后，是不能直接改变字符串中的某个字符的。</p>
+<h2 id="为什么不可变？好处在哪？"><a href="#为什么不可变？好处在哪？" class="headerlink" title="为什么不可变？好处在哪？"></a>为什么不可变？好处在哪？</h2><p>因为用于存储String值的仍然是一个char型数组，并且注意到它是final修饰的，不可更改。</p>
+<ul>
+<li>效率（因为对象不可变，所以可以使用常量池的方式优化效率；因为对象不可变，所以<code>String</code>对象可以自身缓存<code>HashCode</code>）</li>
+<li>安全（<code>String</code>被许多的<code>Java</code>类(库)用来当做参数,例如 网络连接地址<code>URL</code>,文件路径<code>path</code>,还有反射机制所需要的<code>String</code>参数等, 假若<code>String</code>不是固定不变的,将会引起各种安全隐患）</li>
+</ul>
+<h2 id="String-常量池"><a href="#String-常量池" class="headerlink" title="String 常量池"></a>String 常量池</h2><p>对于不可变对象使用<code>String</code>常量池，不然修改变量<code>string1</code>的值，<code>string2</code>的值也发生变化了。常量池的存在无疑大大降低了创建、拷贝等操作的时间复杂度和空间复杂度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String s1=<span class="string">"ab"</span>+“cd”;</span><br><span class="line">String s2=<span class="string">"abc"</span>+<span class="string">"d"</span>;</span><br><span class="line">System.out.println(s1==s2);</span><br><span class="line"><span class="comment">//True</span></span><br><span class="line">String s3=<span class="keyword">new</span> String(<span class="string">"ab"</span>);</span><br><span class="line">String s4=<span class="keyword">new</span> String(<span class="string">"ab"</span>);</span><br><span class="line">System.out.println(s3==s4);</span><br><span class="line"><span class="comment">//Flase</span></span><br></pre></td></tr></table></figure>
+
+<p>由答案可以知道：<code>String</code>类确实是不可变类，<code>&quot;ab&quot;+&quot;cd&quot;</code>被当做了新字符串而不是续接<code>&quot;ab&quot;</code>（不然<code>&quot;ab&quot;</code>和<code>&quot;abc&quot;</code>肯定不会地址一样）；常量池确实存在，同是<code>&quot;abcd&quot;</code>，所有对<code>&quot;abcd&quot;</code>的引用都指向同一地址；如果使用<code>new</code>的话就会直接分配新的地址。</p>
+<h2 id="String，-Stringbuffer，-StringBuilder-的区别。"><a href="#String，-Stringbuffer，-StringBuilder-的区别。" class="headerlink" title="String， Stringbuffer， StringBuilder 的区别。"></a>String， Stringbuffer， StringBuilder 的区别。</h2><ul>
+<li><code>String</code> 字符串常量(<code>final</code>修饰，不可被继承)，线程不安全，<code>String</code>是常量，当创建之后即不能更改。(可以通过<code>StringBuffer</code>和<code>StringBuilder</code>创建<code>String</code>对象(常用的两个字符串操作类)。) </li>
+<li><code>StringBuffer</code> 字符串变量（线程安全）其<code>toString</code>方法会进行对象缓存，以减少元素复制开销，支持同步锁。</li>
+<li><code>StringBuilder</code> 字符串变量（非线程安全）其<code>toString</code>的时候，会直接返回一个新对象。</li>
+</ul>
+<h1 id="int-和Integer"><a href="#int-和Integer" class="headerlink" title="int 和Integer"></a>int 和Integer</h1><h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
+<li><code>int</code>是一个基本数据类型，而<code>Integer</code>是<code>int</code>的包装类。</li>
+<li><code>Integer</code> 变量必须要实例化之后才能使用。</li>
+<li><code>Integer</code>实际是对象的引用，当<code>new</code>一个<code>Integer</code>时，实际上是生成一个指针指向此对象；而<code>int</code>则是直接存储数据值 。</li>
+<li><code>Integer</code>的默认值是<code>null</code>，<code>int</code>的默认值是0。</li>
+</ul>
+<h2 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h2><ul>
+<li>两个<code>int</code> 的比较，就不用说了，就平常的数值比较即可。</li>
+<li>两个<code>new</code> 生成的<code>Integer</code> 比较，由于<code>Integer</code>变量实际上是对一个<code>Integer</code>对象的引用，所以两个通过<code>new</code>生成的<code>Integer</code>变量永远是不相等的（因为<code>new</code>生成的是两个对象，其内存地址不同）。调用<code>equals</code>函数返回<code>true</code>。</li>
+<li><code>Integer</code>变量和<code>int</code>变量比较时，只要两个变量的值是向等的，则结果为<code>true</code>（因为包装类<code>Integer</code>和基本数据类型<code>int</code>比较时，<code>java</code>会自动拆包装为<code>int</code>，然后进行比较，实际上就变为两个<code>int</code>变量的比较）</li>
+<li>对于两个非<code>new</code>生成的<code>Integer</code>对象，进行比较时，如果两个变量的值在区间<code>-128</code>到<code>127</code>之间，则比较结果为<code>true</code>，如果两个变量的值不在此区间，则比较结果为<code>false</code>。调用<code>equals</code>函数返回<code>true</code>。</li>
+<li>非<code>new</code>生成的<code>Integer</code>变量和<code>new Integer()</code>生成的变量比较时，结果为<code>false</code>。（因为非<code>new</code>生成的<code>Integer</code>变量指向的是<code>java</code>常量池中的对象，而<code>new Integer()</code>生成的变量指向堆中新建的对象，两者在内存中的地址不同）</li>
+</ul>
+<h2 id="Integer常量池"><a href="#Integer常量池" class="headerlink" title="Integer常量池"></a>Integer常量池</h2><p><code>Integer i = value;</code>如果<code>i</code>是在<code>-128</code>到<code>127</code>之间，不会去堆中创建对象，而是直接返回<code>IntegerCache</code>中的值;如果值不在上面范围内则会从堆中创建对象。<code>=</code>走的是<code>valueOf()</code>方法,<code>valueOf(int)</code>会走缓存。<code>Integer i2 = new Integer(xxxx);</code>不管参数的<code>value</code>是多少都会从堆中创建对象，与<code>IntegerCache</code>没关系。</p>
+<p>常量池都是放在方法区的。</p>
+<h1 id="Final关键字"><a href="#Final关键字" class="headerlink" title="Final关键字"></a>Final关键字</h1><ul>
+<li><p>修饰类当用<code>final</code>去修饰一个类的时候，表示这个类不能被继承。注意：</p>
+<p>a. 被<code>final</code>修饰的类，<code>final</code>类中的成员变量可以根据自己的实际需要设计为<code>fianl</code>。</p>
+<p>b. <code>final</code>类中的成员方法都会被隐式的指定为<code>final</code>方法。</p>
+</li>
+<li><p>被<code>final</code>修饰的方法不能被重写：</p>
+<p>a. 一个类的<code>private</code>方法会隐式的被指定为<code>final</code>方法。</p>
+<p>b. 如果父类中有<code>final</code>修饰的方法，那么子类不能去重写。</p>
+</li>
+<li><p>修饰成员变量，必须要赋初始值，而且是只能初始化一次。</p>
+</li>
+</ul>
+<h1 id="类初始化顺序"><a href="#类初始化顺序" class="headerlink" title="类初始化顺序"></a>类初始化顺序</h1><ul>
+<li>非继承关系中的初始化顺序：<code>static</code>静态代码块和静态成员 -&gt; 普通成员 -&gt; 构造函数执行</li>
+<li>继承的子类：父类静态代码块和静态成员 -&gt; 子类静态代码块和静态成员 -&gt;父类普通成员和非<code>static</code>块 -&gt; 父类构造函数 -&gt; 子类普通成员和非<code>static</code>块 -&gt; 子类构造函数 。</li>
+</ul>
+<h1 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h1><p><img src="1.png" alt></p>
+<p>注意：<code>String</code> 不属于基础类型，它属于对象。</p>
+<h1 id="Java的容器和容器之间的区别"><a href="#Java的容器和容器之间的区别" class="headerlink" title="Java的容器和容器之间的区别"></a>Java的容器和容器之间的区别</h1><p><code>Java</code>容器分为 <code>Collection</code>和 <code>Map</code> 两大类</p>
+<p><img src="2.png" alt></p>
+<h2 id="ArrayList-和-LinkedList-区别"><a href="#ArrayList-和-LinkedList-区别" class="headerlink" title="ArrayList 和 LinkedList 区别"></a>ArrayList 和 LinkedList 区别</h2><p><code>ArrayList</code>和<code>LinkedList</code>都是实现了<code>List</code>接口的容器类，用于存储一系列的对象引用。他们都可以对元素的增删改查进行操作。</p>
+<p><code>ArrayList</code>是实现了基于动态数组的数据结构，<code>LinkedList</code>是基于链表结构。</p>
+<p><code>ArrayList</code>可以以<code>O(1)</code>时间复杂度对元素进行随机访，<code>LinkedList</code>则是<code>O(n)</code>的复杂度。</p>
+<p>新增和删除操作<code>add</code>和<code>remove</code>，<code>LinkedList</code> 时间复杂度为<code>O(1)</code>，而<code>ArrayList</code> 为<code>O(n)</code>，因为要移动数据。对<code>ArrayList</code>和<code>LinkedList</code>而言，在列表末尾增加一个元素所花的开销都是固定的都是<code>O(1)</code>。<code>LinkedList</code>比<code>ArrayList</code>更占内存，因为<code>LinkedList</code>为每一个节点存储了两个引用，一个指向前一个元素，一个指向下一个元素。</p>
+<h2 id="ArrayList-和-Vector-的区别"><a href="#ArrayList-和-Vector-的区别" class="headerlink" title="ArrayList 和 Vector 的区别"></a>ArrayList 和 Vector 的区别</h2><ul>
+<li>线程安全：<code>Vector</code> 使用了<code>Synchronized</code>来实现线程同步，是线程安全的，而<code>ArrayList</code>是非线程安全的。</li>
+<li>性能：<code>ArrayList</code>在性能方面要优于 <code>Vector</code>。</li>
+<li>扩容：<code>ArrayList</code> 和<code>Vector</code>都会根据实际的需要动态的调整容量，只不过在<code>Vector</code> 扩容每次会增加 1 倍，而<code>ArrayList</code> 只会增加 50%。</li>
+</ul>
+<h2 id="实现数组和-List-之间的转换"><a href="#实现数组和-List-之间的转换" class="headerlink" title="实现数组和 List 之间的转换"></a>实现数组和 List 之间的转换</h2><ul>
+<li>数组转 <code>List</code>：使用 <code>Arrays. asList(array)</code> 进行转换。</li>
+<li><code>List</code> 转数组：使用 <code>List</code>自带的 <code>toArray()</code>方法。</li>
+</ul>
+<h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><p><code>Java</code>反射就是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；并且能改变它的属性。注意：使用反射机制可以打破封装性，导致了<code>java</code>对象的属性不安全。 </p>
+<p>反射的好处：可以更灵活的编写代码，代码可以在运行时装配，无需在组件之间进行源代码链接，降低代码的耦合度；还有动态代理的实现等等。</p>
+<p>有三种得到<code>class</code> 方式：通过 <code>Class</code> 对象的<code>forName()</code>静态方法来获取；直接通过 类名<code>.class</code>的方式得到,该方法最为安全可靠；通过对象调用 <code>getClass()</code> 方法来获取。注意：一个类在<code>JVM</code> 中只会有一个<code>class</code> 实例，所以三种方法得到的<code>class</code> 的地址到最后都是相等的。</p>
+<h1 id="内存泄漏和内存溢出"><a href="#内存泄漏和内存溢出" class="headerlink" title="内存泄漏和内存溢出"></a>内存泄漏和内存溢出</h1><h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。</p>
+<h3 id="常见的内存溢出"><a href="#常见的内存溢出" class="headerlink" title="常见的内存溢出"></a>常见的内存溢出</h3><p>创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出</p>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏指程序运行过程中分配内存给临时变量，用完之后却没有被GC回收，始终占用着内存，既不能被使用也不能分配给其他程序，于是就发生了内存泄漏。</p>
+<h3 id="常见的内存泄露"><a href="#常见的内存泄露" class="headerlink" title="常见的内存泄露"></a>常见的内存泄露</h3><p>静态集合类（如<code>HashMap</code>，<code>Vector</code>）引起的内存泄漏；修改<code>HashSet</code>中对象的参数值，且参数是计算哈希值的字段；监听器；各种连接（如数据库连接）。</p>
+<h3 id="避免内存泄漏的几点建议："><a href="#避免内存泄漏的几点建议：" class="headerlink" title="避免内存泄漏的几点建议："></a>避免内存泄漏的几点建议：</h3><ul>
+<li>尽早释放无用对象的引用。</li>
+<li>避免在循环中创建对象。</li>
+<li>使用字符串处理时避免使用<code>String</code>，应使用<code>StringBuffer</code>。</li>
+<li>尽量少使用静态变量，因为静态变量存放在永久代，基本不参与垃圾回收。</li>
+</ul>
+<h1 id="Java语言的特点和特性"><a href="#Java语言的特点和特性" class="headerlink" title="Java语言的特点和特性"></a>Java语言的特点和特性</h1><h2 id="Java语言的主要特点"><a href="#Java语言的主要特点" class="headerlink" title="Java语言的主要特点"></a>Java语言的主要特点</h2><h3 id="跨平台性"><a href="#跨平台性" class="headerlink" title="跨平台性"></a>跨平台性</h3><p>所谓的跨平台性，是指软件可以不受计算机硬件和操作系统的约束而在任意计算机环境下正常运行。这是软件发展的趋势和编程人员追求的目标。之所以这样说，是因为计算机硬件的种类繁多，操作系统也各不相同，不同的用户和公司有自己不同的计算机环境偏好，而软件为了能在这些不同的环境里正常运行，就需要独立于这些平台。而在<code>Java</code>语言中，<code>Java</code>自带的虚拟机很好地实现了跨平台性。<code>Java</code>源程序代码经过编译后生成二进制的字节码是与平台无关的，但是可被<code>Java</code>虚拟机识别的一种机器码指令。 <code>Java</code>虚拟机提供了一个字节码到底层硬件平台及操作系统的屏障，使得<code>Java</code>语言具备跨平台性。</p>
+<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>面向对象是指以对象为基本粒度，其下包含属性和方法。对象的说明用属性表达，而通过使用方法来操作这个对象。面向对象技术使得应用程序的开发变得简单易用，节省代码。<code>Java</code>是一种面向对象的语言，也继承了面向对象的诸多好处，如代码扩展、代码复用等。</p>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><p>安全性可以分为四个层面，即语言级安全性、编译时安全性、运行时安全性、可执行代码安全性。语言级安全性指<code>Java</code>的数据结构是完整的对象，这些封装过的数据类型具有安全性。编译时要进行<code>Java</code>语言和语义的检查，保证每个变量对应一个相应的值，编译后生成<code>Java</code>类。运行时<code>Java</code>类需要类加载器载入<code>www jxzxmr net</code>，并经由字节码校验器校验之后才可以运行。 <code>Java</code>类在网络上使用时，对它的权限进行了设置，保证了被访问用户的安全性。</p>
+<h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>多线程在操作系统中已得到了最成功的应用。多线程是指允许一个应用程序同时存在两个或两个以上的线程，用于支持事务并发和多任务处理。 Java除了内置的多线程技术之外，还定义了一些类、方法等来建立和管理用户定义的多线程。</p>
+<h3 id="简单易用"><a href="#简单易用" class="headerlink" title="简单易用"></a>简单易用</h3><p><code>Java</code>源代码的书写不拘泥于特定的环境，可以用记事本、文本编辑器等编辑软件来实现，然后将源文件进行编译，编译通过后可直接运行，通过调试则可得到想要的结果。</p>
+<h2 id="Java语言的几大特性"><a href="#Java语言的几大特性" class="headerlink" title="Java语言的几大特性"></a>Java语言的几大特性</h2><h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>封装是把过程和数据包围起来，对数据的访问只能通过已定义的接口。面向对象计算始于这个基本概念，即现实世界可以被描绘成一系列完全自治、封装的对象，这些对象通过一个受保护的接口访问其他对象。封装是一种信息隐藏技术，在<code>java</code>中通过关键字<code>private</code>，<code>protected</code>和<code>public</code>实现封装。什么是封装？封装把对象的所有组成部分组合在一起，封装定义程序如何引用对象的数据，封装实际上使用方法将类的数据隐藏起来，控制用户对类的修改和访问数据的程度。 适当的封装可以让程式码更容易理解和维护，也加强了程式码的安全性。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>继承是面向对象最显著的一个特性。继承是从已有的类中派生出新的类，新的类能吸收已有类的数据属性和行为，并能扩展新的能力。 <code>Java</code>继承是使用已存在的类的定义作为基础建立新类的技术，新类的定义可以增加新的数据或新的功能，也可以用父类的功能，但不能选择性地继承父类。这种技术使得复用以前的代码非常容易，能够大大缩短开发周期，降低开发费用</p>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><p>按字面的意思就是“多种状态”。在面向对象语言中，接口的多种不同的实现方式即为多态。多态性是允许你将父对象设置成为一个或更多的他的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作 多态的话，我觉得是更好的利用了继承这一特性，然后为什么能实现多态，因为可以重写父类的方法。说重写可能不清楚，具体来说就是子类父类可以存在分别存在名字相同的属性或者方法，然后可视声明的类去调用相应的方法等。</p>
+<h3 id="抽象"><a href="#抽象" class="headerlink" title="抽象"></a>抽象</h3><p>抽象是通过分析与综合的途径，运用概念在人脑中再现对象的质和本质的方法，我觉得理解成一种方法比较好。就是我们通过对事物的认知，将某一或者一类事物的属性变化成<code>JAVA</code>语言能识别的类。</p>
+<h1 id="Throwable、error、exception的区别"><a href="#Throwable、error、exception的区别" class="headerlink" title="Throwable、error、exception的区别"></a>Throwable、error、exception的区别</h1><p>异常本质上是程序上的错误，包括程序逻辑错误和系统错误。比如使用空的引用、数组下标越界、内存溢出错误等。<code>Throwable</code> 类是<code>Java</code>语言中所有错误或异常的超类。有两个重要的子类：<code>Exception</code>（异常）和 <code>Error</code>（错误），二者都是 <code>Java</code> 异常处理的重要子类，各自都包含大量子类。4</p>
+<p>异常和错误的本质区别：异常能被程序本身处理，而错误无法处理。<code>Error</code>是可以<code>catch</code>的，而且也可以向常规<code>Exception</code>一样被处理，而且就算不捕捉的话也只是导致当前线程挂掉，其他线程还是可以正常运行，如果有需要的话捕捉<code>Error</code>之后也可以做些其他处理。但是<code>Error</code>是一种系统内部的错误，这种错误不像<code>Exception</code>一样是可能是程序和业务上的错误是可以恢复的。</p>
+<p>怎么<code>catch</code>？<code>catch throwable</code>会把<code>Error</code>和其他继承<code>Throwable</code>的类捕捉到。而<code>catch Exception</code>只会捕捉<code>Exception</code>及其子类，捕捉的范围更小。</p>
+<p><code>Error</code>：是程序无法处理的错误，表示运行应用程序中较严重问题。大多数错误与代码编写者执行的操作无关，而表示代码运行时 <code>JVM</code>出现的问题。 </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/30/SpringBoot的一些面试题/" rel="next" title="SpringBoot的一些面试题">
+                <i class="fa fa-chevron-left"></i> SpringBoot的一些面试题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/01/Mysql的几种链接和引擎/" rel="prev" title="Mysql的几种连接和引擎">
+                Mysql的几种连接和引擎 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rui Zhou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiaorui2" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#和-equals-的区别是什么？"><span class="nav-number">1.</span> <span class="nav-text">== 和 equals 的区别是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#String"><span class="nav-number">2.</span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么不可变？好处在哪？"><span class="nav-number">2.1.</span> <span class="nav-text">为什么不可变？好处在哪？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String-常量池"><span class="nav-number">2.2.</span> <span class="nav-text">String 常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String，-Stringbuffer，-StringBuilder-的区别。"><span class="nav-number">2.3.</span> <span class="nav-text">String， Stringbuffer， StringBuilder 的区别。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#int-和Integer"><span class="nav-number">3.</span> <span class="nav-text">int 和Integer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#区别"><span class="nav-number">3.1.</span> <span class="nav-text">区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较"><span class="nav-number">3.2.</span> <span class="nav-text">比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Integer常量池"><span class="nav-number">3.3.</span> <span class="nav-text">Integer常量池</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Final关键字"><span class="nav-number">4.</span> <span class="nav-text">Final关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类初始化顺序"><span class="nav-number">5.</span> <span class="nav-text">类初始化顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本数据类型"><span class="nav-number">6.</span> <span class="nav-text">基本数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java的容器和容器之间的区别"><span class="nav-number">7.</span> <span class="nav-text">Java的容器和容器之间的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayList-和-LinkedList-区别"><span class="nav-number">7.1.</span> <span class="nav-text">ArrayList 和 LinkedList 区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayList-和-Vector-的区别"><span class="nav-number">7.2.</span> <span class="nav-text">ArrayList 和 Vector 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现数组和-List-之间的转换"><span class="nav-number">7.3.</span> <span class="nav-text">实现数组和 List 之间的转换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射"><span class="nav-number">8.</span> <span class="nav-text">反射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存泄漏和内存溢出"><span class="nav-number">9.</span> <span class="nav-text">内存泄漏和内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出"><span class="nav-number">9.1.</span> <span class="nav-text">内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的内存溢出"><span class="nav-number">9.1.1.</span> <span class="nav-text">常见的内存溢出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄漏"><span class="nav-number">9.2.</span> <span class="nav-text">内存泄漏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的内存泄露"><span class="nav-number">9.2.1.</span> <span class="nav-text">常见的内存泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免内存泄漏的几点建议："><span class="nav-number">9.2.2.</span> <span class="nav-text">避免内存泄漏的几点建议：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java语言的特点和特性"><span class="nav-number">10.</span> <span class="nav-text">Java语言的特点和特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java语言的主要特点"><span class="nav-number">10.1.</span> <span class="nav-text">Java语言的主要特点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#跨平台性"><span class="nav-number">10.1.1.</span> <span class="nav-text">跨平台性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#面向对象"><span class="nav-number">10.1.2.</span> <span class="nav-text">面向对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全性"><span class="nav-number">10.1.3.</span> <span class="nav-text">安全性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多线程"><span class="nav-number">10.1.4.</span> <span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单易用"><span class="nav-number">10.1.5.</span> <span class="nav-text">简单易用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java语言的几大特性"><span class="nav-number">10.2.</span> <span class="nav-text">Java语言的几大特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#封装"><span class="nav-number">10.2.1.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">10.2.2.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态"><span class="nav-number">10.2.3.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象"><span class="nav-number">10.2.4.</span> <span class="nav-text">抽象</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Throwable、error、exception的区别"><span class="nav-number">11.</span> <span class="nav-text">Throwable、error、exception的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rui Zhou</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
