@@ -2,7 +2,7 @@
 title: Redis
 date: 2019-06-27 21:53:09
 tags: Redis
-categories: SpringBoot
+categories: SpringBoot项目
 ---
 
 # Redis是什么，用在哪

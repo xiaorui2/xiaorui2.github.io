@@ -7,5 +7,91 @@ categories: SpringBoot项目
 
 # SpringBoot的IOC和AOP
 
-哪些bean会被扫描
 
+
+# 注解的作用
+
+## @SpringBootApplication
+
+表示这是一个配置文件，点击进去可以看到这些配置文件
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+```
+
+## @SpringBootTest配合@ContextConfiguration(classes = CommunityApplication.class)
+
+引入的一个用于测试的注解
+
+## @Component
+
+泛指组件，把普通`pojo`实例化到`spring`容器中，相当于配置文件中的  `<bean id="" class=""/>`。
+
+因为在持久层、业务层和控制层中，分别采用`@Repository`、`@Service`和`@Controller`对分层中的类进行凝视，而用`@Component`对那些比较中立的类进行凝视。
+
+## @Controller
+
+用于标注控制层，相当于`struts`中的`action`层
+
+## @Autowired
+
+用来做依赖注入的，直接生成就不用`new`对象了。
+
+## 	@Service
+
+用于标注服务层，主要用来进行业务的逻辑处理
+
+### @PostConstruct
+
+修饰的方法在构造器之后被调用
+
+### @PreDestroy
+
+修饰的方法在销毁之前调用，释放某些资源
+
+## @Repository
+
+用于标注数据访问层，也可以说用于标注数据访问组件，即`DAO`组件.
+
+## @Configuration
+
+`@Configuration`定义配置类，被注解的类内部包含有一个或多个被`@Bean`注解的方法,这些方法将会被`AnnotationConfigApplicationContext`或`AnnotationConfigWebApplicationContext`类进行扫描，并用于构建`bean`定义，初始化`Spring`容器。
+
+## @Bean
+
+`@Bean`注解注册`bean`,同时可以指定初始化和销毁方法
+
+## @Scope("prototype")
+
+这个注解导致每次调用`getbean`方法时都实例化`bean`，但是实际上很少会这样去做。记住被`Spring`容器管理的`Bean`只被实例化一次，因为它是单例的。
+
+# 哪些bean会被扫描
+
+被`@controller` 、`@service`、`@repository` 、`@component `注解的类，都会把这些类纳入进`spring`容器中进行管理
+
+# Spring容器管理Bean
+
+容器实现了`IOC`，
+
+`Bean`的实例化；`Bean`的命名；`Bean`的作用域；`Bean`的生命周期回调；`Bean`延迟实例化；指定`Bean`依赖关系。
+
+## Bean的生命周期
+
+`Spring IOC`容器对`Bean`的生命周期进行管理的过程如下：
+
+- 通过构造器或工厂方法创建`Bean`实例
+- 为`Bean`的属性设置值和对其它`Bean`的引用
+- 调用`Bean`的初始化方法
+- `Bean`可以使用了
+- 当容器关闭时，调用`Bean`的销毁方法
+
+# Spring Boot 需要独立的容器运行吗？
+
+可以不需要，内置了 `Tomcat/ Jetty `等容器。

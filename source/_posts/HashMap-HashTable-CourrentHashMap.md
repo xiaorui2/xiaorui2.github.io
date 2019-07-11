@@ -1,5 +1,6 @@
 ---
-title: 'HashMap,HashTable,CourrentHashMap'
+title: 'HashMap,HashTable,
+'
 date: 2019-06-24 15:25:32
 tags: 数据结构
 categories: Java入门
@@ -49,3 +50,9 @@ categories: Java入门
 HashTable 是不能接受NULL，NULL值组合的，而HashMap可以。（因为HashMap做了对应的NULL值处理，会把NULL值的键值对放到hashcode 为0 的链表里面）。
 
 HashTable是线程安全的，HashMap是线程非安全的。因为HashTable是synchronized，要想是HashMap线程安全Map m = Collections.synchronizeMap(hashMap).
+
+## 为什么HashMap长度大于8才转换为红黑树，而不是6
+
+红黑树的平均查找长度是`log(n)`，长度为`8`，查找长度为`log(8)=3`，链表的平均查找长度为`n/2`，当长度为`8`时，平均查找长度为`8/2=4`，这才有转换成树的必要；链表长度如果是小于等于`6`，`6/2=3`，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。中间有个差值`7`可以防止链表和树之间频繁的转换。
+
+这个只是简单的说法个人感觉，正确的说话应该是理想情况下随机hashCode算法下所有bin中节点的分布频率会遵循泊松分布，据概率统计决定的。
