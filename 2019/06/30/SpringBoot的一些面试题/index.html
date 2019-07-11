@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="SpringBoot的IOC和AOP哪些bean会被扫描">
+<meta name="description" content="SpringBoot的IOC和AOP注解的作用@SpringBootApplication表示这是一个配置文件，点击进去可以看到这些配置文件 12345678@Target(ElementType.TYPE)@Retention(RetentionPolicy.RUNTIME)@Documented@Inherited@SpringBootConfiguration@EnableAutoConfi">
 <meta name="keywords" content="SpringBoot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot的一些面试题">
 <meta property="og:url" content="http://yoursite.com/2019/06/30/SpringBoot的一些面试题/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="SpringBoot的IOC和AOP哪些bean会被扫描">
+<meta property="og:description" content="SpringBoot的IOC和AOP注解的作用@SpringBootApplication表示这是一个配置文件，点击进去可以看到这些配置文件 12345678@Target(ElementType.TYPE)@Retention(RetentionPolicy.RUNTIME)@Documented@Inherited@SpringBootConfiguration@EnableAutoConfi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-30T13:02:18.632Z">
+<meta property="og:updated_time" content="2019-07-11T11:53:54.325Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot的一些面试题">
-<meta name="twitter:description" content="SpringBoot的IOC和AOP哪些bean会被扫描">
+<meta name="twitter:description" content="SpringBoot的IOC和AOP注解的作用@SpringBootApplication表示这是一个配置文件，点击进去可以看到这些配置文件 12345678@Target(ElementType.TYPE)@Retention(RetentionPolicy.RUNTIME)@Documented@Inherited@SpringBootConfiguration@EnableAutoConfi">
 
 
 
@@ -389,7 +389,33 @@
       
 
       
-        <h1 id="SpringBoot的IOC和AOP"><a href="#SpringBoot的IOC和AOP" class="headerlink" title="SpringBoot的IOC和AOP"></a>SpringBoot的IOC和AOP</h1><p>哪些bean会被扫描</p>
+        <h1 id="SpringBoot的IOC和AOP"><a href="#SpringBoot的IOC和AOP" class="headerlink" title="SpringBoot的IOC和AOP"></a>SpringBoot的IOC和AOP</h1><h1 id="注解的作用"><a href="#注解的作用" class="headerlink" title="注解的作用"></a>注解的作用</h1><h2 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h2><p>表示这是一个配置文件，点击进去可以看到这些配置文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@SpringBootConfiguration</span></span><br><span class="line"><span class="meta">@EnableAutoConfiguration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(excludeFilters = &#123; <span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</span><br><span class="line">		<span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) &#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="SpringBootTest配合-ContextConfiguration-classes-CommunityApplication-class"><a href="#SpringBootTest配合-ContextConfiguration-classes-CommunityApplication-class" class="headerlink" title="@SpringBootTest配合@ContextConfiguration(classes = CommunityApplication.class)"></a>@SpringBootTest配合@ContextConfiguration(classes = CommunityApplication.class)</h2><p>引入的一个用于测试的注解</p>
+<h2 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h2><p>泛指组件，把普通<code>pojo</code>实例化到<code>spring</code>容器中，相当于配置文件中的  <code>&lt;bean id=&quot;&quot; class=&quot;&quot;/&gt;</code>。</p>
+<p>因为在持久层、业务层和控制层中，分别采用<code>@Repository</code>、<code>@Service</code>和<code>@Controller</code>对分层中的类进行凝视，而用<code>@Component</code>对那些比较中立的类进行凝视。</p>
+<h2 id="Controller"><a href="#Controller" class="headerlink" title="@Controller"></a>@Controller</h2><p>用于标注控制层，相当于<code>struts</code>中的<code>action</code>层</p>
+<h2 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h2><p>用来做依赖注入的，直接生成就不用<code>new</code>对象了。</p>
+<h2 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h2><p>用于标注服务层，主要用来进行业务的逻辑处理</p>
+<h3 id="PostConstruct"><a href="#PostConstruct" class="headerlink" title="@PostConstruct"></a>@PostConstruct</h3><p>修饰的方法在构造器之后被调用</p>
+<h3 id="PreDestroy"><a href="#PreDestroy" class="headerlink" title="@PreDestroy"></a>@PreDestroy</h3><p>修饰的方法在销毁之前调用，释放某些资源</p>
+<h2 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h2><p>用于标注数据访问层，也可以说用于标注数据访问组件，即<code>DAO</code>组件.</p>
+<h2 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h2><p><code>@Configuration</code>定义配置类，被注解的类内部包含有一个或多个被<code>@Bean</code>注解的方法,这些方法将会被<code>AnnotationConfigApplicationContext</code>或<code>AnnotationConfigWebApplicationContext</code>类进行扫描，并用于构建<code>bean</code>定义，初始化<code>Spring</code>容器。</p>
+<h2 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h2><p><code>@Bean</code>注解注册<code>bean</code>,同时可以指定初始化和销毁方法</p>
+<h2 id="Scope-“prototype”"><a href="#Scope-“prototype”" class="headerlink" title="@Scope(“prototype”)"></a>@Scope(“prototype”)</h2><p>这个注解导致每次调用<code>getbean</code>方法时都实例化<code>bean</code>，但是实际上很少会这样去做。记住被<code>Spring</code>容器管理的<code>Bean</code>只被实例化一次，因为它是单例的。</p>
+<h1 id="哪些bean会被扫描"><a href="#哪些bean会被扫描" class="headerlink" title="哪些bean会被扫描"></a>哪些bean会被扫描</h1><p>被<code>@controller</code> 、<code>@service</code>、<code>@repository</code> 、<code>@component</code>注解的类，都会把这些类纳入进<code>spring</code>容器中进行管理</p>
+<h1 id="Spring容器管理Bean"><a href="#Spring容器管理Bean" class="headerlink" title="Spring容器管理Bean"></a>Spring容器管理Bean</h1><p>容器实现了<code>IOC</code>，</p>
+<p><code>Bean</code>的实例化；<code>Bean</code>的命名；<code>Bean</code>的作用域；<code>Bean</code>的生命周期回调；<code>Bean</code>延迟实例化；指定<code>Bean</code>依赖关系。</p>
+<h2 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="Bean的生命周期"></a>Bean的生命周期</h2><p><code>Spring IOC</code>容器对<code>Bean</code>的生命周期进行管理的过程如下：</p>
+<ul>
+<li>通过构造器或工厂方法创建<code>Bean</code>实例</li>
+<li>为<code>Bean</code>的属性设置值和对其它<code>Bean</code>的引用</li>
+<li>调用<code>Bean</code>的初始化方法</li>
+<li><code>Bean</code>可以使用了</li>
+<li>当容器关闭时，调用<code>Bean</code>的销毁方法</li>
+</ul>
+<h1 id="Spring-Boot-需要独立的容器运行吗？"><a href="#Spring-Boot-需要独立的容器运行吗？" class="headerlink" title="Spring Boot 需要独立的容器运行吗？"></a>Spring Boot 需要独立的容器运行吗？</h1><p>可以不需要，内置了 <code>Tomcat/ Jetty</code>等容器。</p>
 
       
     </div>
@@ -573,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot的IOC和AOP"><span class="nav-number">1.</span> <span class="nav-text">SpringBoot的IOC和AOP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot的IOC和AOP"><span class="nav-number">1.</span> <span class="nav-text">SpringBoot的IOC和AOP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注解的作用"><span class="nav-number">2.</span> <span class="nav-text">注解的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">2.1.</span> <span class="nav-text">@SpringBootApplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBootTest配合-ContextConfiguration-classes-CommunityApplication-class"><span class="nav-number">2.2.</span> <span class="nav-text">@SpringBootTest配合@ContextConfiguration(classes = CommunityApplication.class)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Component"><span class="nav-number">2.3.</span> <span class="nav-text">@Component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Controller"><span class="nav-number">2.4.</span> <span class="nav-text">@Controller</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Autowired"><span class="nav-number">2.5.</span> <span class="nav-text">@Autowired</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Service"><span class="nav-number">2.6.</span> <span class="nav-text">@Service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PostConstruct"><span class="nav-number">2.6.1.</span> <span class="nav-text">@PostConstruct</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PreDestroy"><span class="nav-number">2.6.2.</span> <span class="nav-text">@PreDestroy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Repository"><span class="nav-number">2.7.</span> <span class="nav-text">@Repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration"><span class="nav-number">2.8.</span> <span class="nav-text">@Configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bean"><span class="nav-number">2.9.</span> <span class="nav-text">@Bean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scope-“prototype”"><span class="nav-number">2.10.</span> <span class="nav-text">@Scope(“prototype”)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#哪些bean会被扫描"><span class="nav-number">3.</span> <span class="nav-text">哪些bean会被扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring容器管理Bean"><span class="nav-number">4.</span> <span class="nav-text">Spring容器管理Bean</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bean的生命周期"><span class="nav-number">4.1.</span> <span class="nav-text">Bean的生命周期</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-需要独立的容器运行吗？"><span class="nav-number">5.</span> <span class="nav-text">Spring Boot 需要独立的容器运行吗？</span></a></li></ol></div>
             
 
           </div>
