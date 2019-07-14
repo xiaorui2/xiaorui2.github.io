@@ -7,7 +7,40 @@ categories: SpringBoot项目
 
 # SpringBoot的IOC和AOP
 
+## IOC
 
+它是一个容器的感觉,听过最多的一个词：控制反转，它表示让容器管理对象，不用每次都自己取new对象。使用`@Service`和`@Autowired`提供和使用服务。`spring` 是一种基于`IOC`容器编程的框架。 `spring` 把每一个需要管理的对象称为`spring bean`，`spring`管理这些`bean` 被我们称之为`spring ioc `容器。`IOC`容器具备两个基本功能：
+
+- 通过描述管理（发布，获取）`bean`
+
+- 通过描述完成 `bean`之间的依赖关系
+
+一个对象的实例和字段的值被一个特殊的对象从外部注入，这个特殊的对象就是`IOC`。
+
+`IOC`容器包含了所有的`Spring Beans`。
+
+## `AOP`
+
+切面监控，面向切面编程，可以监控任何文件，目前普遍用于日志。这是基本的，它是基于代理模式实现的。
+
+### 代理模式
+
+定义：为其他对象提供一种代理以控制对这个对象的访问。这段话比较官方，但我更倾向于用自己的语言理解：比如`A`对象要做一件事情，在没有代理前，自己来做，在对`A`代理后，由`A`的代理类`B`来做。代理其实是在原实例前后加了一层处理，这也是`AOP`的初级轮廓。
+
+代理的话又分为：
+
+- 静态代理模式：静态代理说白了就是在程序运行前就已经存在代理类的字节码文件，代理类和原始类的关系在运行前就已经确定，保证了业务类只需关注逻辑本身，但是如果要代理的方法很多，代码就很复杂了。
+- 动态代理模式:动态代理类的源码是在程序运行期间通过`JVM`反射等机制动态生成，代理类和委托类的关系是运行时才确定的。
+
+### 动态代理又有两种方法：
+
+- 使用`jdk`生成的动态代理的前提是目标类必须有实现的接口。但这里又引入一个问题,如果某个类没有实现接口,就不能使用`jdk`动态代理
+- `Cglib`是以动态生成的子类继承目标的方式实现，在运行期动态的在内存中构建一个子类，`Cglib`使用的前提是目标类不能为`final`修饰。因为`final`修饰的类不能被继承。
+
+### Spring生成代理对象
+
+- 创建容器对象的时候，根据切入点表达式拦截的类，生成代理对象。
+- 如果目标对象有实现接口，使用`jdk`代理。如果目标对象没有实现接口，则使用`cglib`代理。然后从容器获取代理后的对象，在运行期植入"切面"类的方法。
 
 # 注解的作用
 
@@ -20,10 +53,10 @@ categories: SpringBoot项目
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@SpringBootConfiguration
-@EnableAutoConfiguration
+@SpringBootConfiguration //配置文件
+@EnableAutoConfiguration //自动配置
 @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
-		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })// 组件扫描，扫描配置类和子包下的bean
 ```
 
 ## @SpringBootTest配合@ContextConfiguration(classes = CommunityApplication.class)
