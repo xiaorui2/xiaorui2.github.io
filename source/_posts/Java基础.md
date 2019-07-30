@@ -376,6 +376,105 @@ for (ElementType element : list) {
 
 具体原因：`http://wiki.jikexueyuan.com/project/java-enhancement/java-thirtyfour.html`
 
+## Map的排序
+
+`TreeMap`：基于红黑树的 `NavigableMap` 实现，该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的` Comparator` 进行排序，具体取决于使用的构造方法。
+
+```java
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+public class TreeMapTest {
+    public static void main(String[] args) {
+        Map<String, String> map = new TreeMap<String, String>(
+                new Comparator<String>() {
+                    public int compare(String obj1, String obj2) {
+                        // 降序排序
+                        return obj2.compareTo(obj1);
+                    }
+                });
+        map.put("b", "ccccc");
+        map.put("d", "aaaaa");
+        map.put("c", "bbbbb");
+        map.put("a", "ddddd");
+        
+        Set<String> keySet = map.keySet();
+        Iterator<String> iter = keySet.iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            System.out.println(key + ":" + map.get(key));
+        }
+    }
+}
+```
+
+我们需要根据`TreeMap`的`value`来进行排序。对`value`排序我们就需要借助于`Collections`的`sort(List<T> list, Comparator<? super T> c)`方法，该方法根据指定比较器产生的顺序对指定列表进行排序。但是有一个前提条件，那就是所有的元素都必须能够根据所提供的比较器来进行比较。
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+public class TreeMapTest {
+    public static void main(String[] args) {
+        Map<String, String> map = new TreeMap<String, String>();
+        map.put("a", "ddddd");
+        map.put("c", "bbbbb");
+        map.put("d", "aaaaa");
+        map.put("b", "ccccc");
+        
+        //这里将map.entrySet()转换成list
+        List<Map.Entry<String,String>> list = new ArrayList<Map.Entry<String,String>>(map.entrySet());
+        //然后通过比较器来实现排序
+        Collections.sort(list,new Comparator<Map.Entry<String,String>>() {
+            //升序排序
+            public int compare(Entry<String, String> o1,
+                    Entry<String, String> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+            
+        });
+        
+        for(Map.Entry<String,String> mapping:list){ 
+               System.out.println(mapping.getKey()+":"+mapping.getValue()); 
+          } 
+    }
+}
+```
+
+`HashMap`的值是没有顺序的，他是按照`key`的`HashCode`来实现的，那么它排序的方式和`TreeMap`的`Value`方式是一样的。
+
+```java
+public class HashMapTest {
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("c", "ccccc");
+        map.put("a", "aaaaa");
+        map.put("b", "bbbbb");
+        map.put("d", "ddddd");
+        
+        List<Map.Entry<String,String>> list = new ArrayList<Map.Entry<String,String>>(map.entrySet());
+        Collections.sort(list,new Comparator<Map.Entry<String,String>>() {
+            //升序排序
+            public int compare(Entry<String, String> o1,
+                    Entry<String, String> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+            
+        });
+        
+        for(Map.Entry<String,String> mapping:list){ 
+               System.out.println(mapping.getKey()+":"+mapping.getValue()); 
+          } 
+     }
+}
+```
+
 # 泛型
 
 本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
