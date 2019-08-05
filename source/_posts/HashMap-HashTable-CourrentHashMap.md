@@ -11,6 +11,12 @@ categories: Java入门
 
 ![](1.png)
 
+## HashMap原理
+
+基于`hashing`原理，我们通过`put()`和`get()`方法储存和获取对象。当我们将键值对传递给`put()`方法时，它调用键对象的`hashCode()`方法来计算`hashcode`，返回的`hashCode`用于找到`bucket`位置来储存`Entry`对象。如果该位置已经有元素了,调用`equals`方法判断是否相等,相等的话就进行替换值,不相等的话,放在链表里面.
+
+当获取对象时，通过键对象的`equals()`方法找到正确的键值对，然后返回值对象。`HashMap`使用链表来解决碰撞问题，当发生碰撞了，对象将会储存在链表的下一个节点中。 `HashMap`在每个链表节点中储存键值对对象
+
 ## HashMap的存储原理和存储过程
 
 声明一个下标范围比较大的数组来存储元素，另外设计一个哈希函数获得每一个元素的`Key`（关键字）的函数值（即数组下标，`hash`值）相对应，数组存储的元素是一个`Entry`类，这个类有三个数据域，`key`、`value`（键值对），`next`(指向下一个Entry)。 当两个`key`通过哈希函数计算相同时，则发生了`hash`冲突(碰撞)，`HashMap`解决`hash`冲突的方式是用链表。
@@ -72,6 +78,13 @@ void transfer(Entry[] newTable) {
 `HashTable` 是不能接受`NULL`，`NULL`值组合的，而`HashMap`可以。（因为`HashMap`做了对应的`NULL`值处理，会把`NULL`值的键值对放到`hashcode `为`0 `的链表里面）。
 
 `HashTable`是线程安全的，`HashMap`是线程非安全的。因为`HashTable`是`synchronized`，要想是`HashMap`线程安全`Map m = Collections.synchronizeMap(hashMap)`.
+
+## HashMap和TreeMap比较
+- `HashMap`适用于在`Map`中插入、删除和定位元素。 
+- `Treemap`适用于按自然顺序或自定义顺序遍历键`（key）`。 
+- `HashMap`通常比`TreeMap`快一点（树和哈希表的数据结构使然），建议多使用`HashMap`,在需要排序的`Map`时候才用`TreeMap`。`TreeMap`的底层是红黑树。
+- `HashMap `非线程安全 `TreeMap `非线程安全 
+- `HashMap`的结果是没有排序的，而`TreeMap`输出的结果是排好序的。
 
 ## 为什么HashMap长度大于8才转换为红黑树，而不是6
 

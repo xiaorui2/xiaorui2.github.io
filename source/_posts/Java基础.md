@@ -13,6 +13,8 @@ categories: Java入门
 
 所谓的跨平台性，是指软件可以不受计算机硬件和操作系统的约束而在任意计算机环境下正常运行。这是软件发展的趋势和编程人员追求的目标。之所以这样说，是因为计算机硬件的种类繁多，操作系统也各不相同，不同的用户和公司有自己不同的计算机环境偏好，而软件为了能在这些不同的环境里正常运行，就需要独立于这些平台。而在`Java`语言中，` Java`自带的虚拟机很好地实现了跨平台性。` Java`源程序代码经过编译后生成二进制的字节码是与平台无关的，但是可被`Java`虚拟机识别的一种机器码指令。 `Java`虚拟机提供了一个字节码到底层硬件平台及操作系统的屏障，使得`Java`语言具备跨平台性。
 
+`Java`字节码是`Java`虚拟机执行的一种指令格式，具体的可以看[维基百科](https://zh.wikipedia.org/wiki/Java%E5%AD%97%E8%8A%82%E7%A0%81)
+
 ### 面向对象
 
 面向对象是指以对象为基本粒度，其下包含属性和方法。对象的说明用属性表达，而通过使用方法来操作这个对象。面向对象技术使得应用程序的开发变得简单易用，节省代码。`Java`是一种面向对象的语言，也继承了面向对象的诸多好处，如代码扩展、代码复用等。
@@ -329,7 +331,7 @@ System.out.println(s3==s4);
 
 ## ArrayList 和 Vector 的区别
 
-- 线程安全：`Vector` 使用了` Synchronized `来实现线程同步，是线程安全的，而` ArrayList `是非线程安全的。
+- 线程安全：`Vector` ，在`add`的时候使用了` Synchronized `来实现线程同步，是线程安全的，而` ArrayList `是非线程安全的。
 - 性能：`ArrayList `在性能方面要优于 `Vector`。
 - 扩容：`ArrayList` 和` Vector `都会根据实际的需要动态的调整容量，只不过在` Vector` 扩容每次会增加 1 倍，而` ArrayList` 只会增加 50%。
 
@@ -474,6 +476,12 @@ public class HashMapTest {
      }
 }
 ```
+
+## Set数据为什么是不重合
+
+我们知道常用的`Set`实现类那就是`HashSet`了，查看`HashSet`的源码可以看到内部其实就是一个`HashMap`，因为`HashMap`在`put`一个`Key`时会判断，将要放进去的`Key`的`hash`值与 目前`HashMap`中定位到的那个`Key`的`hash`值比较。
+如果`hash`值相当，继续比较 这两个对象的地址或者内容是否相当。
+如果相当：判断出来要添加的`Key`与`HashMap`中的`Key`重复，把`Value`的值给替换成最新的。也就是理解的`hashcode()`和`equals()`的区别
 
 # 泛型
 
@@ -683,3 +691,14 @@ public class CallableThreadTest implements Callable<Integer>
 
 ## 通过线程池创建线程
 
+## 线程实现callable接口和runnable接口的区别
+
+- `Callable`规定的方法是`call()`,`Runnable`规定的方法是`run()`
+
+- `Callable`有返回值，`Runnable`没有返回值
+
+- `Runnable`没有容错机制，意味着如果出现异常必须立即处理；`Callable`有容错机制，意味着出现异常之后可以向上抛出
+
+- `Runnable`可以通过`Thread`来启动，也可以通过线程池的`execute`、`submit`来处理；`Callable`线程只能通过线程池的`submit`来处理
+
+  
