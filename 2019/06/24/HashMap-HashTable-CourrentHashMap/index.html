@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap的存储原理和存储过程声明一个下标范围比较大的数组来存储元素，另外设计一个哈希函数获得每一个元素的Key（关键字）的函数值（即数组下标，hash值）相对应，数组存储的元素是一个Entry类，这个类有三个数据域，key、value（">
+<meta name="description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap原理基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，返回的hashCode用于找到bucket位置来储">
 <meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap,HashTable，CourrentHashMap">
 <meta property="og:url" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap的存储原理和存储过程声明一个下标范围比较大的数组来存储元素，另外设计一个哈希函数获得每一个元素的Key（关键字）的函数值（即数组下标，hash值）相对应，数组存储的元素是一个Entry类，这个类有三个数据域，key、value（">
+<meta property="og:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap原理基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，返回的hashCode用于找到bucket位置来储">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/3.png">
-<meta property="og:updated_time" content="2019-07-27T10:04:23.953Z">
+<meta property="og:updated_time" content="2019-08-05T12:05:07.652Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap,HashTable，CourrentHashMap">
-<meta name="twitter:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap的存储原理和存储过程声明一个下标范围比较大的数组来存储元素，另外设计一个哈希函数获得每一个元素的Key（关键字）的函数值（即数组下标，hash值）相对应，数组存储的元素是一个Entry类，这个类有三个数据域，key、value（">
+<meta name="twitter:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap原理基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，返回的hashCode用于找到bucket位置来储">
 <meta name="twitter:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/1.png">
 
 
@@ -390,6 +390,8 @@
       
         <h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><p>我们知道<code>Map</code>是一个<code>key-val</code>的集合，<code>HashMap</code>是基于<code>Hash</code>表的<code>Map</code>接口的非同步实现。<code>HashMap</code>的基本数据结构是数组和链表。</p>
 <p><img src="1.png" alt></p>
+<h2 id="HashMap原理"><a href="#HashMap原理" class="headerlink" title="HashMap原理"></a>HashMap原理</h2><p>基于<code>hashing</code>原理，我们通过<code>put()</code>和<code>get()</code>方法储存和获取对象。当我们将键值对传递给<code>put()</code>方法时，它调用键对象的<code>hashCode()</code>方法来计算<code>hashcode</code>，返回的<code>hashCode</code>用于找到<code>bucket</code>位置来储存<code>Entry</code>对象。如果该位置已经有元素了,调用<code>equals</code>方法判断是否相等,相等的话就进行替换值,不相等的话,放在链表里面.</p>
+<p>当获取对象时，通过键对象的<code>equals()</code>方法找到正确的键值对，然后返回值对象。<code>HashMap</code>使用链表来解决碰撞问题，当发生碰撞了，对象将会储存在链表的下一个节点中。 <code>HashMap</code>在每个链表节点中储存键值对对象</p>
 <h2 id="HashMap的存储原理和存储过程"><a href="#HashMap的存储原理和存储过程" class="headerlink" title="HashMap的存储原理和存储过程"></a>HashMap的存储原理和存储过程</h2><p>声明一个下标范围比较大的数组来存储元素，另外设计一个哈希函数获得每一个元素的<code>Key</code>（关键字）的函数值（即数组下标，<code>hash</code>值）相对应，数组存储的元素是一个<code>Entry</code>类，这个类有三个数据域，<code>key</code>、<code>value</code>（键值对），<code>next</code>(指向下一个Entry)。 当两个<code>key</code>通过哈希函数计算相同时，则发生了<code>hash</code>冲突(碰撞)，<code>HashMap</code>解决<code>hash</code>冲突的方式是用链表。</p>
 <p>例如， 第一个键值对<code>A</code>进来。通过计算其<code>key</code>的<code>hash</code>得到的<code>index=0</code>。记做:<code>Entry[0] = A</code>。 
 第二个键值对<code>B</code>，通过计算其<code>index</code>也等于<code>0</code>， <code>HashMap</code>会将<code>B.next =A</code>,<code>Entry[0] =B</code>, 
@@ -416,6 +418,13 @@
 <p>单线程的情况<code>resize（）</code>是没有问题的，但是多线程的时候就可能会出现形成环形链表的情况，导致扩容失败。具体详细的图可以看<a href="https://blog.csdn.net/andy_budd/article/details/81413464" target="_blank" rel="noopener">https://blog.csdn.net/andy_budd/article/details/81413464</a></p>
 <h2 id="HashMap和HashTable的区别："><a href="#HashMap和HashTable的区别：" class="headerlink" title="HashMap和HashTable的区别："></a>HashMap和HashTable的区别：</h2><p><code>HashTable</code> 是不能接受<code>NULL</code>，<code>NULL</code>值组合的，而<code>HashMap</code>可以。（因为<code>HashMap</code>做了对应的<code>NULL</code>值处理，会把<code>NULL</code>值的键值对放到<code>hashcode</code>为<code>0</code>的链表里面）。</p>
 <p><code>HashTable</code>是线程安全的，<code>HashMap</code>是线程非安全的。因为<code>HashTable</code>是<code>synchronized</code>，要想是<code>HashMap</code>线程安全<code>Map m = Collections.synchronizeMap(hashMap)</code>.</p>
+<h2 id="HashMap和TreeMap比较"><a href="#HashMap和TreeMap比较" class="headerlink" title="HashMap和TreeMap比较"></a>HashMap和TreeMap比较</h2><ul>
+<li><code>HashMap</code>适用于在<code>Map</code>中插入、删除和定位元素。 </li>
+<li><code>Treemap</code>适用于按自然顺序或自定义顺序遍历键<code>（key）</code>。 </li>
+<li><code>HashMap</code>通常比<code>TreeMap</code>快一点（树和哈希表的数据结构使然），建议多使用<code>HashMap</code>,在需要排序的<code>Map</code>时候才用<code>TreeMap</code>。<code>TreeMap</code>的底层是红黑树。</li>
+<li><code>HashMap</code>非线程安全 <code>TreeMap</code>非线程安全 </li>
+<li><code>HashMap</code>的结果是没有排序的，而<code>TreeMap</code>输出的结果是排好序的。</li>
+</ul>
 <h2 id="为什么HashMap长度大于8才转换为红黑树，而不是6"><a href="#为什么HashMap长度大于8才转换为红黑树，而不是6" class="headerlink" title="为什么HashMap长度大于8才转换为红黑树，而不是6"></a>为什么HashMap长度大于8才转换为红黑树，而不是6</h2><p>红黑树的平均查找长度是<code>log(n)</code>，长度为<code>8</code>，查找长度为<code>log(8)=3</code>，链表的平均查找长度为<code>n/2</code>，当长度为<code>8</code>时，平均查找长度为<code>8/2=4</code>，这才有转换成树的必要；链表长度如果是小于等于<code>6</code>，<code>6/2=3</code>，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。中间有个差值<code>7</code>可以防止链表和树之间频繁的转换。</p>
 <p>这个只是简单的说法个人感觉，正确的说话应该是理想情况下随机<code>hashCode</code>算法下所有<code>bin</code>中节点的分布频率会遵循泊松分布，据概率统计决定的。</p>
 <h1 id="CourrentHashMap"><a href="#CourrentHashMap" class="headerlink" title="CourrentHashMap"></a>CourrentHashMap</h1><p><code>Java 7</code>中的<code>ConcurrentHashMap</code>的底层数据结构仍然是数组和链表。与<code>HashMap</code>不同的是，<code>ConcurrentHashMap</code>最外层不是一个大的数组，而是一个<code>Segment</code>的数组。每个<code>Segment</code>包含一个与<code>HashMap</code>数据结构差不多的链表数组。整体数据结构如下图所示。</p>
@@ -551,7 +560,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -615,7 +624,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的存储原理和存储过程"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap的存储原理和存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的初始化容量为什么为2的次幂？"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap的初始化容量为什么为2的次幂？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap是非线程安全的？"><span class="nav-number">1.3.</span> <span class="nav-text">为什么HashMap是非线程安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和HashTable的区别："><span class="nav-number">1.4.</span> <span class="nav-text">HashMap和HashTable的区别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap长度大于8才转换为红黑树，而不是6"><span class="nav-number">1.5.</span> <span class="nav-text">为什么HashMap长度大于8才转换为红黑树，而不是6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CourrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">CourrentHashMap</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap原理"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的存储原理和存储过程"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap的存储原理和存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的初始化容量为什么为2的次幂？"><span class="nav-number">1.3.</span> <span class="nav-text">HashMap的初始化容量为什么为2的次幂？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap是非线程安全的？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么HashMap是非线程安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和HashTable的区别："><span class="nav-number">1.5.</span> <span class="nav-text">HashMap和HashTable的区别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和TreeMap比较"><span class="nav-number">1.6.</span> <span class="nav-text">HashMap和TreeMap比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap长度大于8才转换为红黑树，而不是6"><span class="nav-number">1.7.</span> <span class="nav-text">为什么HashMap长度大于8才转换为红黑树，而不是6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CourrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">CourrentHashMap</span></a></li></ol></div>
             
 
           </div>
