@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="九八年生于晚秋">
 <meta property="og:description" content="为什么会有这个关键字？计算机在执行程序时，每条指令都是在CPU中执行的，而执行指令过程中，会涉及到数据的读取和写入，但由于CPU执行速度很快，而从内存读取数据和向内存写入数据的过程跟CPU执行指令的速度比起来要慢的多，因此如果任何时候对数据的操作都要通过和内存的交互来进行，会大大降低指令执行的速度。因此在CPU里面就有了高速缓存。 也就是，当程序在运行过程中，会将运算需要的数据从主存复制一份到CP">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-25T03:37:18.058Z">
+<meta property="og:updated_time" content="2019-07-30T11:46:47.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Volatile关键字">
 <meta name="twitter:description" content="为什么会有这个关键字？计算机在执行程序时，每条指令都是在CPU中执行的，而执行指令过程中，会涉及到数据的读取和写入，但由于CPU执行速度很快，而从内存读取数据和向内存写入数据的过程跟CPU执行指令的速度比起来要慢的多，因此如果任何时候对数据的操作都要通过和内存的交互来进行，会大大降低指令执行的速度。因此在CPU里面就有了高速缓存。 也就是，当程序在运行过程中，会将运算需要的数据从主存复制一份到CP">
@@ -384,32 +384,51 @@
       
 
       
-        <h1 id="为什么会有这个关键字？"><a href="#为什么会有这个关键字？" class="headerlink" title="为什么会有这个关键字？"></a>为什么会有这个关键字？</h1><p>计算机在执行程序时，每条指令都是在CPU中执行的，而执行指令过程中，会涉及到数据的读取和写入，但由于CPU执行速度很快，而从内存读取数据和向内存写入数据的过程跟CPU执行指令的速度比起来要慢的多，因此如果任何时候对数据的操作都要通过和内存的交互来进行，会大大降低指令执行的速度。因此在CPU里面就有了高速缓存。</p>
-<p>也就是，当程序在运行过程中，会将运算需要的数据从主存复制一份到CPU的高速缓存当中，那么CPU进行计算时就可以直接从它的高速缓存读取数据和向其中写入数据，当运算结束之后，再将高速缓存中的数据刷新到主存当中。这样的操作在单线程中不会出现什么问题，但是在多线程中运行就可能会出现问题，会出现缓存不一致问题。所以在多线程的时候就需要加锁了，我们知道的在CourrentHashMap中是通过分段锁和CAS来实现线程安全的，这里面就涉及到了Volatile关键字。</p>
-<h1 id="并发的三个概念"><a href="#并发的三个概念" class="headerlink" title="并发的三个概念"></a>并发的三个概念</h1><h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p>原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。</p>
+        <h1 id="为什么会有这个关键字？"><a href="#为什么会有这个关键字？" class="headerlink" title="为什么会有这个关键字？"></a>为什么会有这个关键字？</h1><p>计算机在执行程序时，每条指令都是在<code>CPU</code>中执行的，而执行指令过程中，会涉及到数据的读取和写入，但由于<code>CPU</code>执行速度很快，而从内存读取数据和向内存写入数据的过程跟<code>CPU</code>执行指令的速度比起来要慢的多，因此如果任何时候对数据的操作都要通过和内存的交互来进行，会大大降低指令执行的速度。因此在<code>CPU</code>里面就有了高速缓存。</p>
+<p>也就是，当程序在运行过程中，会将运算需要的数据从主存复制一份到<code>CPU</code>的高速缓存当中，那么<code>CPU</code>进行计算时就可以直接从它的高速缓存读取数据和向其中写入数据，当运算结束之后，再将高速缓存中的数据刷新到主存当中。这样的操作在单线程中不会出现什么问题，但是在多线程中运行就可能会出现问题，会出现缓存不一致问题。所以在多线程的时候就需要加锁了，我们知道的在<code>CourrentHashMap</code>中是通过分段锁和<code>CAS</code>来实现线程安全的，这里面就涉及到了<code>Volatile</code>关键字。</p>
+<h1 id="并发编程的的三个概念（特性）"><a href="#并发编程的的三个概念（特性）" class="headerlink" title="并发编程的的三个概念（特性）"></a>并发编程的的三个概念（特性）</h1><h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p>原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。</p>
 <p>一个很经典的例子就是银行账户转账问题：</p>
 <p>比如从账户A向账户B转1000元，那么必然包括2个操作：从账户A减去1000元，往账户B加上1000元。</p>
 <p>试想一下，如果这2个操作不具备原子性，会造成什么样的后果。假如从账户A减去1000元之后，操作突然中止。然后又从B取出了500元，取出500元之后，再执行 往账户B加上1000元 的操作。这样就会导致账户A虽然减去了1000元，但是账户B没有收到这个转过来的1000元。所以这2个操作必须要具备原子性才能保证不出现一些意外的问题。</p>
 <h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程1执行的代码</span></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">i = <span class="number">10</span>;</span><br><span class="line"><span class="comment">//线程2执行的代码</span></span><br><span class="line">j = i;</span><br></pre></td></tr></table></figure>
 
-<p>假若执行线程1的是CPU1，执行线程2的是CPU2。由上面的分析可知，当线程1执行 i =10这句时，会先把i的初始值加载到CPU1的高速缓存中，然后赋值为10，那么在CPU1的高速缓存当中i的值变为10了，却没有立即写入到主存当中。此时线程2执行 j = i，它会先去主存读取i的值并加载到CPU2的缓存当中，注意此时内存当中i的值还是0，那么就会使得j的值为0，而不是10.</p>
+<p>假若执行线程1的是CPU1，执行线程2的是CPU2。由上面的分析可知，当线程1执行 <code>i =10</code>这句时，会先把i的初始值加载到CPU1的高速缓存中，然后赋值为10，那么在CPU1的高速缓存当中i的值变为10了，却没有立即写入到主存当中。此时线程2执行<code>j = i</code>，它会先去主存读取i的值并加载到CPU2的缓存当中，注意此时内存当中i的值还是0，那么就会使得j的值为0，而不是10.</p>
 <p>这就是可见性问题，线程1对变量i修改了之后，线程2没有立即看到线程1修改的值。</p>
 <h2 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h2><p>有序性：即程序执行的顺序按照代码的先后顺序执行。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;              </span><br><span class="line"><span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">i = <span class="number">1</span>;                <span class="comment">//语句1  </span></span><br><span class="line">flag = <span class="keyword">true</span>;          <span class="comment">//语句2</span></span><br></pre></td></tr></table></figure>
 
-<p>一般来说，处理器为了提高程序运行效率，可能会对输入代码进行优化，它不保证程序中各个语句的执行先后顺序同代码中的顺序一致，但是它会保证程序最终执行结果和代码顺序执行的结果是一致的。所以JVM在真正执行这段代码的时候不会保证语句1一定会在语句2前面执行。</p>
+<p>一般来说，处理器为了提高程序运行效率，可能会对输入代码进行优化，它不保证程序中各个语句的执行先后顺序同代码中的顺序一致，但是它会保证程序最终执行结果和代码顺序执行的结果是一致的。所以<code>JVM</code>在真正执行这段代码的时候不会保证语句1一定会在语句2前面执行。</p>
 <p>指令重排序不会影响单个线程的执行，但是会影响到线程并发执行的正确性。</p>
-<h1 id="volatile关键字的两层语义"><a href="#volatile关键字的两层语义" class="headerlink" title="volatile关键字的两层语义"></a>volatile关键字的两层语义</h1><p>一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：</p>
+<h1 id="volatile关键字的两层语义"><a href="#volatile关键字的两层语义" class="headerlink" title="volatile关键字的两层语义"></a>volatile关键字的两层语义</h1><p>一旦一个共享变量（类的成员变量、类的静态成员变量）被<code>volatile</code>修饰之后，那么就具备了两层语义：</p>
 <ul>
-<li>保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。</li>
+<li>保证了不同线程对这个变量进行操作时的内存可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。</li>
 <li>禁止进行指令重排序。</li>
 </ul>
-<p>它能保证程序的可见性，一定程度的有序性，但是不能保证原子性（可以采用synchronized）。</p>
+<p>它能保证程序的可见性，一定程度的有序性，但是不能保证原子性（可以采用<code>synchronized</code>）。</p>
 <h1 id="使用volatile必须具备以下2个条件："><a href="#使用volatile必须具备以下2个条件：" class="headerlink" title="使用volatile必须具备以下2个条件："></a>使用volatile必须具备以下2个条件：</h1><ul>
 <li>对变量的写操作不依赖于当前值</li>
 <li>该变量没有包含在具有其他变量的不变式中</li>
 </ul>
+<h1 id="Volatile底层原理"><a href="#Volatile底层原理" class="headerlink" title="Volatile底层原理"></a>Volatile底层原理</h1><p>如果把加入<code>volatile</code>关键字的代码和未加入<code>volatile</code>关键字的代码都生成汇编代码，会发现加入<code>volatile</code>关键字的代码会多出一个<code>lock</code>前缀指令。</p>
+<p><code>lock</code>前缀指令实际相当于一个内存屏障（由于现代操作系统都是多处理器操作系统，每个处理器都会有自己的缓存，可能存再不同处理器缓存不一致的问题，而且由于操作系统可能存在重排序，导致读取到错误的数据，因此，操作系统提供了一些内存屏障以解决这种问题），它提供以下功能：</p>
+<ul>
+<li>重排序时不能把后面的指令重排序到内存屏障之前的位置</li>
+<li>使得本<code>CPU</code>的<code>Cache</code>写入内存 </li>
+<li>写入动作也会引起别的<code>CPU</code>或者别的内核无效化其<code>Cache</code>，相当于让新写入的值对别的线程可见。</li>
+</ul>
+<p>这样的话两个线程改变内容的时候就是这样的</p>
+<p>写两条线程<code>Thread-A</code>与<code>Threab-B</code>同时操作主存中的一个<code>volatile</code>变量i时，<code>Thread-A</code>写了变量<code>i</code>，那么：</p>
+<ul>
+<li><code>Thread-A</code>发出<code>LOCK#</code>指令</li>
+<li>发出的<code>LOCK#</code>指令锁总线（或锁缓存行），同时让<code>Thread-B</code>高速缓存中的缓存行内容失效</li>
+<li><code>Thread-A</code>向主存回写最新修改的i</li>
+</ul>
+<p><code>Thread-B</code>读取变量i，那么：</p>
+<ul>
+<li><code>Thread-B</code>发现对应地址的缓存行被锁了，等待锁的释放，缓存一致性协议会保证它读取到最新的值</li>
+</ul>
+<p>由此可以看出，<code>volatile</code>关键字的读和普通变量的读取相比基本没差别，差别主要还是在变量的写操作上。</p>
 
       
     </div>
@@ -593,7 +612,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么会有这个关键字？"><span class="nav-number">1.</span> <span class="nav-text">为什么会有这个关键字？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并发的三个概念"><span class="nav-number">2.</span> <span class="nav-text">并发的三个概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">2.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">2.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序性"><span class="nav-number">2.3.</span> <span class="nav-text">有序性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile关键字的两层语义"><span class="nav-number">3.</span> <span class="nav-text">volatile关键字的两层语义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用volatile必须具备以下2个条件："><span class="nav-number">4.</span> <span class="nav-text">使用volatile必须具备以下2个条件：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么会有这个关键字？"><span class="nav-number">1.</span> <span class="nav-text">为什么会有这个关键字？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并发编程的的三个概念（特性）"><span class="nav-number">2.</span> <span class="nav-text">并发编程的的三个概念（特性）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">2.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">2.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序性"><span class="nav-number">2.3.</span> <span class="nav-text">有序性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile关键字的两层语义"><span class="nav-number">3.</span> <span class="nav-text">volatile关键字的两层语义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用volatile必须具备以下2个条件："><span class="nav-number">4.</span> <span class="nav-text">使用volatile必须具备以下2个条件：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Volatile底层原理"><span class="nav-number">5.</span> <span class="nav-text">Volatile底层原理</span></a></li></ol></div>
             
 
           </div>
