@@ -82,15 +82,16 @@
 <meta name="description" content="概念与区别从本质上来说，一个进程就是一个正在执行的程序，它是系统进行资源分配和调度的基本单位，是操作系统结构的基础。每个进程都有自己的地址空间，包括可执行程序，程序的数据，栈，一组寄存器（程序计算器，栈指针以及其他运行程序需要的信息 线程有时被称为轻量级进程，是程序执行的最小执行流，它是进程的一个实体，是系统独立调度和分派的基本单位 进程和线程的区别：  地址空间：同一进程的线程共享本进程的地址空">
 <meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="进程和线程（持续更新）">
+<meta property="og:title" content="进程和线程">
 <meta property="og:url" content="http://yoursite.com/2019/05/22/进程和线程/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
 <meta property="og:description" content="概念与区别从本质上来说，一个进程就是一个正在执行的程序，它是系统进行资源分配和调度的基本单位，是操作系统结构的基础。每个进程都有自己的地址空间，包括可执行程序，程序的数据，栈，一组寄存器（程序计算器，栈指针以及其他运行程序需要的信息 线程有时被称为轻量级进程，是程序执行的最小执行流，它是进程的一个实体，是系统独立调度和分派的基本单位 进程和线程的区别：  地址空间：同一进程的线程共享本进程的地址空">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/1.png">
-<meta property="og:updated_time" content="2019-05-25T09:57:59.146Z">
+<meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/2.png">
+<meta property="og:updated_time" content="2019-08-06T16:54:40.752Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="进程和线程（持续更新）">
+<meta name="twitter:title" content="进程和线程">
 <meta name="twitter:description" content="概念与区别从本质上来说，一个进程就是一个正在执行的程序，它是系统进行资源分配和调度的基本单位，是操作系统结构的基础。每个进程都有自己的地址空间，包括可执行程序，程序的数据，栈，一组寄存器（程序计算器，栈指针以及其他运行程序需要的信息 线程有时被称为轻量级进程，是程序执行的最小执行流，它是进程的一个实体，是系统独立调度和分派的基本单位 进程和线程的区别：  地址空间：同一进程的线程共享本进程的地址空">
 <meta name="twitter:image" content="http://yoursite.com/2019/05/22/进程和线程/1.png">
 
@@ -128,7 +129,7 @@
 
 
 
-  <title>进程和线程（持续更新） | 九八年生于晚秋</title>
+  <title>进程和线程 | 九八年生于晚秋</title>
   
 
 
@@ -314,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">进程和线程（持续更新）</h1>
+          <h1 class="post-title" itemprop="name headline">进程和线程</h1>
         
 
         <div class="post-meta">
@@ -417,7 +418,9 @@
 <li><p>挂起原语（<code>Suspend</code>）：将指定的进程或处于阻塞的进程挂起</p>
 </li>
 </ol>
-
+<h1 id="Java的Runnable状态与操作系统中进程运行状态的关系"><a href="#Java的Runnable状态与操作系统中进程运行状态的关系" class="headerlink" title="Java的Runnable状态与操作系统中进程运行状态的关系"></a>Java的Runnable状态与操作系统中进程运行状态的关系</h1><p><code>RUNNABLE</code> 状态对应了传统的 <code>ready</code>，<code>running</code> 以及部分的 <code>waiting</code>状态，也就是上面的三种状态，但是操作体系中其实是有五种状态的。</p>
+<p><img src="2.png" alt></p>
+<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><h1 id="线程间通信"><a href="#线程间通信" class="headerlink" title="线程间通信"></a>线程间通信</h1>
       
     </div>
     
@@ -536,7 +539,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -600,7 +603,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念与区别"><span class="nav-number">1.</span> <span class="nav-text">概念与区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程"><span class="nav-number">2.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的创建和终止"><span class="nav-number">2.1.</span> <span class="nav-text">进程的创建和终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的状态和控制原语"><span class="nav-number">2.2.</span> <span class="nav-text">进程的状态和控制原语</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念与区别"><span class="nav-number">1.</span> <span class="nav-text">概念与区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程"><span class="nav-number">2.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的创建和终止"><span class="nav-number">2.1.</span> <span class="nav-text">进程的创建和终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的状态和控制原语"><span class="nav-number">2.2.</span> <span class="nav-text">进程的状态和控制原语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java的Runnable状态与操作系统中进程运行状态的关系"><span class="nav-number">3.</span> <span class="nav-text">Java的Runnable状态与操作系统中进程运行状态的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-number">4.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程间通信"><span class="nav-number">5.</span> <span class="nav-text">线程间通信</span></a></li></ol></div>
             
 
           </div>
