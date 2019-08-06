@@ -568,7 +568,7 @@ List<String> arrayList = new ArrayList<String>();
 
 `getName()`：获得类的完整名字；`getDeclaredFields()`：获得类的所有属性。包括`private`声明的和继承类；`getMethods()`：获得类的`public`类型的方法；
 
-# java创建线程的三种方式
+# java创建线程的四种方式
 
 ## 继承Thread类创建线程类
 
@@ -701,4 +701,43 @@ public class CallableThreadTest implements Callable<Integer>
 
 - `Runnable`可以通过`Thread`来启动，也可以通过线程池的`execute`、`submit`来处理；`Callable`线程只能通过线程池的`submit`来处理
 
-  
+## Java实现多线程
+
+就是利用上面的四种方式实现多线程
+
+# sleep()，wait()，yield()和join()方法
+
+## sleep() 
+`sleep()`方法需要指定等待的时间，它可以让当前正在执行的线程在指定的时间内暂停执行，进入阻塞状态，该方法既可以让其他同优先级或者高优先级的线程得到执行的机会，也可以让低优先级的线程得到执行机会。但是`sleep()`方法不会释放“锁标志”，也就是说如果有`synchronized`同步块，其他线程仍然不能访问共享数据。 
+
+## wait() 
+
+`wait()`方法需要和`notify()`及`notifyAll()`两个方法一起介绍，这三个方法用于协调多个线程对共享数据的存取，所以必须在`synchronized`语句块内使用，也就是说，调用`wait()`，`notify()`和`notifyAll()`的任务在调用这些方法前必须拥有对象的锁。注意，它们都是`Object`类的方法，而不是Thread类的方法。 
+
+那如果使用的是`ReenTrantLock`实现同步，该如何达到这三个方法的效果呢？解决方法是使用`ReenTrantLock.newCondition()`获取一个`Condition`类对象，然后`Condition`的`await()`，`signal()`以及`signalAll()`分别对应上面的三个方法。
+
+## yield() 
+`yield()`方法和`sleep()`方法类似，也不会释放“锁标志”，区别在于，它没有参数，即`yield()`方法只是使当前线程重新回到可执行状态，所以执行`yield()`的线程有可能在进入到可执行状态后马上又被执行，另外`yield()`方法只能使同优先级或者高优先级的线程得到执行机会，这也和`sleep()`方法不同。
+
+## **join()** 
+`join()`方法会使当前线程等待调用`join()`方法的线程结束后才能继续执行。`join()`无参形式等价于`join(0)`，`wait()`类似。
+
+## sleep()与wait()的区别
+- 这两个方法来自不同的类，`sleep`是`Thread`类的方法，而`wait`是`Object`类的方法；
+- 执行sleep方法后不会释放锁，而执行`wait`方法后会释放锁；
+- `wait`，`notify`和`notifyAll`只能在同步方法或同步代码块中调用，而sleep可以在任何地方调用；
+- `sleep`必须捕获异常，而`wait`，`notify`和`notifyAll`不需要捕获异常。（如果不是在同步方法或同步代码块中调用`wait()`方法，则抛出`IllegalMOnitorStateException`，它是`RuntimeException`的一个子类，因此，不需要`try-catch`语句进行捕捉异常）
+
+需要注意以下几点： 
+- 在执行`notify()`或`notifyAll()`方法后，当前线程不会马上释放该对象锁，需要等到`notify()`或`notifyAll()`方法所在的同步方法或同步代码块执行完成，当前线程才会释放锁。 
+- 在`sleep()`状态下`interrupt()`中断线程，会进入`catch`语句，并且清除停止状态值，使之变成`false`。 
+- `wait(long)`方法：如果线程在指定时间`(long)`内未被唤醒，则自动唤醒。`wait(0)`等价于`wait()`。 
+- `Thread.Sleep(0)`的作用是“触发操作系统立刻重新进行一次`CPU`竞争”。
+
+## sleep()与 yield()的区别
+- `sleep()`方法给其他线程运行机会时不考虑其他线程的优先级，因此会给低优先级的线程运行的机会；`yield()`方法只会给相同优先级或更高优先级的线程运行的机会。
+- 线程执行`sleep()`方法后转入阻塞`（blocked）`状态，而执行`yield()`方法后转入就绪`（ready）`状态。
+- `sleep()`方法声明抛出`InterruptedException`异常，而`yield()`方法没有声明任何异常。
+- `sleep()`方法比`yield()`方法具有更好的可移植性（跟操作系统`CPU`调度相关）。
+- `sleep`方法需要参数，而`yield`方法不需要参数。
+
