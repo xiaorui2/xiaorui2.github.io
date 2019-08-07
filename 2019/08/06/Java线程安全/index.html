@@ -88,7 +88,7 @@
 <meta property="og:description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/08/06/Java线程安全/1.png">
-<meta property="og:updated_time" content="2019-08-06T16:31:50.509Z">
+<meta property="og:updated_time" content="2019-08-07T11:42:14.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程安全">
 <meta name="twitter:description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
@@ -391,6 +391,12 @@
 <p>比方说<code>ArrayList</code>是非线程安全的，<code>Vector</code>是线程安全的；<code>HashMap</code>是非线程安全的，<code>HashVector</code>是线程安全的；<code>StringBuilder</code>是非线程安全的，<code>StringBuffer</code>是线程安全的。</p>
 <h2 id="产生线程不安全的原因"><a href="#产生线程不安全的原因" class="headerlink" title="产生线程不安全的原因"></a>产生线程不安全的原因</h2><p>在同一程序中运行多个线程本身不会导致问题，问题在于多个线程访问了相同的资源。如，同一内存区（变量，数组，或对象）、系统（数据库，<code>web services</code>等）或文件。实际上，这些问题只有在一或多个线程向这些资源做了写操作时才有可能发生，只要资源没有发生变化,多个线程读取相同的资源就是安全的。</p>
 <p>记住引用不是线程安全的，即使一个对象是线程安全的不可变对象，指向这个对象的引用也可能不是线程安全的。</p>
+<h1 id="Java线程安全的类"><a href="#Java线程安全的类" class="headerlink" title="Java线程安全的类"></a>Java线程安全的类</h1><ul>
+<li>通过<code>synchronized</code> 关键字给方法加上内置锁来实现线程安全<br><code>Timer</code>，<code>TimerTask</code>，<code>Vector</code>，<code>Stack</code>，<code>HashTable</code>，<code>StringBuffer</code></li>
+<li>原子类<code>Atomicxxx</code>—包装类的线程安全类<br>如<code>AtomicLong</code>，<code>AtomicInteger</code>等等</li>
+<li><code>BlockingQueue</code> 和<code>BlockingDeque</code> </li>
+<li><code>ThreadPoolExecutor</code><br><code>ThreadPoolExecutor</code>也是使用了<code>ReentrantLock</code>显式加锁同步</li>
+</ul>
 <h1 id="锁的种类和区别"><a href="#锁的种类和区别" class="headerlink" title="锁的种类和区别"></a>锁的种类和区别</h1><h2 id="公平锁-非公平锁"><a href="#公平锁-非公平锁" class="headerlink" title="公平锁/非公平锁"></a>公平锁/非公平锁</h2><p>公平锁是指多个线程按照申请锁的顺序来获取锁。<br>非公平锁是指多个线程获取锁的顺序并不是按照申请锁的顺序，有可能后申请的线程比先申请的线程优先获取锁。有可能，会造成优先级反转或者饥饿现象。</p>
 <p>对于<code>Java ReentrantLock</code>而言，通过构造函数指定该锁是否是公平锁，默认是非公平锁。非公平锁的优点在于吞吐量比公平锁大。<br>对于<code>Synchronized</code>而言，也是一种非公平锁。由于其并不像<code>ReentrantLock</code>是通过<code>AQS</code>的来实现线程调度，所以并没有任何办法使其变成公平锁。</p>
 <h2 id="可重入锁"><a href="#可重入锁" class="headerlink" title="可重入锁"></a>可重入锁</h2><p>可重入锁又名递归锁，是指在同一个线程在外层方法获取锁的时候，在进入内层方法会自动获取锁。</p>
@@ -486,6 +492,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/08/07/阻塞队列以及生产者消费者的实现/" rel="prev" title="阻塞队列以及生产者消费者的实现">
+                阻塞队列以及生产者消费者的实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -561,7 +571,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -583,7 +593,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -625,7 +635,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是线程安全"><span class="nav-number">1.</span> <span class="nav-text">什么是线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#产生线程不安全的原因"><span class="nav-number">1.1.</span> <span class="nav-text">产生线程不安全的原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁的种类和区别"><span class="nav-number">2.</span> <span class="nav-text">锁的种类和区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁-非公平锁"><span class="nav-number">2.1.</span> <span class="nav-text">公平锁/非公平锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可重入锁"><span class="nav-number">2.2.</span> <span class="nav-text">可重入锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#独享锁-共享锁"><span class="nav-number">2.3.</span> <span class="nav-text">独享锁/共享锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乐观锁-悲观锁"><span class="nav-number">2.4.</span> <span class="nav-text">乐观锁/悲观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁-轻量级锁-重量级锁"><span class="nav-number">2.5.</span> <span class="nav-text">偏向锁/轻量级锁/重量级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">2.6.</span> <span class="nav-text">自旋锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">3.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#三种应用方式"><span class="nav-number">3.1.</span> <span class="nav-text">三种应用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized代码块底层原理"><span class="nav-number">3.2.</span> <span class="nav-text">synchronized代码块底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized方法底层原理"><span class="nav-number">3.3.</span> <span class="nav-text">synchronized方法底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java虚拟机对synchronized的优化"><span class="nav-number">3.4.</span> <span class="nav-text">Java虚拟机对synchronized的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#偏向锁"><span class="nav-number">3.4.1.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轻量级锁"><span class="nav-number">3.4.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁-1"><span class="nav-number">3.4.3.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁消除"><span class="nav-number">3.4.4.</span> <span class="nav-text">锁消除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReentrantLock"><span class="nav-number">4.</span> <span class="nav-text">ReentrantLock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAS"><span class="nav-number">4.1.</span> <span class="nav-text">CAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">4.2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁的lock方法："><span class="nav-number">4.2.1.</span> <span class="nav-text">非公平锁的lock方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁的unlock方法"><span class="nav-number">4.2.2.</span> <span class="nav-text">非公平锁的unlock方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized和ReentrantLock的异同"><span class="nav-number">5.</span> <span class="nav-text">synchronized和ReentrantLock的异同</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是线程安全"><span class="nav-number">1.</span> <span class="nav-text">什么是线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#产生线程不安全的原因"><span class="nav-number">1.1.</span> <span class="nav-text">产生线程不安全的原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java线程安全的类"><span class="nav-number">2.</span> <span class="nav-text">Java线程安全的类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁的种类和区别"><span class="nav-number">3.</span> <span class="nav-text">锁的种类和区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁-非公平锁"><span class="nav-number">3.1.</span> <span class="nav-text">公平锁/非公平锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可重入锁"><span class="nav-number">3.2.</span> <span class="nav-text">可重入锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#独享锁-共享锁"><span class="nav-number">3.3.</span> <span class="nav-text">独享锁/共享锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乐观锁-悲观锁"><span class="nav-number">3.4.</span> <span class="nav-text">乐观锁/悲观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁-轻量级锁-重量级锁"><span class="nav-number">3.5.</span> <span class="nav-text">偏向锁/轻量级锁/重量级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">3.6.</span> <span class="nav-text">自旋锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">4.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#三种应用方式"><span class="nav-number">4.1.</span> <span class="nav-text">三种应用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized代码块底层原理"><span class="nav-number">4.2.</span> <span class="nav-text">synchronized代码块底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized方法底层原理"><span class="nav-number">4.3.</span> <span class="nav-text">synchronized方法底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java虚拟机对synchronized的优化"><span class="nav-number">4.4.</span> <span class="nav-text">Java虚拟机对synchronized的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#偏向锁"><span class="nav-number">4.4.1.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轻量级锁"><span class="nav-number">4.4.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁-1"><span class="nav-number">4.4.3.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁消除"><span class="nav-number">4.4.4.</span> <span class="nav-text">锁消除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReentrantLock"><span class="nav-number">5.</span> <span class="nav-text">ReentrantLock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAS"><span class="nav-number">5.1.</span> <span class="nav-text">CAS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">5.2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁的lock方法："><span class="nav-number">5.2.1.</span> <span class="nav-text">非公平锁的lock方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁的unlock方法"><span class="nav-number">5.2.2.</span> <span class="nav-text">非公平锁的unlock方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized和ReentrantLock的异同"><span class="nav-number">6.</span> <span class="nav-text">synchronized和ReentrantLock的异同</span></a></li></ol></div>
             
 
           </div>
