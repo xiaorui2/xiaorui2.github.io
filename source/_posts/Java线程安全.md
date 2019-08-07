@@ -19,6 +19,16 @@ categories: Java入门
 
 记住引用不是线程安全的，即使一个对象是线程安全的不可变对象，指向这个对象的引用也可能不是线程安全的。
 
+# Java线程安全的类
+
+- 通过`synchronized` 关键字给方法加上内置锁来实现线程安全 
+  `Timer`，`TimerTask`，`Vector`，`Stack`，`HashTable`，`StringBuffer`
+- 原子类`Atomicxxx`—包装类的线程安全类 
+  如`AtomicLong`，`AtomicInteger`等等
+- `BlockingQueue` 和`BlockingDeque` 
+- `ThreadPoolExecutor`
+  `ThreadPoolExecutor`也是使用了`ReentrantLock`显式加锁同步
+
 # 锁的种类和区别
 
 ## 公平锁/非公平锁
