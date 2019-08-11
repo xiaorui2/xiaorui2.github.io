@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/3.png">
-<meta property="og:updated_time" content="2019-08-05T12:05:07.652Z">
+<meta property="og:updated_time" content="2019-08-11T02:47:55.079Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap,HashTable，CourrentHashMap">
 <meta name="twitter:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap原理基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，返回的hashCode用于找到bucket位置来储">
@@ -441,6 +441,12 @@
 <p>这个版本，是通过大量的<code>volatile</code>关键字以及<code>CAS</code>操作来实现线程安全的。</p>
 <p>对于<code>put</code>操作，如果<code>Key</code>对应的数组元素为<code>null</code>，则通过<code>CAS</code>操作将其设置为当前值。如果<code>Key</code>对应的数组元素（也即链表表头或者树的根元素）不为<code>null</code>，则对该元素使用<code>synchronized</code>关键字申请锁，然后进行操作。如果该<code>put</code>操作使得当前链表长度超过一定阈值，则将该链表转换为树，从而提高寻址效率。</p>
 <p>对于读操作，由于数组被<code>volatile</code>关键字修饰，因此不用担心数组的可见性问题。同时每个元素是一个<code>Node</code>实例（<code>Java 7</code>中每个元素是一个<code>HashEntry</code>），它的<code>Key</code>值和<code>hash</code>值都由<code>final</code>修饰，不可变更，无须关心它们被修改后的可见性问题。而其<code>Value</code>及对下一个元素的引用由<code>volatile</code>修饰，可见性也有保障。</p>
+<h1 id="HashMap-HashTable-CourrentHashMap的key和value是否可为null"><a href="#HashMap-HashTable-CourrentHashMap的key和value是否可为null" class="headerlink" title="HashMap,HashTable,CourrentHashMap的key和value是否可为null"></a>HashMap,HashTable,CourrentHashMap的key和value是否可为null</h1><p><code>HashMap</code>对象的<code>key</code>、<code>value</code>值均可为<code>null</code>。</p>
+<p><code>ConcurrentHashMap</code>，<code>HahTable</code>对象的<code>key</code>、<code>value</code>值均不可为<code>null</code>。</p>
+<p><code>HashMap</code>在<code>put</code>的时候会调用<code>hash()</code>方法来计算<code>key</code>的<code>hashcode</code>值，可以从<code>hash</code>算法中看出当<code>key==null</code>时返回的值为0。因此<code>key</code>为<code>null</code>时，<code>hash</code>算法返回值为0，不会调用<code>key</code>的<code>hashcode</code>方法。但是<code>HashTable</code>存入的<code>value</code>为<code>null</code>时，抛出<code>NullPointerException</code>异常。如果<code>value</code>不为<code>null</code>，而<code>key</code>为空，在执行到<code>int  hash = key.hashCode()</code>时同样会抛出<code>NullPointerException</code>异常。</p>
+<p>那为什么这么设计？</p>
+<p><code>ConcurrentHashmap</code>和<code>Hashtable</code>都是支持并发的，这样会有一个问题，当你通过<code>get(k)</code>获取对应的<code>value</code>时，如果获取到的是<code>null</code>时，你无法判断，它是<code>put（k,v）</code>的时候<code>value</code>为<code>null</code>，还是这个<code>key</code>从来没有做过映射。<code>HashMap</code>是非并发的，可以通过<code>contains(key)</code>来做这个判断。</p>
+<p>对于<code>TreeMap</code>的话<code>value</code>是可以为<code>null</code>的，对于<code>key</code>的话未实现 <code>Comparator</code> 接口时，<code>key</code> 不可以为<code>null</code>，否则抛 <code>NullPointerException</code> 异常；当实现<code>Comparator</code>接口时，若未对<code>null</code>情况进行判断，则可能抛 <code>NullPointerException</code> 异常。如果针对<code>null</code>情况实现了，可以存入，但是却不能正常使用<code>get()</code>访问，只能通过遍历去访问。</p>
 
       
     </div>
@@ -560,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -624,7 +630,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap原理"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的存储原理和存储过程"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap的存储原理和存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的初始化容量为什么为2的次幂？"><span class="nav-number">1.3.</span> <span class="nav-text">HashMap的初始化容量为什么为2的次幂？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap是非线程安全的？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么HashMap是非线程安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和HashTable的区别："><span class="nav-number">1.5.</span> <span class="nav-text">HashMap和HashTable的区别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和TreeMap比较"><span class="nav-number">1.6.</span> <span class="nav-text">HashMap和TreeMap比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap长度大于8才转换为红黑树，而不是6"><span class="nav-number">1.7.</span> <span class="nav-text">为什么HashMap长度大于8才转换为红黑树，而不是6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CourrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">CourrentHashMap</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap原理"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的存储原理和存储过程"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap的存储原理和存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的初始化容量为什么为2的次幂？"><span class="nav-number">1.3.</span> <span class="nav-text">HashMap的初始化容量为什么为2的次幂？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap是非线程安全的？"><span class="nav-number">1.4.</span> <span class="nav-text">为什么HashMap是非线程安全的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和HashTable的区别："><span class="nav-number">1.5.</span> <span class="nav-text">HashMap和HashTable的区别：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap和TreeMap比较"><span class="nav-number">1.6.</span> <span class="nav-text">HashMap和TreeMap比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap长度大于8才转换为红黑树，而不是6"><span class="nav-number">1.7.</span> <span class="nav-text">为什么HashMap长度大于8才转换为红黑树，而不是6</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CourrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">CourrentHashMap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap-HashTable-CourrentHashMap的key和value是否可为null"><span class="nav-number">3.</span> <span class="nav-text">HashMap,HashTable,CourrentHashMap的key和value是否可为null</span></a></li></ol></div>
             
 
           </div>
