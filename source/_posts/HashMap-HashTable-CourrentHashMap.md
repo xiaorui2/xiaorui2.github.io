@@ -40,6 +40,8 @@ categories: Java入门
 - 调用`getNode()`，得到桶号；
 - 在桶里面找元素和`key`值相等的即可，未找到返回空。
 
+# hashmap的负载因子
+
 ## HashMap的初始化容量为什么为2的次幂？
 
 因为在`get（）`方法中，获得元素的位置是通过`(length- 1) & h `来得到的，其中` h`:为插入元素的`hashcode length`:为`map`的容量大小。如果`length`为`2`的次幂 则`length-1` 转化为二进制必定是`11111……`的形式，在于h的二进制与操作效率会非常的快，而且空间不浪费。如果是其他的话，空间不够，碰撞的几率变大，查询变慢，空间会浪费。　
@@ -122,3 +124,18 @@ Segment<K,V> s = (Segment<K,V>)UNSAFE.getObjectVolatile(segments, u)
 对于`put`操作，如果`Key`对应的数组元素为`null`，则通过`CAS`操作将其设置为当前值。如果`Key`对应的数组元素（也即链表表头或者树的根元素）不为`null`，则对该元素使用`synchronized`关键字申请锁，然后进行操作。如果该`put`操作使得当前链表长度超过一定阈值，则将该链表转换为树，从而提高寻址效率。
 
 对于读操作，由于数组被`volatile`关键字修饰，因此不用担心数组的可见性问题。同时每个元素是一个`Node`实例（`Java 7`中每个元素是一个`HashEntry`），它的`Key`值和`hash`值都由`final`修饰，不可变更，无须关心它们被修改后的可见性问题。而其`Value`及对下一个元素的引用由`volatile`修饰，可见性也有保障。
+
+# HashMap,HashTable,CourrentHashMap的key和value是否可为null
+
+`HashMap`对象的`key`、`value`值均可为`null`。
+
+`ConcurrentHashMap`，`HahTable`对象的`key`、`value`值均不可为`null`。
+
+`HashMap`在`put`的时候会调用`hash()`方法来计算`key`的`hashcode`值，可以从`hash`算法中看出当`key==null`时返回的值为0。因此`key`为`null`时，`hash`算法返回值为0，不会调用`key`的`hashcode`方法。但是`HashTable`存入的`value`为`null`时，抛出`NullPointerException`异常。如果`value`不为`null`，而`key`为空，在执行到`int  hash = key.hashCode()`时同样会抛出`NullPointerException`异常。
+
+那为什么这么设计？
+
+`ConcurrentHashmap`和`Hashtable`都是支持并发的，这样会有一个问题，当你通过`get(k)`获取对应的`value`时，如果获取到的是`null`时，你无法判断，它是`put（k,v）`的时候`value`为`null`，还是这个`key`从来没有做过映射。`HashMap`是非并发的，可以通过`contains(key)`来做这个判断。
+
+对于`TreeMap`的话`value`是可以为`null`的，对于`key`的话未实现 `Comparator` 接口时，`key` 不可以为`null`，否则抛 `NullPointerException` 异常；当实现` Comparator `接口时，若未对` null `情况进行判断，则可能抛 `NullPointerException` 异常。如果针对`null`情况实现了，可以存入，但是却不能正常使用`get()`访问，只能通过遍历去访问。
+
