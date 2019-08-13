@@ -1,5 +1,5 @@
 ---
-title: SpringBoot开发六—-发送邮件
+title: SpringBoot开发六-发送邮件
 date: 2019-08-11 13:48:27
 tags: SpringBoot
 categories: SpringBoot项目
