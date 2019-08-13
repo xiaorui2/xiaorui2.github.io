@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/2.png">
-<meta property="og:updated_time" content="2019-08-07T11:15:52.595Z">
+<meta property="og:updated_time" content="2019-08-13T13:22:08.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程和线程">
 <meta name="twitter:description" content="概念与区别从本质上来说，一个进程就是一个正在执行的程序，它是系统进行资源分配和调度的基本单位，是操作系统结构的基础。每个进程都有自己的地址空间，包括可执行程序，程序的数据，栈，一组寄存器（程序计算器，栈指针以及其他运行程序需要的信息 线程有时被称为轻量级进程，是程序执行的最小执行流，它是进程的一个实体，是系统独立调度和分派的基本单位 进程和线程的区别：  地址空间：同一进程的线程共享本进程的地址空">
@@ -483,12 +483,41 @@
 <li><p>缺点：共享内存没有提供互斥同步的机制，这使得我们在使用共享内存进行进程间通信时，往往要借助其他的手段比如信号量等来进行进程间的同步工作。</p>
 </li>
 </ul>
+<h1 id="为什么需要进程间通信"><a href="#为什么需要进程间通信" class="headerlink" title="为什么需要进程间通信"></a>为什么需要进程间通信</h1><p>进程是一个独立的资源分配单元，不同进程（这里所说的进程通常指的是用户进程）之间的资源是独立的，没有关联，不能在一个进程中直接访问另一个进程的资源（例如打开的文件描述符）但是，进程不是孤立的，不同的进程需要进行信息的交互和状态的传递等，因此需要进程间通信</p>
+<p>进程间通信的目的：</p>
+<ul>
+<li>数据传输：一个进程需要将它的数据发送给另一个进程。</li>
+<li>通知事件：一个进程需要向另一个或一组进程发送消息，通知它（它们）发生了某种事件（如进程终止时要通知父进程）。</li>
+<li>资源共享：多个进程之间共享同样的资源。为了做到这一点，需要内核提供互斥和同步机制。</li>
+<li>进程控制：有些进程希望完全控制另一个进程的执行（如 <code>Debug</code> 进程），此时控制进程希望能够拦截另一个进程的所有陷入和异常，并能够及时知道它的状态改变。</li>
+</ul>
 <h1 id="线程间通信"><a href="#线程间通信" class="headerlink" title="线程间通信"></a>线程间通信</h1><h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>指多个线程通过<code>Synchronized</code>关键字这种方式来实现线程间的通信。</p>
 <p>比方说由于线程<code>A</code>和线程<code>B</code>持有同一个<code>MyObject</code>类的对象<code>object</code>，尽管这两个线程需要调用不同的方法，但是它们是同步执行的，比如：线程B需要等待线程<code>A</code>执行完了<code>methodA()</code>方法之后，它才能执行<code>methodB()</code>方法。这样，线程<code>A</code>和线程<code>B</code>就实现了通信。</p>
 <p>这种方式，本质上就是“共享内存”式的通信。多个线程需要访问同一个共享变量，谁拿到了锁（获得了访问权限），谁就可以执行。</p>
 <h2 id="while轮询的方式"><a href="#while轮询的方式" class="headerlink" title="while轮询的方式"></a>while轮询的方式</h2><p>参考：<a href="https://www.cnblogs.com/hapjin/p/5492619.html" target="_blank" rel="noopener">Java多线程通信方式</a></p>
 <h2 id="wait-notify机制"><a href="#wait-notify机制" class="headerlink" title="wait/notify机制"></a>wait/notify机制</h2><p>通过进程调用对应的函数，通知对应另外的线程从而实现线程的通信。</p>
 <p>比方说当条件未满足时，线程<code>A</code>调用<code>wait()</code>放弃<code>CPU</code>，并进入阻塞状态，当条件满足时，线程<code>B</code>调用 <code>notify()</code>通知线程<code>A</code>，所谓通知线程<code>A</code>，就是唤醒线程<code>A</code>，并让它进入可运行状态。</p>
+<h1 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h1><p>进程同步是一个操作系统级别的概念,是在多道程序的环境下，存在着不同的制约关系，为了协调这种互相制约的关系，实现资源共享和进程协作，从而避免进程之间的冲突，引入了进程同步。 比如说进程<code>A</code>需要从缓冲区读取进程<code>B</code>产生的信息，当缓冲区为空时，进程<code>B</code>因为读取不到信息而被阻塞。而当进程<code>A</code>产生信息放入缓冲区时，进程<code>B</code>才会被唤醒。</p>
+<h2 id="临界资源"><a href="#临界资源" class="headerlink" title="临界资源"></a>临界资源</h2><p> 在操作系统中，进程是占有资源的最小单位，但对于某些资源来说，其在同一时间只能被一个进程所占用。这些一次只能被一个进程所占用的资源就是所谓的临界资源。典型的临界资源比如物理上的打印机</p>
+<p>对于临界资源的访问，必须是互诉进行。也就是当临界资源被占用时，另一个申请临界资源的进程会被阻塞，直到其所申请的临界资源被释放。而进程内访问临界资源的代码被成为临界区。</p>
+<p>对于临界区的访问过程分为四个部分：</p>
+<ul>
+<li>进入区:查看临界区是否可访问，如果可以访问，则转到步骤二，否则进程会被阻塞</li>
+<li>临界区:在临界区做操作</li>
+<li>退出区:清除临界区被占用的标志</li>
+<li>剩余区：进程与临界区不相关部分的代码</li>
+</ul>
+<h1 id="进程互斥"><a href="#进程互斥" class="headerlink" title="进程互斥"></a>进程互斥</h1><p>进程互斥是进程之间的间接制约关系。当一个进程进入临界区使用临界资源时，另一个进程必须等待。只有当使用临界资源的进程退出临界区后，这个进程才会解除阻塞状态。</p>
+<p>比如进程<code>B</code>需要访问打印机，但此时进程<code>A</code>占有了打印机，进程<code>B</code>会被阻塞，直到进程<code>A</code>释放了打印机资源,进程<code>B</code>才可以继续执行。</p>
+<h2 id="实现临界区互斥的基本方法"><a href="#实现临界区互斥的基本方法" class="headerlink" title="实现临界区互斥的基本方法"></a>实现临界区互斥的基本方法</h2><ul>
+<li>通过硬件实现临界区最简单的办法就是关<code>CPU</code>的中断</li>
+<li>信号量实现：常见的<code>P，V</code>操作</li>
+</ul>
+<h1 id="进程同步与进程通信区别"><a href="#进程同步与进程通信区别" class="headerlink" title="进程同步与进程通信区别"></a>进程同步与进程通信区别</h1><ul>
+<li>进程同步：控制多个进程按一定顺序执行；</li>
+<li>进程通信：进程间传输信息。</li>
+</ul>
+<p>进程通信是一种手段，而进程同步是一种目的。也可以说，为了能够达到进程同步的目的，需要让进程进行通信，传输一些进程同步所需要的信息。</p>
 
       
     </div>
@@ -608,7 +637,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -672,7 +701,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念与区别"><span class="nav-number">1.</span> <span class="nav-text">概念与区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程"><span class="nav-number">2.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的创建和终止"><span class="nav-number">2.1.</span> <span class="nav-text">进程的创建和终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的状态和控制原语"><span class="nav-number">2.2.</span> <span class="nav-text">进程的状态和控制原语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java的Runnable状态与操作系统中进程运行状态的关系"><span class="nav-number">3.</span> <span class="nav-text">Java的Runnable状态与操作系统中进程运行状态的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-number">4.</span> <span class="nav-text">进程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道"><span class="nav-number">4.1.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量"><span class="nav-number">4.2.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-number">4.3.</span> <span class="nav-text">消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享内存"><span class="nav-number">4.4.</span> <span class="nav-text">共享内存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程间通信"><span class="nav-number">5.</span> <span class="nav-text">线程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">5.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#while轮询的方式"><span class="nav-number">5.2.</span> <span class="nav-text">while轮询的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-notify机制"><span class="nav-number">5.3.</span> <span class="nav-text">wait/notify机制</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念与区别"><span class="nav-number">1.</span> <span class="nav-text">概念与区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程"><span class="nav-number">2.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的创建和终止"><span class="nav-number">2.1.</span> <span class="nav-text">进程的创建和终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的状态和控制原语"><span class="nav-number">2.2.</span> <span class="nav-text">进程的状态和控制原语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java的Runnable状态与操作系统中进程运行状态的关系"><span class="nav-number">3.</span> <span class="nav-text">Java的Runnable状态与操作系统中进程运行状态的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-number">4.</span> <span class="nav-text">进程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道"><span class="nav-number">4.1.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量"><span class="nav-number">4.2.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-number">4.3.</span> <span class="nav-text">消息队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享内存"><span class="nav-number">4.4.</span> <span class="nav-text">共享内存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么需要进程间通信"><span class="nav-number">5.</span> <span class="nav-text">为什么需要进程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程间通信"><span class="nav-number">6.</span> <span class="nav-text">线程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">6.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#while轮询的方式"><span class="nav-number">6.2.</span> <span class="nav-text">while轮询的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-notify机制"><span class="nav-number">6.3.</span> <span class="nav-text">wait/notify机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程同步"><span class="nav-number">7.</span> <span class="nav-text">进程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#临界资源"><span class="nav-number">7.1.</span> <span class="nav-text">临界资源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程互斥"><span class="nav-number">8.</span> <span class="nav-text">进程互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现临界区互斥的基本方法"><span class="nav-number">8.1.</span> <span class="nav-text">实现临界区互斥的基本方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程同步与进程通信区别"><span class="nav-number">9.</span> <span class="nav-text">进程同步与进程通信区别</span></a></li></ol></div>
             
 
           </div>
