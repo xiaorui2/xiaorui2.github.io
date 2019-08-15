@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/07/01/Java基础/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/01/Java基础/2.png">
-<meta property="og:updated_time" content="2019-08-13T11:46:48.744Z">
+<meta property="og:updated_time" content="2019-08-15T15:43:20.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java基础">
 <meta name="twitter:description" content="Java语言的特点和特性Java语言的主要特点跨平台性所谓的跨平台性，是指软件可以不受计算机硬件和操作系统的约束而在任意计算机环境下正常运行。这是软件发展的趋势和编程人员追求的目标。之所以这样说，是因为计算机硬件的种类繁多，操作系统也各不相同，不同的用户和公司有自己不同的计算机环境偏好，而软件为了能在这些不同的环境里正常运行，就需要独立于这些平台。而在Java语言中，Java自带的虚拟机很好地实现">
@@ -580,7 +580,13 @@
 <p>异常和错误的本质区别：异常能被程序本身处理，而错误无法处理。<code>Error</code>是可以<code>catch</code>的，而且也可以向常规<code>Exception</code>一样被处理，而且就算不捕捉的话也只是导致当前线程挂掉，其他线程还是可以正常运行，如果有需要的话捕捉<code>Error</code>之后也可以做些其他处理。但是<code>Error</code>是一种系统内部的错误，这种错误不像<code>Exception</code>一样是可能是程序和业务上的错误是可以恢复的。</p>
 <p>怎么<code>catch</code>？<code>catch throwable</code>会把<code>Error</code>和其他继承<code>Throwable</code>的类捕捉到。而<code>catch Exception</code>只会捕捉<code>Exception</code>及其子类，捕捉的范围更小。</p>
 <p><code>Error</code>：是程序无法处理的错误，表示运行应用程序中较严重问题。大多数错误与代码编写者执行的操作无关，而表示代码运行时 <code>JVM</code>出现的问题。 </p>
-<h1 id="异常的种类"><a href="#异常的种类" class="headerlink" title="异常的种类"></a>异常的种类</h1><ul>
+<h1 id="异常的种类"><a href="#异常的种类" class="headerlink" title="异常的种类"></a>异常的种类</h1><p>主要是分为运行时异常和非运行异常</p>
+<ul>
+<li>Checked Exception（非 Runtime Exception）</li>
+<li>Unchecked Exception（Runtime Exception）</li>
+</ul>
+<p>Java 中凡是继承自 Exception，而不继承自 RuntimeException 类的异常都是非运行时异常。所有非运行时异常都必须进行处理不然无法通过编译</p>
+<ul>
 <li>算术异常类：<code>ArithmeticExecption</code></li>
 <li>空指针异常类：<code>NullPointerException</code></li>
 <li>类型强制转换异常：<code>ClassCastException</code></li>
@@ -861,7 +867,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">69</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
