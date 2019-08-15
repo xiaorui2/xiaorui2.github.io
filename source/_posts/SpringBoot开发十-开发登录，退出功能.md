@@ -169,20 +169,35 @@ public Map<String, Object> login(String username, String password, long expiredS
     }
 ```
 
-那么现在写表现层，写`LoginController`来处理页面传来的请求，写能处理请求的方法就可以了
+那么现在写表现层，写`LoginController`来处理页面传来的请求，写能处理请求的方法就可以了。
+
+对于记住我的勾选我们要有不同的保存时间，所以我们定义两个常量的时间比较好，在`CommunityConstant`里添加定义：
+
+```
+/**
+* 默认状态的登录凭证的超时时间
+*/
+int DEFAULT_EXPIRED_SECONDS = 3600 * 12;
+
+/**
+* 记住状态的登录凭证的超时时间
+*/
+int REMEMBER_EXPIRED_SECONDS = 3600 * 24 *100;
+
+
+```
+
+辅助功能完成就写对应的表现层：
 
 ```java
+// 我们在决定Cookie的有效路径,最好是用变量来显示比较方便
+@Value("${server.servlet.context-path}")
+private String contextPath;
+
 @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String login(String username, String password, String code, boolean rememberme,
-                        Model model,/* HttpSession httpSession,*/ HttpServletResponse httpServletResponse,
-                        @CookieValue("kaptchaOwner") String kaptchaOwner) {
+public String login(String username, String password, String code, boolean rememberme, Model model, HttpSession httpSession, HttpServletResponse httpServletResponse) {
         // 检查验证码
         String kaptcha = (String) httpSession.getAttribute("kaptcha");
-        String kaptcha = null;
-        if (StringUtils.isNotBlank(kaptchaOwner)) {
-            String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
-            kaptcha = (String) redisTemplate.opsForValue().get(redisKey);
-        }
 
         if (StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !kaptcha.equalsIgnoreCase(code)) {
             model.addAttribute("codeMsg","验证码不正确");
@@ -193,6 +208,7 @@ public Map<String, Object> login(String username, String password, long expiredS
         int expiredSeconds = rememberme ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
         Map<String, Object> map = userService.login(username, password, expiredSeconds);
         if(map.containsKey("ticket")) {
+            // 需要给客户端发送一个Cookie
             Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
             cookie.setPath(contextPath);
             cookie.setMaxAge(expiredSeconds);
@@ -205,5 +221,26 @@ public Map<String, Object> login(String username, String password, long expiredS
             return "/site/login";
         }
     }
+```
+
+最后开发退出：
+
+首先数据层我们已经写好了，只需要写个业务层和表现层
+
+```java
+// 业务层调一下mapper的update方法就可以了
+public void logout(String ticket) {
+    loginTicketMapper.updateStatus(ticket, 1);
+}
+```
+
+表现层要从`Cookie`中拿到`ticket`，然后调业务层。
+
+```java
+@RequestMapping(path = "/logout", method = RequestMethod.GET)
+public String logout(@CookieValue("ticket") String ticket) {
+    userService.logout(ticket);
+    return "redirect:/login";
+}
 ```
 

@@ -547,6 +547,13 @@ List<String> arrayList = new ArrayList<String>();
 
 # 异常的种类
 
+主要是分为运行时异常和非运行异常
+
+- Checked Exception（非 Runtime Exception）
+- Unchecked Exception（Runtime Exception）
+
+Java 中凡是继承自 Exception，而不继承自 RuntimeException 类的异常都是非运行时异常。所有非运行时异常都必须进行处理不然无法通过编译
+
 - 算术异常类：`ArithmeticExecption`
 - 空指针异常类：`NullPointerException`
 - 类型强制转换异常：`ClassCastException`
