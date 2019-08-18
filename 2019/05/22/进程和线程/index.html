@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/2.png">
-<meta property="og:updated_time" content="2019-08-13T13:22:08.546Z">
+<meta property="og:updated_time" content="2019-08-17T14:02:01.970Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程和线程">
 <meta name="twitter:description" content="概念与区别从本质上来说，一个进程就是一个正在执行的程序，它是系统进行资源分配和调度的基本单位，是操作系统结构的基础。每个进程都有自己的地址空间，包括可执行程序，程序的数据，栈，一组寄存器（程序计算器，栈指针以及其他运行程序需要的信息 线程有时被称为轻量级进程，是程序执行的最小执行流，它是进程的一个实体，是系统独立调度和分派的基本单位 进程和线程的区别：  地址空间：同一进程的线程共享本进程的地址空">
@@ -508,10 +508,10 @@
 <li>剩余区：进程与临界区不相关部分的代码</li>
 </ul>
 <h1 id="进程互斥"><a href="#进程互斥" class="headerlink" title="进程互斥"></a>进程互斥</h1><p>进程互斥是进程之间的间接制约关系。当一个进程进入临界区使用临界资源时，另一个进程必须等待。只有当使用临界资源的进程退出临界区后，这个进程才会解除阻塞状态。</p>
-<p>比如进程<code>B</code>需要访问打印机，但此时进程<code>A</code>占有了打印机，进程<code>B</code>会被阻塞，直到进程<code>A</code>释放了打印机资源,进程<code>B</code>才可以继续执行。</p>
+<p>比如进程 B 需要访问打印机，但此时进程 A 占有了打印机，进程 B 会被阻塞，直到进程 A 释放了打印机资源,进程B 才可以继续执行。</p>
 <h2 id="实现临界区互斥的基本方法"><a href="#实现临界区互斥的基本方法" class="headerlink" title="实现临界区互斥的基本方法"></a>实现临界区互斥的基本方法</h2><ul>
-<li>通过硬件实现临界区最简单的办法就是关<code>CPU</code>的中断</li>
-<li>信号量实现：常见的<code>P，V</code>操作</li>
+<li>通过硬件实现临界区最简单的办法就是关 CPU 的中断</li>
+<li>信号量实现：常见的 P，V 操作</li>
 </ul>
 <h1 id="进程同步与进程通信区别"><a href="#进程同步与进程通信区别" class="headerlink" title="进程同步与进程通信区别"></a>进程同步与进程通信区别</h1><ul>
 <li>进程同步：控制多个进程按一定顺序执行；</li>
@@ -637,7 +637,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -659,7 +659,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

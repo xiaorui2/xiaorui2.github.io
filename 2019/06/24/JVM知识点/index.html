@@ -79,23 +79,24 @@
 
 
 
-<meta name="description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
+<meta name="description" content="三个比较容易混淆的概念Java内存模型共享内存模型。线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本  JVM内存结构就是我们接下来要介绍的JVM的内存划分 Java对象结构对象在内存中存储的布局可以分为3块区域：对象头、实例数据和对齐填充，可以参考对象在内存中的布局。 JAVA虚拟">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM知识点">
 <meta property="og:url" content="http://yoursite.com/2019/06/24/JVM知识点/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
+<meta property="og:description" content="三个比较容易混淆的概念Java内存模型共享内存模型。线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本  JVM内存结构就是我们接下来要介绍的JVM的内存划分 Java对象结构对象在内存中存储的布局可以分为3块区域：对象头、实例数据和对齐填充，可以参考对象在内存中的布局。 JAVA虚拟">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/5.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/JVM知识点/3.png">
-<meta property="og:updated_time" content="2019-08-13T11:38:18.747Z">
+<meta property="og:updated_time" content="2019-08-18T02:10:18.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM知识点">
-<meta name="twitter:description" content="JAVA虚拟机JAVA跨平台我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？ Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后">
-<meta name="twitter:image" content="http://yoursite.com/2019/06/24/JVM知识点/1.png">
+<meta name="twitter:description" content="三个比较容易混淆的概念Java内存模型共享内存模型。线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本  JVM内存结构就是我们接下来要介绍的JVM的内存划分 Java对象结构对象在内存中存储的布局可以分为3块区域：对象头、实例数据和对齐填充，可以参考对象在内存中的布局。 JAVA虚拟">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/24/JVM知识点/5.png">
 
 
 
@@ -389,7 +390,11 @@
       
 
       
-        <h1 id="JAVA虚拟机"><a href="#JAVA虚拟机" class="headerlink" title="JAVA虚拟机"></a>JAVA虚拟机</h1><h2 id="JAVA跨平台"><a href="#JAVA跨平台" class="headerlink" title="JAVA跨平台"></a>JAVA跨平台</h2><p>我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？</p>
+        <h1 id="三个比较容易混淆的概念"><a href="#三个比较容易混淆的概念" class="headerlink" title="三个比较容易混淆的概念"></a>三个比较容易混淆的概念</h1><h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><p>共享内存模型。线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本</p>
+<p><img src="5.png" alt></p>
+<h2 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h2><p>就是我们接下来要介绍的JVM的内存划分</p>
+<h2 id="Java对象结构"><a href="#Java对象结构" class="headerlink" title="Java对象结构"></a>Java对象结构</h2><p>对象在内存中存储的布局可以分为3块区域：对象头、实例数据和对齐填充，可以参考对象在内存中的布局。</p>
+<h1 id="JAVA虚拟机"><a href="#JAVA虚拟机" class="headerlink" title="JAVA虚拟机"></a>JAVA虚拟机</h1><h2 id="JAVA跨平台"><a href="#JAVA跨平台" class="headerlink" title="JAVA跨平台"></a>JAVA跨平台</h2><p>我们都知道JAVA是一个可以跨平台的语言，那么它为什么可以跨平台？</p>
 <p>Java不只是一种编程语言，还是一个完整的操作平台。Java之所以可以跨平台，这离不开JVM虚拟机。JVM是一个软件，在不同的平台上，JVM有不同的版本。Java在编译之后会生成一种.class文件，这种文件成为字节码文件。JVM虚拟机就是将Java编译后的.class文件翻译成特定平台下的机器码，然后运行。也就是说，在不同平台上装上平台对应的JVM虚拟机后，就可以将Java字节码文件转换，然后运行我们的Java程序。</p>
 <p>Java编译后的结果是生成字节码，而不是机器码。字节码是不可以直接运行的，必须通过JVM再次翻译成机器码才可以运行。即使是将Java程序打包成可执行文件，也仍然需要JVM的支持才可以运行。跨平台的是Java程序，而不是JVM。JVM是用C/C++开发的，不能平台，不同的平台下JVM的版本是不同的。</p>
 <h2 id="JAVA虚拟机内存划分"><a href="#JAVA虚拟机内存划分" class="headerlink" title="JAVA虚拟机内存划分"></a>JAVA虚拟机内存划分</h2><p>在Java中，程序员把内存控制权利交给 Java 虚拟机而不用像c++为一个 new 操作去写对应的 delete/free 操作，因此不是很容易出现内存泄露和溢出的问题。</p>
@@ -413,6 +418,11 @@
 <p>这个参数用于显示每次Minor GC时Survivor区中各个年龄段的对象的大小。</p>
 <p>4-XX:InitialTenuringThreshol和-XX:MaxTenuringThreshold</p>
 <p>用于设置晋升到老年代的对象年龄的最小值和最大值，每个对象在坚持过一次Minor GC之后，年龄就加1。</p>
+<p>这上面的也是 JVM 的参数，除了这个以外还有很多，列几个</p>
+<p> -Xms   初始堆大小</p>
+<p>-Xmn   年轻代大小</p>
+<p>-XX:PermSize   设置持久代初始值</p>
+<p>-Xss     每个线程的堆栈大小</p>
 <h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>程序计数器的作用：字节码解释器通过改变程序计数器的值来选取下一条需要执行的字节码指令，从而实现代码的流程控制；在多线程的情况下，程序计数器用于记录当前线程执行的位置，从而当线程被切换回来的时候能够知道该线程上次运行到哪儿了。</p>
 <p>注意：程序计数器是唯不会出现 OutOfMemoryError 的内存区域，它的生命周期随着线程的创建而创建，随着线程的结束而死亡。</p>
 <h3 id="JAVA虚拟机栈"><a href="#JAVA虚拟机栈" class="headerlink" title="JAVA虚拟机栈"></a>JAVA虚拟机栈</h3><p>Java虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有局部变量表、操作数栈、动态链接、方法出口信息。<strong>每个方法从被调用，直到被执行完。对应着一个栈帧在虚拟机中从入栈到出栈的过程</strong></p>
@@ -431,12 +441,13 @@
 <p>初始化：为类的静态变量赋予正确的初始值，上述的准备阶段为静态变量赋予的是虚拟机默认的初始值，此处赋予的才是程序编写者为变量分配的真正的初始值。</p>
 <h2 id="类加载基于的机制"><a href="#类加载基于的机制" class="headerlink" title="类加载基于的机制"></a>类加载基于的机制</h2><p>Java类加载器基于三个机制：委托、可见性和单一性。委托就是将加载一个类的请求交给父类加载器，如果没有父类加载器或者父类加载器不给它加载再加载它，可见性是父类加载器不能看到子类的加载的类，但是子类的加载能看到父类的加载的类。单一性是指仅加载一个类一次，这是由委托机制确保子类加载器不会再次加载父类加载器加载过的类。</p>
 <p>为什么要双亲委派？</p>
-<p>保证java类库中的类不受用户类影响，防止用户自定义一个类库中的同名类，引起问题。</p>
-<p>我们常见的有三种加载器：Bootstrap类加载器（加载java核心类库）、Extension类加载器（加载 Java 的扩展库）和System类加载器（Java 应用的类路径来加载 Java 类）</p>
+<p>保证 java 类库中的类不受用户类影响，防止用户自定义一个类库中的同名类，引起问题。除此之外还有安全性考虑，系统定义的类只能由顶层类加载器加载</p>
+<p>我们常见的有三种加载器：Bootstrap 类加载器（加载 java 核心类库，JVM 自身需要的类）、Extension 类加载器（加载 Java 的扩展库）和 System 类加载器（Java 应用的类路径来加载 Java 类）</p>
 <p>注意：使用不同的类加载器，你可以从不同的源地址加载同一个类，它们被视为不同的类。</p>
-<p>类加载器并不需要等到某个类被“首次主动使用”时再加载它，JVM规范允许类加载器在预料某个类将要被使用时就预先加载它，如果在预先加载的过程中遇到了.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误（LinkageError错误）如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误</p>
+<p>类加载器并不需要等到某个类被“首次主动使用”时再加载它，JVM 规范允许类加载器在预料某个类将要被使用时就预先加载它，如果在预先加载的过程中遇到了.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误（LinkageError错误）如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误</p>
 <p>几个类加载器的层次关系：</p>
 <p><img src="3.png" alt></p>
+<h2 id="如何自定义自己的类加载器"><a href="#如何自定义自己的类加载器" class="headerlink" title="如何自定义自己的类加载器"></a>如何自定义自己的类加载器</h2><p>继承 ClassLoader，重写 findClass 方法，实现加载自定义路径下 class 文件的逻辑。</p>
 <h2 id="自己写个String能加载吗"><a href="#自己写个String能加载吗" class="headerlink" title="自己写个String能加载吗"></a>自己写个String能加载吗</h2><p>加载过程中会先检查类是否被已加载，检查顺序是自底向上，从Custom ClassLoader到BootStrap ClassLoader逐层检查，只要某个classloader已加载就视为已加载此类，保证此类只所有ClassLoader加载一次。而加载的顺序是自顶向下，也就是说当发现这个类没有的时候会先去让自己的父类去加载，父类没有再让儿子去加载，那么在这个例子中我们自己写的String应该是被Bootstrap ClassLoader加载了，所以App ClassLoader就不会再去加载我们写的String类了，导致我们写的String类是没有被加载的。但在应用的时候，需要用自己的类加载器去加载，否则，系统的类加载器永远只是去加载 jre.jar 包中的那个 java.lang.String。双亲委派机制是可以打破的， 所以，这些类都是可以重写的。 但是JVM出于安全的考虑， 你自己写的类 ， 不能用java.* 开头， 否则都不会被加载。 懂了吧， 总结一下就是： 可以写， 但是包名要改。</p>
 <h1 id="类初始化时机"><a href="#类初始化时机" class="headerlink" title="类初始化时机"></a>类初始化时机</h1><p>只有当对类的主动使用的时候才会导致类的初始化，类的主动使用包括以下六种：</p>
 <ul>
@@ -474,10 +485,11 @@
 <p>设置对象头：虚拟机要对对象进行必要的设置，例如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的哈希吗、对象的 GC 分代年龄等信息。 这些信息存放在对象头中。</p>
 <p>执行 init ：在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始，所以要执行程序写的 init 方法。</p>
 <h1 id="GC算法与垃圾回收"><a href="#GC算法与垃圾回收" class="headerlink" title="GC算法与垃圾回收"></a>GC算法与垃圾回收</h1><h2 id="为什么需要垃圾回收以及什么时候GC"><a href="#为什么需要垃圾回收以及什么时候GC" class="headerlink" title="为什么需要垃圾回收以及什么时候GC"></a>为什么需要垃圾回收以及什么时候GC</h2><p>首先因为内存是有限的，在不断的分配内存空间而不回收的话内存迟早都会被消耗完，所以垃圾回收是必须的。</p>
-<p>触发GC 的条件：</p>
-<p>1.GC在优先级最低的线程中运行，一般在应用程序空闲即没有应用线程在运行时被调用。</p>
-<p>2.Java堆内存不足时，GC会被调用。</p>
-<p>触发Full GC：调用Sytem.GC()；老年代空间不足时；GC担保失败。</p>
+<p>触发 GC 的条件：</p>
+<p>1.GC 在优先级最低的线程中运行，一般在应用程序空闲即没有应用线程在运行时被调用。</p>
+<p>2.Java 堆内存不足时，GC 会被调用。</p>
+<p>触发 Full GC：调用 Sytem.GC()；老年代空间不足时；GC 担保失败。</p>
+<h2 id="GC涉及到的内存部分"><a href="#GC涉及到的内存部分" class="headerlink" title="GC涉及到的内存部分"></a>GC涉及到的内存部分</h2><p>主要是堆，还包括方法区（针对常量池的内存回收和对已加载类的卸载）</p>
 <h2 id="对象存活判断"><a href="#对象存活判断" class="headerlink" title="对象存活判断"></a>对象存活判断</h2><p>判断对象是否存活一般有两种方式：</p>
 <ul>
 <li>引用计数：每个对象有一个引用计数属性，新增一个引用时计数加1，引用释放时计数减1，计数为0时可以回收。此方法简单，无法解决对象相互循环引用的问题。</li>
@@ -495,6 +507,10 @@
 <li><p>分代收集：根据各块的特点采用最适当的收集算法。大批对象死去、少量对象存活的（新生代），使用复制算法，复制成本低；对象存活率高、没有额外空间进行分配担保的（老年代），采用标记-清理算法或者标记-整理算法。</p>
 </li>
 </ul>
+<h3 id="复制整理和标记回收有有什么优劣"><a href="#复制整理和标记回收有有什么优劣" class="headerlink" title="复制整理和标记回收有有什么优劣"></a>复制整理和标记回收有有什么优劣</h3><ul>
+<li>复制整理不涉及到对象的删除，只是把可用的对象从一个地方拷贝到另一个地方，因此适合大量对象回收的场景，比如新生代的回收</li>
+<li>标记回收：标记出仍然存活的对象（存在引用的），将所有存活的对象向一端移动，以保证内存的连续，适用于低频操作、数量少，大对象回收，如老年代，但会增加停顿时间</li>
+</ul>
 <h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><ul>
 <li><p>CMS 垃圾收集器：获取最短回收停顿时间为目标的收集器。使用标记 - 清除算法。</p>
 <p>初始标记(标记GCRoots能直接关联到的对象，时间很短)-&gt; 并发标记(进行可达性分析过程，时间很长)-&gt; 重新标记-&gt;并发清除(回收内存空间，时间很长)</p>
@@ -507,15 +523,38 @@
 </ul>
 <h1 id="Java变量申明后存放的区域"><a href="#Java变量申明后存放的区域" class="headerlink" title="Java变量申明后存放的区域"></a>Java变量申明后存放的区域</h1><ul>
 <li>寄存器：最快的存储区, 由编译器根据需求进行分配,我们在程序中无法控制. </li>
-<li>栈：存放基本类型的变量数据和对象的引用，但对象本身不存放在栈中，而是存放在堆（<code>new</code> 出来的对象）或者常量池中（字符串常量对象存放在常量池中。） </li>
-<li>堆：存放所有<code>new</code>出来的对象。</li>
-<li>静态域：存放静态成员（<code>static</code>定义的） </li>
-<li>常量池：存放字符串常量和基本类型常量（<code>public static final</code>）。 </li>
+<li>栈：存放基本类型的变量数据和对象的引用，但对象本身不存放在栈中，而是存放在堆（ new  出来的对象）或者常量池中（字符串常量对象存放在常量池中。） </li>
+<li>堆：存放所有 new 出来的对象。</li>
+<li>静态域：存放静态成员（ static 定义的） </li>
+<li>常量池：存放字符串常量和基本类型常量（ public static final ）。 </li>
 </ul>
-<p>栈和常量池中的数据是可以共享的，但是堆的数据是不可以共享的</p>
-<h1 id="java中new对象干的几件事"><a href="#java中new对象干的几件事" class="headerlink" title="java中new对象干的几件事"></a>java中new对象干的几件事</h1><p>例如：<code>User u = new User();</code></p>
-<p>在堆空间里以<code>User</code>为模板创造了一个 类对象，然后立刻调用<code>User</code>类的构造函数给这个 类对象初始化</p>
-<p>创造了一个<code>User</code>的引用对象，类似<code>c++</code>中的指针，指向这个刚刚创建好的对象。这个引用对象是放在栈里面的（垃圾回收会自动回收）</p>
+<p>栈和常量池中的数据是可以共享的，但是堆的数据是不可以共享的。</p>
+<p>打个比方像 String 的变量申明之后，如果是编译期已经创建好(直接用双引号定义的)的就存储在常量池中，如果是运行期（new 出来的）才能确定的就存储在堆中。</p>
+<h1 id="java中new对象干的几件事"><a href="#java中new对象干的几件事" class="headerlink" title="java中new对象干的几件事"></a>java中new对象干的几件事</h1><p>例如：User u = new User();</p>
+<p>在堆空间里以 User 为模板创造了一个 类对象，然后立刻调用 User 类的构造函数给这个类对象初始化</p>
+<p>创造了一个 User 的引用对象，类似 c++ 中的指针，指向这个刚刚创建好的对象。这个引用对象是放在栈里面的（垃圾回收会自动回收）</p>
+<h1 id="什么时候一个对象会被GC"><a href="#什么时候一个对象会被GC" class="headerlink" title="什么时候一个对象会被GC"></a>什么时候一个对象会被GC</h1><p>比方说我们使用的判断一个对象是否存活的方式是可达性分析，即使在可达性分析算法中不可达的对象，也不是一定会死亡的，要真正宣告一个对象“死亡”，至少要经历两次标记过程：如果对象在进行可达性分析后发现没有与 GC Roots 相连接的引用链，那它将会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行 finaliza() 方法。当对象没有覆盖 finaliza( ) 方法，或者 finaliza( ) 方法已经被虚拟机调用过，虚拟机将这两种情况都视为“没有必要执行”，否则此对象将会放置在一个叫做 F-Queue 的队列中，最后在 finaliza( ) 方法调用中如果这个对象重新</p>
+<h1 id="一个对象从创建到销毁都是怎么在这些部分里存活和转移的？"><a href="#一个对象从创建到销毁都是怎么在这些部分里存活和转移的？" class="headerlink" title="一个对象从创建到销毁都是怎么在这些部分里存活和转移的？"></a>一个对象从创建到销毁都是怎么在这些部分里存活和转移的？</h1><h2 id="对象的创建-1"><a href="#对象的创建-1" class="headerlink" title="对象的创建"></a>对象的创建</h2><ul>
+<li>定位到方法区常量池的类，检查类是否已经被加载、验证、准备、解析。</li>
+<li>检查类是否已经进行过初始化。</li>
+<li>在内存中分配空间</li>
+<li>设置对象的默认初始值(0,false,null)</li>
+<li>执行()方法(类变量的赋值和静态代码块)</li>
+<li>执行构造</li>
+<li>在线程栈中设置对象引用</li>
+</ul>
+<h2 id="对象在内存中的布局"><a href="#对象在内存中的布局" class="headerlink" title="对象在内存中的布局"></a>对象在内存中的布局</h2><p>对象在内存中存储的布局可以分为3块区域：对象头、实例数据和对齐填充。</p>
+<ul>
+<li>对象头：每一个堆中的对象在 HosPost 虚拟机中都有一个对象头，对象头里存储两部分信息：一部分是运行时对象自身的哈希码值 (HashCode)、GC 分代年龄 (Generational GC Age)、锁标志位（占用 2 个 bit 的位置）等信息，另一部分是指向方法去中的类型信息的指针。如果是数组对象的话，还会有额外一部分用来存储数组长度。</li>
+<li>实例数据：是程序代码中定义的各种类型的字段内容。</li>
+<li>对齐填充：并不是必然存在的，仅仅在对象的大小不是8字节的整数倍时起占位符的作用。</li>
+</ul>
+<h2 id="对象的访问方式"><a href="#对象的访问方式" class="headerlink" title="对象的访问方式"></a>对象的访问方式</h2><ul>
+<li>句柄：java 堆中划出一块空间单独存放句柄池，java 栈中的 reference 指向句柄池中的某个句柄，句柄包含两部分信息：堆中实例对象地址和方法区中对象类型信息。</li>
+<li>直接指针：java 栈中的 reference 指向 java 堆中的实例对象，每个实例对象上有一部分信息是用来指向该对象在方法区中的类型信息。</li>
+<li>句柄的优势：当对象发生改变时，reference 的值不用变，只需要改变句柄的实例指针，reference 自身不需要改变。直接指针的优势：节省了一次指针定位的开销，速度更快。HosPot 虚拟机采用第二种方式。</li>
+</ul>
+<h2 id="销毁"><a href="#销毁" class="headerlink" title="销毁"></a>销毁</h2><p>对象完成使命后，等待 GC 进行垃圾回收。销毁对象即清理对象所占用的内存空间，会调用对象的 finalize( ) 方法。</p>
 
       
     </div>
@@ -635,7 +674,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -657,7 +696,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -699,7 +738,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA虚拟机"><span class="nav-number">1.</span> <span class="nav-text">JAVA虚拟机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA跨平台"><span class="nav-number">1.1.</span> <span class="nav-text">JAVA跨平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA虚拟机内存划分"><span class="nav-number">1.2.</span> <span class="nav-text">JAVA虚拟机内存划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA堆"><span class="nav-number">1.2.1.</span> <span class="nav-text">JAVA堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.2.2.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA虚拟机栈"><span class="nav-number">1.2.3.</span> <span class="nav-text">JAVA虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.2.4.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.2.5.</span> <span class="nav-text">方法区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载"><span class="nav-number">2.</span> <span class="nav-text">类加载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">2.1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载的过程"><span class="nav-number">2.2.</span> <span class="nav-text">类加载的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载基于的机制"><span class="nav-number">2.3.</span> <span class="nav-text">类加载基于的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自己写个String能加载吗"><span class="nav-number">2.4.</span> <span class="nav-text">自己写个String能加载吗</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类初始化时机"><span class="nav-number">3.</span> <span class="nav-text">类初始化时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机结束生命周期"><span class="nav-number">4.</span> <span class="nav-text">Java虚拟机结束生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM初始化步骤"><span class="nav-number">5.</span> <span class="nav-text">JVM初始化步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象的创建"><span class="nav-number">6.</span> <span class="nav-text">对象的创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC算法与垃圾回收"><span class="nav-number">7.</span> <span class="nav-text">GC算法与垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要垃圾回收以及什么时候GC"><span class="nav-number">7.1.</span> <span class="nav-text">为什么需要垃圾回收以及什么时候GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象存活判断"><span class="nav-number">7.2.</span> <span class="nav-text">对象存活判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC算法"><span class="nav-number">7.3.</span> <span class="nav-text">GC算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集器"><span class="nav-number">7.4.</span> <span class="nav-text">垃圾收集器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java变量申明后存放的区域"><span class="nav-number">8.</span> <span class="nav-text">Java变量申明后存放的区域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java中new对象干的几件事"><span class="nav-number">9.</span> <span class="nav-text">java中new对象干的几件事</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#三个比较容易混淆的概念"><span class="nav-number">1.</span> <span class="nav-text">三个比较容易混淆的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.1.</span> <span class="nav-text">Java内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM内存结构"><span class="nav-number">1.2.</span> <span class="nav-text">JVM内存结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java对象结构"><span class="nav-number">1.3.</span> <span class="nav-text">Java对象结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA虚拟机"><span class="nav-number">2.</span> <span class="nav-text">JAVA虚拟机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA跨平台"><span class="nav-number">2.1.</span> <span class="nav-text">JAVA跨平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA虚拟机内存划分"><span class="nav-number">2.2.</span> <span class="nav-text">JAVA虚拟机内存划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA堆"><span class="nav-number">2.2.1.</span> <span class="nav-text">JAVA堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">2.2.2.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA虚拟机栈"><span class="nav-number">2.2.3.</span> <span class="nav-text">JAVA虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">2.2.4.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">2.2.5.</span> <span class="nav-text">方法区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类加载"><span class="nav-number">3.</span> <span class="nav-text">类加载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是类的加载"><span class="nav-number">3.1.</span> <span class="nav-text">什么是类的加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载的过程"><span class="nav-number">3.2.</span> <span class="nav-text">类加载的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类加载基于的机制"><span class="nav-number">3.3.</span> <span class="nav-text">类加载基于的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何自定义自己的类加载器"><span class="nav-number">3.4.</span> <span class="nav-text">如何自定义自己的类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自己写个String能加载吗"><span class="nav-number">3.5.</span> <span class="nav-text">自己写个String能加载吗</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类初始化时机"><span class="nav-number">4.</span> <span class="nav-text">类初始化时机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机结束生命周期"><span class="nav-number">5.</span> <span class="nav-text">Java虚拟机结束生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM初始化步骤"><span class="nav-number">6.</span> <span class="nav-text">JVM初始化步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象的创建"><span class="nav-number">7.</span> <span class="nav-text">对象的创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC算法与垃圾回收"><span class="nav-number">8.</span> <span class="nav-text">GC算法与垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要垃圾回收以及什么时候GC"><span class="nav-number">8.1.</span> <span class="nav-text">为什么需要垃圾回收以及什么时候GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC涉及到的内存部分"><span class="nav-number">8.2.</span> <span class="nav-text">GC涉及到的内存部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象存活判断"><span class="nav-number">8.3.</span> <span class="nav-text">对象存活判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GC算法"><span class="nav-number">8.4.</span> <span class="nav-text">GC算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#复制整理和标记回收有有什么优劣"><span class="nav-number">8.4.1.</span> <span class="nav-text">复制整理和标记回收有有什么优劣</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集器"><span class="nav-number">8.5.</span> <span class="nav-text">垃圾收集器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java变量申明后存放的区域"><span class="nav-number">9.</span> <span class="nav-text">Java变量申明后存放的区域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#java中new对象干的几件事"><span class="nav-number">10.</span> <span class="nav-text">java中new对象干的几件事</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么时候一个对象会被GC"><span class="nav-number">11.</span> <span class="nav-text">什么时候一个对象会被GC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一个对象从创建到销毁都是怎么在这些部分里存活和转移的？"><span class="nav-number">12.</span> <span class="nav-text">一个对象从创建到销毁都是怎么在这些部分里存活和转移的？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的创建-1"><span class="nav-number">12.1.</span> <span class="nav-text">对象的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象在内存中的布局"><span class="nav-number">12.2.</span> <span class="nav-text">对象在内存中的布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的访问方式"><span class="nav-number">12.3.</span> <span class="nav-text">对象的访问方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#销毁"><span class="nav-number">12.4.</span> <span class="nav-text">销毁</span></a></li></ol></li></ol></div>
             
 
           </div>

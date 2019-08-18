@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="SpringBoot,">
 
 
 
@@ -79,15 +79,20 @@
 
 
 
-<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta name="description" content="需求介绍—显示登录信息我们需要在每个页面的头部都要把登录用户的头像显示出来，另外在详细信息里面你需要显示用户的名字，除此之外如果登录了，我们显示首页 信息 头像 三个功能的链接，否则显示首页 登录两个功能点，也就是根据登录与否显示头部的内容。 我们每个静态页面都有这个内容，都需要显示登录信息，那么开发这个功能你需要每个请求都需要实现这个工能。我们想要低耦合的解决这个功能，就利用 Spring 的拦">
+<meta name="keywords" content="SpringBoot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot开发十一-显示登录信息">
 <meta property="og:url" content="http://yoursite.com/2019/08/13/SpringBoot开发十一-显示登录信息/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="需求介绍—显示登录信息我们需要在每个页面的头部都要把登录用户的头像显示出来，另外在详细信息里面你需要显示用户的名字，除此之外如果登录了，我们显示首页 信息 头像 三个功能的链接，否则显示首页 登录两个功能点，也就是根据登录与否显示头部的内容。 我们每个静态页面都有这个内容，都需要显示登录信息，那么开发这个功能你需要每个请求都需要实现这个工能。我们想要低耦合的解决这个功能，就利用 Spring 的拦">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-13T13:44:04.094Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/13/SpringBoot开发十一-显示登录信息/1.png">
+<meta property="og:updated_time" content="2019-08-18T07:39:33.890Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot开发十一-显示登录信息">
+<meta name="twitter:description" content="需求介绍—显示登录信息我们需要在每个页面的头部都要把登录用户的头像显示出来，另外在详细信息里面你需要显示用户的名字，除此之外如果登录了，我们显示首页 信息 头像 三个功能的链接，否则显示首页 登录两个功能点，也就是根据登录与否显示头部的内容。 我们每个静态页面都有这个内容，都需要显示登录信息，那么开发这个功能你需要每个请求都需要实现这个工能。我们想要低耦合的解决这个功能，就利用 Spring 的拦">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/13/SpringBoot开发十一-显示登录信息/1.png">
 
 
 
@@ -332,6 +337,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot项目/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot项目</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -359,7 +386,33 @@
       
 
       
-        
+        <h1 id="需求介绍—显示登录信息"><a href="#需求介绍—显示登录信息" class="headerlink" title="需求介绍—显示登录信息"></a>需求介绍—显示登录信息</h1><p>我们需要在每个页面的头部都要把登录用户的头像显示出来，另外在详细信息里面你需要显示用户的名字，除此之外如果登录了，我们显示首页 信息 头像 三个功能的链接，否则显示首页 登录两个功能点，也就是根据登录与否显示头部的内容。</p>
+<p>我们每个静态页面都有这个内容，都需要显示登录信息，那么开发这个功能你需要每个请求都需要实现这个工能。我们想要低耦合的解决这个功能，就利用 Spring 的拦截器，它可以拦截访问服务器的请求，拦截请求之后可以在拦截这个请求之后的开始或者结束的部分插入一些代码，从而解决一些请求共有点的一些功能实现。</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>使用拦截器的方法：</p>
+<p>先写一个类实现 HandlerInterceptor 接口，然后配置拦截器的处理范围，拦截哪些请求，不拦截哪些请求。写个实例，先写类 AlphaInterceptor 实现 HandlerInterceptor 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.controller.interceptor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.ModelAndView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span><span class="comment">// 把拦截器交给容器管理</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AlphaInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(AlphaInterceptor.class);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在Controller之前执行</span></span><br><span class="line">    <span class="comment">// Object是拦截的方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        logger.debug(<span class="string">"preHandle: "</span>+ handler.toString());</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在调用完Controller之后执行，模板之前执行</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        logger.debug(<span class="string">"postHandle:"</span> + handler.toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在TemplateEngine之后执行</span></span><br><span class="line">    <span class="comment">// 异常是在调用Controller或者模板过程中出现了异常就会赋值给这个ex参数</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        logger.debug(<span class="string">"afterCompletion: "</span> + handler.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们写好了之后要写一个配置类 WebMvcConfig：</p>
+<p>一般配置类都是引入第三方的 Bean，但是拦截器需要实现 WebMvcConfigurer 接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.AlphaInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.LoginRequiredInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.LoginTicketInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.MessageInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurer;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AlphaInterceptor alphaInterceptor;</span><br><span class="line">	<span class="comment">// .excludePathPatterns 表示哪些路径不被拦截比方说一些静态资源，</span></span><br><span class="line">    <span class="comment">// .addPathPatterns 表示确定的拦截的路径</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addInterceptor(alphaInterceptor)</span><br><span class="line">                .excludePathPatterns(<span class="string">"/**/*.css"</span>, <span class="string">"/**/*.js"</span>, <span class="string">"/**/*.png"</span>, <span class="string">"/**/*.jpg"</span>, <span class="string">"/**/*.jpeg"</span>)</span><br><span class="line">                .addPathPatterns(<span class="string">"/register"</span>, <span class="string">"/login"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>知道拦截器怎么用了，我们就正式来写一下，根据我们的需求，</p>
+<p>我们需要在请求开始时查询登录用户，然后在本次请求中持有用户数据（就是存到内存里），然后在模板视图上引用，最后在请求结束时清理用户数据。</p>
+<p><img src="1.png" alt></p>
+<p>第一步我们知道 Cookie 是从 HttpServletRequest 对象里面取出来的，因为很多情况下都需要获获取 Cookie，所以写一个工具帮我们实现一下 CookieUtil：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.CookieValue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.Cookie;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CookieUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getValue</span><span class="params">(HttpServletRequest httpServletRequest, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (httpServletRequest == <span class="keyword">null</span> || name == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"参数为空！"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Cookie[] cookies = httpServletRequest.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookies != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cookie.getName().equals(name)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cookie.getValue();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其次我们说了我们通过 Ticket 查询到的用户，我们需要把它存下来，但是由于服务器对应客户端是一对多的，它是一个处理多线程的，每个线程隔离的存这个对象，那么我们写个工具 HostHolder 存 User 对象，起到一个容器的作用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.entity.User;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 持有用户信息，用于代替session对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HostHolder</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ThreadLocal&lt;User&gt; users = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        users.set(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> users.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        users.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后写个拦截器 LoginTicketInterceptor：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.controller.interceptor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.entity.LoginTicket;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.entity.User;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.service.UserService;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.util.CookieUtil;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.util.HostHolder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.authentication.UsernamePasswordAuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.Authentication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.context.SecurityContextHolder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.core.context.SecurityContextImpl;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.ModelAndView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.net.Authenticator;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginTicketInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> HostHolder hostHolder;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 从Cookie中获取凭证</span></span><br><span class="line">        String ticket = CookieUtil.getValue(request, <span class="string">"ticket"</span>);</span><br><span class="line">        <span class="keyword">if</span> (ticket != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 查询凭证</span></span><br><span class="line">            LoginTicket loginTicket = userService.findLoginTicket(ticket);</span><br><span class="line">            <span class="comment">// 检查凭证是否有效</span></span><br><span class="line">            <span class="keyword">if</span> (loginTicket != <span class="keyword">null</span> &amp;&amp; loginTicket.getStatus() == <span class="number">0</span> &amp;&amp; loginTicket.getExpired().after(<span class="keyword">new</span> Date())) &#123;</span><br><span class="line">                <span class="comment">// 根据凭证查用户</span></span><br><span class="line">                User user = userService.findUserById(loginTicket.getUserId());</span><br><span class="line">                <span class="comment">// 在本次请求中持有用户，多线程，利用ThreadLocal</span></span><br><span class="line">                hostHolder.setUser(user);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 在模板引擎调用之前把这个User存放到modelAndView里面</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        User user = hostHolder.getUser();</span><br><span class="line">        <span class="keyword">if</span> (user != <span class="keyword">null</span> &amp;&amp; modelAndView != <span class="keyword">null</span>) &#123;</span><br><span class="line">            modelAndView.addObject(<span class="string">"loginUser"</span>, user);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        hostHolder.clear();</span><br><span class="line">        SecurityContextHolder.clearContext();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写好拦截器就要注入到 WebMvcConfig：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.AlphaInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.LoginRequiredInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.LoginTicketInterceptor;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.controller.interceptor.MessageInterceptor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistry;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurer;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AlphaInterceptor alphaInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> LoginTicketInterceptor loginTicketInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addInterceptor(alphaInterceptor)</span><br><span class="line">                .excludePathPatterns(<span class="string">"/**/*.css"</span>, <span class="string">"/**/*.js"</span>, <span class="string">"/**/*.png"</span>, <span class="string">"/**/*.jpg"</span>, <span class="string">"/**/*.jpeg"</span>)</span><br><span class="line">                .addPathPatterns(<span class="string">"/register"</span>, <span class="string">"/login"</span>);</span><br><span class="line"></span><br><span class="line">        registry.addInterceptor(loginTicketInterceptor)</span><br><span class="line">                .excludePathPatterns(<span class="string">"/**/*.css"</span>, <span class="string">"/**/*.js"</span>, <span class="string">"/**/*.png"</span>, <span class="string">"/**/*.jpg"</span>, <span class="string">"/**/*.jpeg"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就是处理页面了。</p>
+
       
     </div>
     
@@ -373,6 +426,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+        </div>
       
 
       
@@ -447,8 +506,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -463,7 +531,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -485,7 +553,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -517,6 +585,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#需求介绍—显示登录信息"><span class="nav-number">1.</span> <span class="nav-text">需求介绍—显示登录信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

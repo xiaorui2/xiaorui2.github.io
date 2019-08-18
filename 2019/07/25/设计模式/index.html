@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="九八年生于晚秋">
 <meta property="og:description" content="单例模式它属于创建型模式，它提供了一种创建对象的最佳方式。 这种模式涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。 根据定义可以看到，单例类只能有一个实例。单例类必须自己创建自己的唯一实例。单例类必须给所有其他对象提供这一实例。 优点：在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-30T11:36:27.383Z">
+<meta property="og:updated_time" content="2019-08-18T02:39:40.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式">
 <meta name="twitter:description" content="单例模式它属于创建型模式，它提供了一种创建对象的最佳方式。 这种模式涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。 根据定义可以看到，单例类只能有一个实例。单例类必须自己创建自己的唯一实例。单例类必须给所有其他对象提供这一实例。 优点：在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销">
@@ -440,6 +440,8 @@
 <p>客户端使用：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取Jpg</span></span><br><span class="line">ReaderFactory factory=<span class="keyword">new</span> JpgReaderFactory();</span><br><span class="line">Reader  reader=factory.getReader();</span><br><span class="line">reader.read();</span><br><span class="line"><span class="comment">// 读取Png</span></span><br><span class="line">ReaderFactory factory=<span class="keyword">new</span> PngReaderFactory();</span><br><span class="line">Reader  reader=factory.getReader();</span><br><span class="line">reader.read();</span><br><span class="line"><span class="comment">// 读取Gif</span></span><br><span class="line">ReaderFactory factory=<span class="keyword">new</span> GifReaderFactory();</span><br><span class="line">Reader  reader=factory.getReader();</span><br><span class="line">reader.read();</span><br></pre></td></tr></table></figure>
 
+<h2 id="抽象工厂模式和工厂方法模式区别"><a href="#抽象工厂模式和工厂方法模式区别" class="headerlink" title="抽象工厂模式和工厂方法模式区别"></a>抽象工厂模式和工厂方法模式区别</h2><p>工厂模式：定义一个用于创建对象的借口，让子类决定实例化哪一个类</p>
+<p>抽象工厂模式：为创建一组相关或相互依赖的对象提供一个接口，而且无需指定他们的具体类</p>
 <h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><p>代理模式使用代理对象完成用户请求，屏蔽用户对真实对象的访问。在代理模式中，我们创建具有现有对象的对象，以便向外界提供功能接口。</p>
 <p>优点：职责清晰；高扩展性；智能化。</p>
 <p>缺点：由于在客户端和真实主题之间增加了代理对象，因此有些类型的代理模式可能会造成请求的处理速度变慢。 实现代理模式需要额外的工作，有些代理模式的实现非常复杂。</p>
@@ -575,7 +577,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -597,7 +599,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -639,7 +641,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#几种实现方式"><span class="nav-number">1.1.</span> <span class="nav-text">几种实现方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式，线程不安全"><span class="nav-number">1.1.1.</span> <span class="nav-text">懒汉式，线程不安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式，线程安全"><span class="nav-number">1.1.2.</span> <span class="nav-text">懒汉式，线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#饿汉式，线程安全"><span class="nav-number">1.1.3.</span> <span class="nav-text">饿汉式，线程安全</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#典型的双重检查锁定"><span class="nav-number">2.</span> <span class="nav-text">典型的双重检查锁定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工厂模式"><span class="nav-number">3.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单工厂"><span class="nav-number">3.1.</span> <span class="nav-text">简单工厂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式-1"><span class="nav-number">3.2.</span> <span class="nav-text">工厂模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#几种实现方式"><span class="nav-number">1.1.</span> <span class="nav-text">几种实现方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式，线程不安全"><span class="nav-number">1.1.1.</span> <span class="nav-text">懒汉式，线程不安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#懒汉式，线程安全"><span class="nav-number">1.1.2.</span> <span class="nav-text">懒汉式，线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#饿汉式，线程安全"><span class="nav-number">1.1.3.</span> <span class="nav-text">饿汉式，线程安全</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#典型的双重检查锁定"><span class="nav-number">2.</span> <span class="nav-text">典型的双重检查锁定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工厂模式"><span class="nav-number">3.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单工厂"><span class="nav-number">3.1.</span> <span class="nav-text">简单工厂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式-1"><span class="nav-number">3.2.</span> <span class="nav-text">工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式和工厂方法模式区别"><span class="nav-number">3.3.</span> <span class="nav-text">抽象工厂模式和工厂方法模式区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li></ol></div>
             
 
           </div>
