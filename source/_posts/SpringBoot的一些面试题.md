@@ -5,6 +5,25 @@ tags: SpringBoot
 categories: SpringBoot项目
 ---
 
+# SpringBoot的启动和运行原理
+
+## SpringBoot的启动流程
+
+首先是@SpringBootApplication 注解，@SpringBootApplication 注解实际上是 SpringBoot 提供的一个复合注解：@SpringBootConfiguration  @EnableAutoConfiguration  @ComponentScan
+
+- @SpringBootConfiguration 也是来源于 @Configuration，二者功能都是将当前类标注为配置类，并将当前类里以 @Bean 注解标记的方法的实例注入到srping容器中
+- @EnableAutoConfiguration 注解启用自动配置其可以帮助 SpringBoot 应用将所有符合条件的 @Configuration 配置都加载到当前 IoC 容器之中
+
+- @ComponentScan：@ComponentScan 对应于XML配置形式中的 context:component-scan，用于将一些标注了特定注解的bean定义批量采集注册到Spring的IoC容器之中，这些特定的注解大致包括：@Controller  @Entity @Component  @Service  @Repository
+
+其次是SpringApplication 以及 run() 方法（也就是自动加载的原理）
+
+流程看一下：run 方法中去创建了一个 SpringApplication 实例，调用了一个初始化的 initialize 方法，
+为 SpringApplication 对象赋一些初值、在调用 loadFactoryNames 方法其作用是把 /spring.factories 文件中的配置类转化为对象
+创建了应用的监听器 SpringApplicationRunListeners 并开始监听
+
+![](5.png)
+
 # SpringBoot的IOC和AOP
 
 ## IOC
@@ -21,7 +40,7 @@ categories: SpringBoot项目
 
 由此我们可以看书`IOC`的目的无外乎三种：
 
-- `Resource`定位，也就我们所说的配置文件（`Xml`），配置类（`JavaConfig`）。必须先找到描述`bean`对象的文件，才好完成后面对象创建与管理。
+- `Resource`定位，也就我们所说的配置文件（`Xml`），配置类（`JavaConfig`）。必须先找到描述`bean`对象的文件，才好完成后面对象创建与管理。  
 - `BeanDefinition`的解析和注册，承继上面的找到`bean`对象描述信息之后，我们需要在内存中用命为`BeanDefinition`的对象去封装它。何谓注册？顾名思义，注册就是为了后面的查询服务的，我们前文不是提及过希望有一个“容器”去管理它们吗。所以注册就是以`beanName` 为`key`，`beanDefinition`为`value`注册到一个`concurrentHashMap`中去。
 - `Ioc`的依赖注入，通过`getbean()`的方式获取bean对象，而依赖注入就是在这个方法内部完成的，内部是以递归的方式完成的。所以当我们在开发时候碰到空指针异常的时候，大多数时候是因为我们`Spring` 配置文件处理不当，`bean`与`bean`之间的依赖关系没处理好。
 
@@ -90,6 +109,64 @@ public class CommonConfiguration {}
 
 `Spring`如何使用`CGLIB`来生成代理对象：通过动态地对目标对象进行子类化
 
+# BeanFactory 和 FactoryBean 的区别
+
+BeanFactory 是 IOC 最基本的容器，负责生产和管理 bean，它为其他具体的 IOC 容器提供了最基本的规范，例如 DefaultListableBeanFactory。
+
+FactoryBean 是一个接口，当在 IOC 容器中的 Bean 实现了 FactoryBean 后，通过 getBean(String BeanName)获取到的 Bean 对象并不是 FactoryBean 的实现类对象，而是这个实现类中的 getObject() 方法返回的对象。
+
+ BeanFactory 和 FactoryBean 其实没有什么比较性的，只是两者的名称特别接近
+
+# 注解的原理
+
+注解相当于一种标记，在程序中加入注解就等于为程序打上某种标记在此以后，javac编译器、开发工具和其他程序可以通过反射来了解你的类及各种元素上有无何种标记，看你的程序有什么标记，就去干相应的事情，标记(注解)可以加在包、类，属性、方法，方法的参数以及局部变量上。springboot 注解主要用来配置 bean，切面相关配置。
+
+## 元注解和组合注解
+
+ 元注解：注解的最小单位，有 4 个分别为 @Retention @Target @Document @Inherited
+
+组合注解：由元注解组合而成的注解，比如@Controller、@Override、@Component等我们平常用的所有注解都是由这 4 个注解所组成的
+
+### @Retention
+
+有三种取值
+
+```java
+@Retention(RetentionPolicy.SOURCE)   
+//注解仅存在于源码中，在class字节码文件中不包含，对应Java源文件(.java文件)
+@Retention(RetentionPolicy.CLASS)     
+// 默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得 ，对应.class文件，
+@Retention(RetentionPolicy.RUNTIME)  
+// 注解会在class字节码文件中存在，在运行时可以通过反射获取到, 对应内存中的字节码
+```
+
+首先要明确生命周期长度 SOURCE < CLASS < RUNTIME，当在 Java 源程序上加了一个注解，这个 Java 源程序要由 javac 去编译
+
+### @Target
+
+```java
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface Target {
+    ElementType[] value();
+}
+@Target(ElementType.TYPE)   //接口、类、枚举、注解
+@Target(ElementType.FIELD) //字段、枚举的常量
+@Target(ElementType.METHOD) //方法
+@Target(ElementType.PARAMETER) //方法参数
+@Target(ElementType.CONSTRUCTOR)  //构造函数
+@Target(ElementType.LOCAL_VARIABLE)//局部变量
+@Target(ElementType.ANNOTATION_TYPE)//注解
+@Target(ElementType.PACKAGE) ///包
+```
+
+### @Documented
+
+说明该注解将被包含在 javadoc 中
+
+### @Inherited
+
+说明子类能够继承父类的的该注解，就是当一个类 A 使用了改注解，一个类 B 继承这个类 A,则类 B 也拥有类 A 的所有注解
+
 # 注解的作用
 
 ## @SpringBootApplication
@@ -107,10 +184,6 @@ public class CommonConfiguration {}
 		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })// 组件扫描，扫描配置类和子包下的bean
 ```
 
-## @SpringBootTest配合@ContextConfiguration(classes = CommunityApplication.class)
-
-引入的一个用于测试的注解
-
 ## @Component
 
 泛指组件，把普通`pojo`实例化到`spring`容器中，相当于配置文件中的  `<bean id="" class=""/>`。
@@ -118,6 +191,8 @@ public class CommonConfiguration {}
 因为在持久层、业务层和控制层中，分别采用`@Repository`、`@Service`和`@Controller`对分层中的类进行凝视，而用`@Component`对那些比较中立的类进行凝视。
 
 ## @Controller
+
+由@Retention @Target @Document 和 @Component 这几个注解组成
 
 用于标注控制层，相当于`struts`中的`action`层
 
@@ -153,6 +228,24 @@ public class CommonConfiguration {}
 
 这个注解导致每次调用`getbean`方法时都实例化`bean`，但是实际上很少会这样去做。记住被`Spring`容器管理的`Bean`只被实例化一次，因为它是单例的。
 
+## @Autowired 与@Resource的区别
+
+@Autowired 与 @Resource 都可以用来装配 bean. 都可以写在字段上，但是 @Autowired 默认按类型装配，@Resource 是 JDK1.6 支持的注解，默认按照名称进行装配
+
+## @Autowired与@Override的区别
+
+@Autowired 注解的作用是解决对类成员变量、方法及构造函数进行标注，完成自动装配的工作，  @Override 是伪代码,表示重写(当然不写也可以)可以当注释用,可以给你验证 @Override 下面的方法名是否是你父类中所有的，如果没有则报错
+
+## 有关注解的一个问题
+
+一个 controller 分别调用两个 Service 再调用两个 Dao 时，注解加在什么层，如何实现事务？
+
+应该加在 Service 层吧，配置一下 spring 的事务传播，创建两个事务。
+
+那如果那两个Service强相关呢？
+
+Dao 层中的方法更多的是一种对数据库的增删改查的原子性操作，而 Service 层中的方法相当于对这些原子性的操作做一个组合，这里要同时操作 TeacherDao、StudentDao 中的 insert 方法所以新建一个接口，添加 @Service注解。@Transactional 注解开启事务管理，利用事务管理器加入。
+
 # 哪些bean会被扫描
 
 被`@controller` 、`@service`、`@repository` 、`@component `注解的类，都会把这些类纳入进`spring`容器中进行管理
@@ -179,19 +272,27 @@ public class CommonConfiguration {}
 
 # Spring事务管理
 
+## 事务原理
+
+Spring 事务的本质其实就是数据库对事务的支持：加上了 @EnableTransctionManagement注解就表示使用Spring 事务机制来进行事务管理。
+
+- 配置文件开启注解驱动，在相关的类和方法上通过注解 @Transactional 标识。
+- spring 在启动的时候会去解析生成相关的 bean，这时候会查看拥有相关注解的类和方法，并且为这些类和方法生成代理，并根据 @Transaction 的相关参数进行相关配置注入，这样就在代理中为我们把相关的事务处理掉了（开启正常提交事务，异常回滚事务）。
+- 真正的数据库层的事务提交和回滚是通过bin log或者redo log实现的。
+
 具体的事务的概念可以看[https://xiaorui2.github.io/2019/06/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/](https://xiaorui2.github.io/2019/06/29/数据库事务和隔离级别/)
 
-`Spring`事务支持编程式事务管理和声明式事务管理两种。
+Spring 事务支持编程式事务管理和声明式事务管理两种。
 
 ## Spring事务管理接口
 
-- `PlatformTransactionManager`：（平台）事务管理器
-- `TransactionDefinition`：事务定义信息(事务隔离级别、传播行为、超时、只读、回滚规则)
-- `TransactionStatus`：事务运行状态
+- PlatformTransactionManager：（平台）事务管理器
+- TransactionDefinition：事务定义信息(事务隔离级别、传播行为、超时、只读、回滚规则)
+- TransactionStatus：事务运行状态
 
 ### PlatformTransactionManager
 
-`TransactionTemplate`或者直接使用底层的`PlatformTransactionManager`。对于编程式事务管理，`spring`推荐使用`TransactionTemplate`。`Spring`并不直接管理事务，而是提供了多种事务管理器，通过`PlatformTransactionManager`接口来实现。`PlatformTransactionManager`接口中定义了三个方法：
+TransactionTemplate 或者直接使用底层的 PlatformTransactionManager 对于编程式事务管理，spring 推荐使用 TransactionTemplate。Spring 并不直接管理事务，而是提供了多种事务管理器，通过PlatformTransactionManager 接口来实现。PlatformTransactionManager 接口中定义了三个方法：
 
 ```java
 Public interface PlatformTransactionManager()...{  
@@ -278,3 +379,18 @@ public interface TransactionDefinition {
 ### 声明式事务
 
 不需要通过编程的方式管理事务，这样就不需要在业务逻辑代码中掺杂事务管理的代码，只需在配置文件中做相关的事务规则声明(或通过基于`@Transactional`注解的方式)，便可以将事务规则应用到业务逻辑中。
+
+# SpringMVC的流程
+
+- 发起请求到前端控制器(DispatcherServlet)
+- 前端控制器请求 HandlerMapping 查找 Handler （可以根据xml配置、注解进行查找）
+- 处理器映射器 HandlerMapping 向前端控制器返回 Handler，HandlerMapping 会把请求映射为HandlerExecutionChain 对象（包含一个Handler 处理器（页面控制器）对象，多个 HandlerInterceptor对象），通过这种策略模式，很容易添加新的映射策略
+- 前端控制器调用处理器适配器去执行 Handler
+- 处理器适配器 HandlerAdapter 将会根据适配的结果去执行 Handler
+- Handler 执行完成给适配器返回 ModelAndView
+- 处理器适配器向前端控制器返回 ModelAndView （ModelAndView 是 springmvc 框架的一个底层对象，包括 Model 和 view）
+- 前端控制器请求视图解析器去进行视图解析 （根据逻辑视图名解析成真正的视图），通过这种策略很容易更换其他视图技术，只需要更改视图解析器即可
+- 视图解析器向前端控制器返回 View
+- 前端控制器进行视图渲染 （视图渲染将模型数据(在 ModelAndView 对象中)填充到 request 域）
+- 前端控制器向用户响应结果
+

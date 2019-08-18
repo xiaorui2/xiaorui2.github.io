@@ -226,11 +226,19 @@ class Outter {
 
 `== `对于基本类型来说是值比较，对于引用类型来说是比较的是引用；而 `equals` 默认情况下是引用比较，只是很多类重新了` equals `方法，比如` String`、`Integer` 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。
 
+## 若对一个类不重写，它的equals()方法是如何比较的
+
+比较是对象的地址
+
 # 基本数据类型
 
 ![](1.png)
 
 注意：`String` 不属于基础类型，它属于对象。
+
+## 自动装箱和自动拆箱
+
+自动装箱是 Java 编译器在基本数据类型和对应的对象包装类型之间做的一个转化。比如：把 int 转化成 Integer，double 转化成 Double，等等。反之就是自动拆箱。
 
 # String
 
@@ -343,13 +351,15 @@ System.out.println(s3==s4);
 
 ## ArrayList 和 LinkedList 区别
 
-`ArrayList`和`LinkedList`都是实现了`List`接口的容器类，用于存储一系列的对象引用。他们都可以对元素的增删改查进行操作。
+ArrayList 和 LinkedList 都是实现了 List 接口的容器类，用于存储一系列的对象引用。他们都可以对元素的增删改查进行操作。
 
-`ArrayList`是实现了基于动态数组的数据结构，`LinkedList`是基于链表结构。
+ArrayList 是实现了基于动态数组的数据结构，LinkedList 是基于链表结构。
 
-`ArrayList`可以以`O(1)`时间复杂度对元素进行随机访，`LinkedList `则是`O(n)`的复杂度。
+ArrayList 可以以 O(1) 时间复杂度对元素进行随机访，LinkedList 则是 O(n) 的复杂度。
 
-新增和删除操作`add`和`remove`，`LinkedList` 时间复杂度为`O(1)`，而`ArrayList` 为`O(n)`，因为要移动数据。对`ArrayList`和`LinkedList`而言，在列表末尾增加一个元素所花的开销都是固定的都是`O(1)`。`LinkedList`比`ArrayList`更占内存，因为`LinkedList`为每一个节点存储了两个引用，一个指向前一个元素，一个指向下一个元素。
+新增和删除操作 add 和 remove，LinkedList 时间复杂度为 O(1)，而 ArrayList 为 O(n)，因为要移动数据。对ArrayList 和 LinkedList 而言，在列表末尾增加一个元素所花的开销都是固定的都是 O(1)。LinkedList 比 ArrayList 更占内存，因为 LinkedList 为每一个节点存储了两个引用，一个指向前一个元素，一个指向下一个元素。
+
+ArrayList 并发 add() 可能出现数组下标越界异常。
 
 ## ArrayList 和 Vector 的区别
 
@@ -505,6 +515,12 @@ public class HashMapTest {
 如果`hash`值相当，继续比较 这两个对象的地址或者内容是否相当。
 如果相当：判断出来要添加的`Key`与`HashMap`中的`Key`重复，把`Value`的值给替换成最新的。也就是理解的`hashcode()`和`equals()`的区别
 
+## Iterator和ListIterator的区别
+
+Iterator 可用来遍历 Set 和 List 集合，但是 ListIterator 只能用来遍历List。 
+Iterator 对集合只能是前向遍历，ListIterator 既可以前向也可以后向。 
+ListIterator 实现了 Iterator 接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。
+
 # 泛型
 
 本质是为了参数化类型（在不创建新的类型的情况下，通过泛型指定的不同类型来控制形参具体限制的类型）。也就是说在泛型使用过程中，操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
@@ -523,7 +539,7 @@ List<String> arrayList = new ArrayList<String>();
 
 毫无疑问，程序的运行结果会以崩溃结束：`ArrayList`可以存放任意类型，例子中添加了一个`String`类型，添加了一个`Integer`类型，再使用时都以`String`的方式使用，因此程序崩溃了。
 
-注意：泛型只在编译阶段有效，在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。对此总结成一句话：泛型类型在逻辑上看以看成是多个不同的类型，实际上都是相同的基本类型。
+注意：泛型只在编译阶段有效，在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。也就是说，泛型信息不会进入到运行时阶段。对此总结成一句话：泛型类型在逻辑上看以看成是多个不同的类型，实际上都是相同的基本类型。但是在在return之前，会根据泛型变量进行强转
 
 泛型有三种使用方式，分别为：泛型类、泛型接口、泛型方法
 
@@ -742,6 +758,10 @@ public class CallableThreadTest implements Callable<Integer>
 `run()`就和普通的成员方法一样，可以被重复调用。
 如果直接调用`run`方法，并不会启动新线程！程序中依然只有主线程这一个线程，其程序执行路径还是只有一条，还是要顺序执行，还是要等待`run`方法体执行完毕后才可继续执行下面的代码，这样就没有达到多线程的目的。
 
+## 四种方式哪种更好一点
+
+实现 Runnalbe 接口更好，使用实现 Runnable 接口的方式创建的线程可以处理同一资源，从而实现资源的共享。
+
 # sleep()，wait()，yield()和join()方法
 
 ## sleep() 
@@ -760,16 +780,16 @@ public class CallableThreadTest implements Callable<Integer>
 `join()`方法会使当前线程等待调用`join()`方法的线程结束后才能继续执行。`join()`无参形式等价于`join(0)`，`wait()`类似。
 
 ## sleep()与wait()的区别
-- 这两个方法来自不同的类，`sleep`是`Thread`类的方法，而`wait`是`Object`类的方法；
-- 执行sleep方法后不会释放锁，而执行`wait`方法后会释放锁；
-- `wait`，`notify`和`notifyAll`只能在同步方法或同步代码块中调用，而sleep可以在任何地方调用；
-- `sleep`必须捕获异常，而`wait`，`notify`和`notifyAll`不需要捕获异常。（如果不是在同步方法或同步代码块中调用`wait()`方法，则抛出`IllegalMOnitorStateException`，它是`RuntimeException`的一个子类，因此，不需要`try-catch`语句进行捕捉异常）
+- 这两个方法来自不同的类，sleep 是 Thread 类的方法，而 wait 是 Object 类的方法；
+- 执行sleep方法后不会释放锁，而执行 wait 方法后会释放锁；
+- wait，notify 和 notifyAll 只能在同步方法或同步代码块中调用，而sleep可以在任何地方调用；
+- sleep必须捕获异常，而wait，notify和notifyAll不需要捕获异常。（如果不是在同步方法或同步代码块中调用wait() 方法，则抛出 IllegalMOnitorStateException，它是 RuntimeException 的一个子类，因此，不需要 try-catch 语句进行捕捉异常）
 
 需要注意以下几点： 
-- 在执行`notify()`或`notifyAll()`方法后，当前线程不会马上释放该对象锁，需要等到`notify()`或`notifyAll()`方法所在的同步方法或同步代码块执行完成，当前线程才会释放锁。 
-- 在`sleep()`状态下`interrupt()`中断线程，会进入`catch`语句，并且清除停止状态值，使之变成`false`。 
-- `wait(long)`方法：如果线程在指定时间`(long)`内未被唤醒，则自动唤醒。`wait(0)`等价于`wait()`。 
-- `Thread.Sleep(0)`的作用是“触发操作系统立刻重新进行一次`CPU`竞争”。
+- 在执行 notify() 或 notifyAll() 方法后，当前线程不会马上释放该对象锁，需要等到 notify() 或 notifyAll() 方法所在的同步方法或同步代码块执行完成，当前线程才会释放锁。 
+- 在 sleep() 状态下 interrupt() 中断线程，会进入 catch 语句，并且清除停止状态值，使之变成 false。 
+- wait(long) 方法：如果线程在指定时间内未被唤醒，则自动唤醒。wait(0) 等价于 wait()。 
+- Thread.Sleep(0) 的作用是“触发操作系统立刻重新进行一次 CPU 竞争。
 
 ## sleep()与 yield()的区别
 - `sleep()`方法给其他线程运行机会时不考虑其他线程的优先级，因此会给低优先级的线程运行的机会；`yield()`方法只会给相同优先级或更高优先级的线程运行的机会。
@@ -777,6 +797,10 @@ public class CallableThreadTest implements Callable<Integer>
 - `sleep()`方法声明抛出`InterruptedException`异常，而`yield()`方法没有声明任何异常。
 - `sleep()`方法比`yield()`方法具有更好的可移植性（跟操作系统`CPU`调度相关）。
 - `sleep`方法需要参数，而`yield`方法不需要参数。
+
+## wait 方法底层原理
+
+
 
 # 输入一个URL回车之后的过程是什么，涉及到了哪些协议
 
@@ -795,7 +819,9 @@ public class CallableThreadTest implements Callable<Integer>
 
 首先按值调用是表示方法接收的是调用者提供的值。而按引用调用表示方法接收的是调用者提供的变量地址。
 
-`java`里对象传递的时候，传递的都是引用（也就是对象的地址），这比传递整个对象高效的多。而基础类型，`int`，`double`等传递的才是值。
+java 里对象传递的时候，传递的都是引用（也就是对象的地址），这比传递整个对象高效的多。而基础类型，int，double 等传递的才是值。
+
+但是当一个对象被当作参数传递给一个方法后，此方法可改变这个对象的属性，并可返回变化后的结果，那么这里到底是值传递还是引用传递：是值传递。Java 编程语言只有值传递参数。当一个对象实例作为一个参数被传递到方法中时，参数的值就是对该对象的引用。对象的内容可以在被调用的方法中改变，但对象的引用是永远不会改变的。
 
 # Java的null类型
 
@@ -895,3 +921,15 @@ https://blog.csdn.net/why_still_confused/article/details/51295707
 ## 使用反序列化
 
 当我们序列化和反序列化一个对象，`jvm`会给我们创建一个单独的对象。在反序列化时，`jvm`创建对象并不会调用任何构造函数。为了反序列化一个对象，我们需要让我们的类实现`Serializable`接口
+
+# 方法覆盖和方法重载
+
+Java 中的方法重载发生在同一个类里面两个或者是多个方法的方法名相同但是参数不同的情况。与此相对，方法覆盖是说子类重新定义了父类的方法。方法覆盖必须有相同的方法名，参数列表和返回类型。覆盖者可能不会限制它所覆盖的方法的访问。Java 中 static 方法不能被覆盖，因为方法覆盖是基于运行时动态绑定的，而 static 方法是编译时静态绑定的。
+
+# 为什么会出现 4.0-3.6=0.40000001 这种现象
+
+简单来说是这样：2 进制的小数无法精确的表达 10 进制小数，计算机在计算 10 进制小数的过程中要先转换为 2 进制进行计算，这个过程中出现了误差。
+
+# 十进制的数在内存中是怎么存的
+
+补码的形式
