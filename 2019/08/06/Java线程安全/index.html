@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
+<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程安全">
+<meta property="og:url" content="http://yoursite.com/2019/08/06/Java线程安全/index.html">
+<meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/08/06/Java线程安全/1.png">
+<meta property="og:updated_time" content="2019-08-18T15:20:18.610Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java线程安全">
+<meta name="twitter:description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/06/Java线程安全/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/06/Java线程安全/">
+
+
+
+
+
+  <title>Java线程安全 | 九八年生于晚秋</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九八年生于晚秋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/06/Java线程安全/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rui Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九八年生于晚秋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java线程安全</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-06T23:41:22+08:00">
+                2019-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Java入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="什么是线程安全"><a href="#什么是线程安全" class="headerlink" title="什么是线程安全"></a>什么是线程安全</h1><p>线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。</p>
+<p>线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。</p>
+<p>比方说<code>ArrayList</code>是非线程安全的，<code>Vector</code>是线程安全的；<code>HashMap</code>是非线程安全的，<code>HashVector</code>是线程安全的；<code>StringBuilder</code>是非线程安全的，<code>StringBuffer</code>是线程安全的。</p>
+<h2 id="产生线程不安全的原因"><a href="#产生线程不安全的原因" class="headerlink" title="产生线程不安全的原因"></a>产生线程不安全的原因</h2><p>在同一程序中运行多个线程本身不会导致问题，问题在于多个线程访问了相同的资源。如，同一内存区（变量，数组，或对象）、系统（数据库，<code>web services</code>等）或文件。实际上，这些问题只有在一或多个线程向这些资源做了写操作时才有可能发生，只要资源没有发生变化,多个线程读取相同的资源就是安全的。</p>
+<p>记住引用不是线程安全的，即使一个对象是线程安全的不可变对象，指向这个对象的引用也可能不是线程安全的。</p>
+<h1 id="Java线程安全的类"><a href="#Java线程安全的类" class="headerlink" title="Java线程安全的类"></a>Java线程安全的类</h1><ul>
+<li>通过<code>synchronized</code> 关键字给方法加上内置锁来实现线程安全<br><code>Timer</code>，<code>TimerTask</code>，<code>Vector</code>，<code>Stack</code>，<code>HashTable</code>，<code>StringBuffer</code></li>
+<li>原子类<code>Atomicxxx</code>—包装类的线程安全类<br>如<code>AtomicLong</code>，<code>AtomicInteger</code>等等</li>
+<li><code>BlockingQueue</code> 和<code>BlockingDeque</code> </li>
+<li><code>ThreadPoolExecutor</code><br><code>ThreadPoolExecutor</code>也是使用了<code>ReentrantLock</code>显式加锁同步</li>
+</ul>
+<h1 id="锁的种类和区别"><a href="#锁的种类和区别" class="headerlink" title="锁的种类和区别"></a>锁的种类和区别</h1><h2 id="公平锁-非公平锁"><a href="#公平锁-非公平锁" class="headerlink" title="公平锁/非公平锁"></a>公平锁/非公平锁</h2><p>公平锁是指多个线程按照申请锁的顺序来获取锁。<br>非公平锁是指多个线程获取锁的顺序并不是按照申请锁的顺序，有可能后申请的线程比先申请的线程优先获取锁。有可能，会造成优先级反转或者饥饿现象。</p>
+<p>对于 Java ReentrantLock 而言，通过构造函数指定该锁是否是公平锁，默认是非公平锁。非公平锁的优点在于吞吐量比公平锁大。<br>对于 Synchronized 而言，也是一种非公平锁。由于其并不像 ReentrantLock 是通过 AQS 的来实现线程调度，所以并没有任何办法使其变成公平锁。</p>
+<h2 id="可重入锁"><a href="#可重入锁" class="headerlink" title="可重入锁"></a>可重入锁</h2><p>可重入锁又名递归锁，是指在同一个线程在外层方法获取锁的时候，在进入内层方法会自动获取锁。</p>
+<p><code>Java ReentrantLock</code>以及<code>Synchronized</code>都是可重入锁</p>
+<h2 id="独享锁-共享锁"><a href="#独享锁-共享锁" class="headerlink" title="独享锁/共享锁"></a>独享锁/共享锁</h2><p>独享锁是指该锁一次只能被一个线程所持有。共享锁是指该锁可被多个线程所持有。</p>
+<p>对于<code>Java ReentrantLock</code>而言，其是独享锁。但是对于<code>Lock</code>的另一个实现类<code>ReadWriteLock</code>，其读锁是共享锁，其写锁是独享锁。<code>Synchronized</code>是独享锁。</p>
+<h2 id="乐观锁-悲观锁"><a href="#乐观锁-悲观锁" class="headerlink" title="乐观锁/悲观锁"></a>乐观锁/悲观锁</h2><p>乐观锁与悲观锁不是指具体的什么类型的锁，而是指看待并发同步的角度。</p>
+<p>悲观锁认为对于同一个数据的并发操作，一定是会发生修改的，哪怕没有修改，也会认为修改。因此对于同一个数据的并发操作，悲观锁采取加锁的形式。悲观的认为，不加锁的并发操作一定会出问题。</p>
+<p>乐观锁则认为对于同一个数据的并发操作，是不会发生修改的。在更新数据的时候，会采用尝试更新，不断重新的方式更新数据。乐观的认为，不加锁的并发操作是没有事情的。</p>
+<p>从上面的描述我们可以看出，悲观锁适合写操作非常多的场景，乐观锁适合读操作非常多的场景，不加锁会带来大量的性能提升。悲观锁在<code>Java</code>中的使用，就是利用各种锁。乐观锁在<code>Java</code>中的使用，是无锁编程，常常采用的是<code>CAS</code>算法，典型的例子就是原子类，通过<code>CAS</code>自旋实现原子操作的更新。</p>
+<h2 id="偏向锁-轻量级锁-重量级锁"><a href="#偏向锁-轻量级锁-重量级锁" class="headerlink" title="偏向锁/轻量级锁/重量级锁"></a>偏向锁/轻量级锁/重量级锁</h2><p>这三种锁是指锁的状态，并且是针对<code>Synchronized</code>。在<code>Java 5</code>通过引入锁升级的机制来实现高效<code>Synchronized</code>。这三种锁的状态是通过对象监视器在对象头中的字段来表明的。</p>
+<p>偏向锁是指一段同步代码一直被一个线程所访问，那么该线程会自动获取锁。降低获取锁的代价。</p>
+<p>轻量级锁是指当锁是偏向锁的时候，被另一个线程所访问，偏向锁就会升级为轻量级锁，其他线程会通过自旋的形式尝试获取锁，不会阻塞，提高性能。</p>
+<p>重量级锁是指当锁为轻量级锁的时候，另一个线程虽然是自旋，但自旋不会一直持续下去，当自旋一定次数的时候，还没有获取到锁，就会进入阻塞，该锁膨胀为重量级锁。重量级锁会让其他申请的线程进入阻塞，性能降低。</p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>在<code>Java</code>中，自旋锁是指尝试获取锁的线程不会立即阻塞，而是采用循环的方式去尝试获取锁，这样的好处是减少线程上下文切换的消耗，缺点是循环会消耗<code>CPU</code>。</p>
+<h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><h2 id="三种应用方式"><a href="#三种应用方式" class="headerlink" title="三种应用方式"></a>三种应用方式</h2><ul>
+<li>修饰实例方法，作用于当前实例加锁，进入同步代码前要获得当前实例的锁</li>
+<li>修饰静态方法，作用于当前类对象加锁，进入同步代码前要获得当前类对象的锁</li>
+<li>修饰代码块，指定加锁对象，对给定对象加锁，进入同步代码库前要获得给定对象的锁。</li>
+</ul>
+<p>作用于实例方法的时候，会出现<code>new</code>了两个不同的实例对象，这也就意味着存在着两个不同的实例对象锁，这个时候各自的进程使用的就是不同的锁就不能保证线程的安全，这个时候就是用<code>Synchronized</code>作用于静态方法，因为锁对象是当前类的<code>class</code>对象。</p>
+<p><code>Java</code> 虚拟机中的同步(<code>Synchronization</code>)基于进入和退出管程(<code>Monitor</code>)对象（存在于每个<code>Java</code>对象的对象头）实现， 无论是显式同步(有明确的 <code>monitorenter</code>和 <code>monitorexit</code>指令,即同步代码块)还是隐式同步都是如此。</p>
+<h2 id="synchronized代码块底层原理"><a href="#synchronized代码块底层原理" class="headerlink" title="synchronized代码块底层原理"></a>synchronized代码块底层原理</h2><p>同步语句块的实现使用的是<code>monitorenter</code> 和 <code>monitorexit</code>指令，其中<code>monitorenter</code>指令指向同步代码块的开始位置，<code>monitorexit</code>指令则指明同步代码块的结束位置，当执行<code>monitorenter</code>指令时，当前线程将试图获取 <code>objectref</code>(即对象锁) 所对应的 <code>monitor</code>的持有权，当 <code>objectref</code>的<code>monitor</code>的进入计数器为 0，那线程可以成功取得<code>monitor</code>，并将计数器值设置为 1，取锁成功。如果当前线程已经拥有 <code>objectref</code> 的 <code>monitor</code>的持有权，那它可以重入这个 <code>monitor</code> (关于重入性稍后会分析)，重入时计数器的值也会加 1。倘若其他线程已经拥有 <code>objectref</code> 的 <code>monitor</code> 的所有权，那当前线程将被阻塞，直到正在执行线程执行完毕，即<code>monitorexit</code>指令被执行，执行线程将释放 <code>monitor</code>(锁)并设置计数器值为0 ，其他线程将有机会持有<code>monitor</code> 。</p>
+<h2 id="synchronized方法底层原理"><a href="#synchronized方法底层原理" class="headerlink" title="synchronized方法底层原理"></a>synchronized方法底层原理</h2><p>方法级的同步是隐式，即无需通过字节码指令来控制的，它实现在方法调用和返回操作之中。<code>JVM</code>可以从方法常量池中的方法表结构(<code>method_info Structure</code>) 中的<code>ACC_SYNCHRONIZED</code> 访问标志区分一个方法是否同步方法。当方法调用时，调用指令将会 检查方法的<code>ACC_SYNCHRONIZED</code>访问标志是否被设置，如果设置了，执行线程将先持有<code>monitor</code>（虚拟机规范中用的是管程一词）， 然后再执行方法，最后再方法完成(无论是正常完成还是非正常完成)时释放<code>monitor</code>。在方法执行期间，执行线程持有了<code>monitor</code>，其他任何线程都无法再获得同一个<code>monitor</code>。如果一个同步方法执行期间抛 出了异常，并且在方法内部无法处理此异常，那这个同步方法所持有的<code>monitor</code>将在异常抛到同步方法之外时自动释放。</p>
+<h2 id="Java虚拟机对synchronized的优化"><a href="#Java虚拟机对synchronized的优化" class="headerlink" title="Java虚拟机对synchronized的优化"></a>Java虚拟机对synchronized的优化</h2><p>锁的状态总共有四种，无锁状态、偏向锁、轻量级锁和重量级锁。随着锁的竞争，锁可以从偏向锁升级到轻量级锁，再升级的重量级锁，但是锁的升级是单向的，也就是说只能从低到高升级，不会出现锁的降级，把我们刚才看的锁的进一步看一下在<code>synchronized</code>是怎么应用的。</p>
+<h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><p>偏向锁是<code>Java 6</code>之后加入的新锁，它是一种针对加锁操作的优化手段，经过研究发现，在大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，因此为了减少同一线程获取锁(会涉及到一些<code>CAS</code>操作,耗时)的代价而引入偏向锁。偏向锁的核心思想是，如果一个线程获得了锁，那么锁就进入偏向模式，此时<code>Mark Word</code> 的结构也变为偏向锁结构，当这个线程再次请求锁时，无需再做任何同步操作，即获取锁的过程，这样就省去了大量有关锁申请的操作，从而也就提供程序的性能。</p>
+<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p>倘若偏向锁失败，虚拟机并不会立即升级为重量级锁，它还会尝试使用一种称为轻量级锁的优化手段。</p>
+<h3 id="自旋锁-1"><a href="#自旋锁-1" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>轻量级锁失败后，虚拟机为了避免线程真实地在操作系统层面挂起，还会进行一项称为自旋锁的优化手段。</p>
+<h3 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h3><p>消除锁是虚拟机另外一种锁的优化，这种优化更彻底，<code>Java</code>虚拟机在<code>JIT</code>编译时，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁，通过这种方式消除没有必要的锁，可以节省毫无意义的请求锁时间</p>
+<h1 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h1><p><code>ReentrantLock</code>是基于<code>AQS</code>实现的，<code>AQS</code>的基础又是<code>CAS</code>。</p>
+<h2 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h2><p><code>CAS</code>设计到三个操作数：<code>V</code> 内存地址存放的实际值；<code>O</code>预期的值（旧值）；<code>N</code>更新的新值。当<code>V</code>和<code>O</code>相同时，也就是说旧值和内存中实际的值相同表明该值没有被其他线程更改过，即该旧值<code>O</code>就是目前来说最新的值了，自然而然可以将新值<code>N</code>赋值给<code>V</code>。反之，<code>V</code>和<code>O</code>不相同，表明该值已经被其他线程改过了则该旧值<code>O</code>不是最新版本的值了，所以不能将新值<code>N</code>赋给<code>V</code>，返回<code>V</code>即可。所以多个线程同时访问的时候就只会有一个线程成功。</p>
+<p>实例理解一下：比方说在内存地址<code>V</code>中，存放着值为10的变量，此时此时线程1想要把变量的值增加1。对线程1来说，旧的预期值<code>A=10</code>，要修改的新值<code>B=11</code>。在线程1要提交更新之前，另一个线程2抢先一步，把内存地址V中的变量值率先更新成了11。线程1开始提交更新，首先进行<code>A</code>和地址<code>V</code>的实际值比较，发现<code>A</code>不等于<code>V</code>的实际值，提交失败。线程1重新获取内存地址<code>V</code>的当前值，并重新计算想要修改的新值。此时对线程1来说，<code>A=11</code>，<code>B=12</code>。这个重新尝试的过程被称为自旋。这一次比较幸运，没有其他线程改变地址<code>V</code>的值。线程1进行<code>Compare</code>，发现<code>A</code>和地址<code>V</code>的实际值是相等的。线程1进行<code>SWAP</code>，把地址<code>V</code>的值替换为<code>B</code>，也就是12。</p>
+<h3 id="CAS-原理"><a href="#CAS-原理" class="headerlink" title="CAS 原理"></a>CAS 原理</h3><p>CAS 底层使用 JNI 调用 C 代码实现的，最终是通过 Unsafe_CompareAndSwapInt 这个函数调用了 Atomic::cmpxchg(x, addr, e) 其中 x 是即将更新的值，参数 e 是原内存的值。</p>
+<p>最后 JDK 通过 CPU 的 cmpxchgl 指令的支持，实现 AtomicInteger 的 CAS操作的原子性。</p>
+<h3 id="CSA-的问题"><a href="#CSA-的问题" class="headerlink" title="CSA 的问题"></a>CSA 的问题</h3><ul>
+<li>ABA 问题：CAS 需要在操作值的时候检查下值有没有发生变化，如果没有发生变化则更新，但是如果一个值原来是A，变成了 B，又变成了 A，那么使用 CAS 进行检查时会发现它的值没有发生变化，但是实际上却变化了。这就是 CAS 的 ABA 问题。 常见的解决思路是使用版本号。</li>
+<li>循环时间长开销大：如果 CAS 不成功，则会原地自旋，如果长时间自旋会给 CPU 带来非常大的执行开销</li>
+</ul>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p><code>AQS</code>是基于<code>FIFO</code>队列的实现，因此必然存在一个个节点，<code>Node</code>就是一个节点。Node里面有：</p>
+<p><img src="1.png" alt></p>
+<p><code>AQS</code>的变量和方法一般重点掌握<code>tryAcquire(int arg)</code>和<code>tryRelease(int arg)</code>两个方法，因为一般这两个函数是会被重写的。</p>
+<p><code>ReentrantLock</code>类中有三个内部类，<code>Sync</code>是另外两个类的父类，<code>ReentrantLock</code>的公平锁和非公平锁的实现就是通过<code>Sync</code>的两个子类<code>NonfairSync</code>和<code>FairSync</code>来完成的。默认<code>ReentrantLock</code>实现的是非公平锁，非公平锁虽然失去了公平但是获得了更好地吞吐量。</p>
+<h3 id="非公平锁的lock方法："><a href="#非公平锁的lock方法：" class="headerlink" title="非公平锁的lock方法："></a>非公平锁的<code>lock</code>方法：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">// 如果锁没有被任何线程锁定且加锁成功则设定当前线程为锁的拥有者</span></span><br><span class="line">	<span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">		setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line"><span class="comment">// 否则执行acquire方法传入参数为1	</span></span><br><span class="line">		acquire(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键的逻辑在<code>acquire</code>也就是当有线程发生竞争的时候：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先调用tryAcquire方法来再一次尝试获取锁，如果成功则返回，否则执行acquireQueued方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;</span><br><span class="line">    acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</span><br><span class="line">    selfInterrupt();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//非公平锁的获取方法</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">nonfairTryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//首先获取当前线程</span></span><br><span class="line">    <span class="keyword">final</span> Thread current = Thread.currentThread();</span><br><span class="line">    <span class="comment">//获取锁的状态</span></span><br><span class="line">    <span class="keyword">int</span> c = getState();</span><br><span class="line">    <span class="comment">//如果为0则继续通过原子操作设置state，如果成功则设置获取锁的线程为当前线程并返回成功</span></span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, acquires)) &#123;</span><br><span class="line">	    setExclusiveOwnerThread(current);</span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//否则锁已经被某个线程获取到，判断是否为当前线程</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</span><br><span class="line">	<span class="comment">//如果是当前线程则将state+1，可以看出锁的可重入性就体现在这里</span></span><br><span class="line">	<span class="keyword">int</span> nextc = c + acquires;</span><br><span class="line">	<span class="keyword">if</span> (nextc &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">	    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Maximum lock count exceeded"</span>);</span><br><span class="line">	<span class="comment">//设置状态，并返回成功</span></span><br><span class="line">	setState(nextc);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//否则该锁已经被其他线程占用，因此后面需要考虑阻塞该线程。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//新增等待线程节点</span></span><br><span class="line"> <span class="function"><span class="keyword">private</span> Node <span class="title">addWaiter</span><span class="params">(Node mode)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//使用当前线程构造出新的节点</span></span><br><span class="line">	Node node = <span class="keyword">new</span> Node(Thread.currentThread(), mode);</span><br><span class="line">	<span class="comment">// Try the fast path of enq; backup to full enq on failure</span></span><br><span class="line">	<span class="comment">//第一次tail肯定为空则走enq(node)入队列</span></span><br><span class="line">	Node pred = tail;</span><br><span class="line">	<span class="keyword">if</span> (pred != <span class="keyword">null</span>) &#123;</span><br><span class="line">	    <span class="comment">//非第一次竞争</span></span><br><span class="line">	    node.prev = pred;</span><br><span class="line">	    <span class="keyword">if</span> (compareAndSetTail(pred, node)) &#123;</span><br><span class="line">		pred.next = node;</span><br><span class="line">		<span class="keyword">return</span> node;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	enq(node);</span><br><span class="line">	<span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//入队列操作</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">enq</span><span class="params">(<span class="keyword">final</span> Node node)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//乐观等待</span></span><br><span class="line">	<span class="keyword">for</span> (;;) &#123;</span><br><span class="line">	    <span class="comment">//第一次tail仍然为空</span></span><br><span class="line">	    Node t = tail;</span><br><span class="line">	    <span class="keyword">if</span> (t == <span class="keyword">null</span>) &#123; <span class="comment">// Must initialize</span></span><br><span class="line">	        <span class="comment">//当第一次产生竞争的时候初始化虚拟头结点，节省空间</span></span><br><span class="line">		Node h = <span class="keyword">new</span> Node(); <span class="comment">// Dummy header</span></span><br><span class="line">		<span class="comment">//头结点h的下一个节点指向前面新建的节点</span></span><br><span class="line">		h.next = node;</span><br><span class="line">		<span class="comment">//双向链表</span></span><br><span class="line">		node.prev = h;</span><br><span class="line">		<span class="comment">//原子操作设置头结点，如果成功则尾节点为前面新建的节点，否则循环直到成功，如果同一时刻有其他线程set成功，则可能走else分支</span></span><br><span class="line">		<span class="keyword">if</span> (compareAndSetHead(h)) &#123;</span><br><span class="line">		    <span class="comment">//返回头结点</span></span><br><span class="line">		    tail = node;</span><br><span class="line">		    <span class="keyword">return</span> h;</span><br><span class="line">		&#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	    <span class="keyword">else</span> &#123;</span><br><span class="line">	        <span class="comment">//否则</span></span><br><span class="line">		node.prev = t;</span><br><span class="line">		<span class="keyword">if</span> (compareAndSetTail(t, node)) &#123;</span><br><span class="line">		    t.next = node;</span><br><span class="line">		    <span class="keyword">return</span> t;</span><br><span class="line">		&#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="非公平锁的unlock方法"><a href="#非公平锁的unlock方法" class="headerlink" title="非公平锁的unlock方法"></a>非公平锁的<code>unlock</code>方法</h3><p>走<code>AQS</code>的<code>release</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    sync.release(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先调用<code>Sync</code>的<code>tryRelease</code>尝试释放锁：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> c = getState() - releases;</span><br><span class="line">    <span class="comment">//只有持有锁的线程才能进行释放动作</span></span><br><span class="line">    <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</span><br><span class="line">    <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">        free = <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">//锁被释放，独占线程设置为null</span></span><br><span class="line">        setExclusiveOwnerThread(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    setState(c);</span><br><span class="line">    <span class="keyword">return</span> free;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">首先，只有当c==0的时候才会让free=true，这和上面一个线程多次调用lock方法累加state是对应的，调用了多少次的lock()方法自然必须调用同样次数的unlock()方法才行，这样才把一个锁给全部解开。</span></span><br><span class="line"><span class="comment">当一条线程对同一个ReentrantLock全部解锁之后，AQS的state自然就是0了，AbstractOwnableSynchronizer的exclusiveOwnerThread将被设置为null，这样就表示没有线程占有锁，方法返回true。代码继续往下走，上面的release方法的第四行，h不为null成立，h的waitStatus为-1，不等于0也成立，所以走第5行的unparkSuccessor方法：</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>唤醒<code>node</code>节点的后继，保证整个<code>FIFO</code>队列减少一个<code>Node</code>（参考<a href="https://www.cnblogs.com/xrq730/p/4979021.html）" target="_blank" rel="noopener">https://www.cnblogs.com/xrq730/p/4979021.html）</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unparkSuccessor</span><span class="params">(Node node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ws = node.waitStatus;</span><br><span class="line">        <span class="keyword">if</span> (ws &lt; <span class="number">0</span>)</span><br><span class="line">	   <span class="comment">//如果当前节点为SIGNAL则修改为0</span></span><br><span class="line">            compareAndSetWaitStatus(node, ws, <span class="number">0</span>); </span><br><span class="line">	 <span class="comment">// 若后续节点为空或已被cancel，则从尾部开始找到队列中第一个waitStatus&lt;=0，即未被cancel的节点</span></span><br><span class="line">        Node s = node.next;</span><br><span class="line">        <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.waitStatus &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            s = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">for</span> (Node t = tail; t != <span class="keyword">null</span> &amp;&amp; t != node; t = t.prev)</span><br><span class="line">                <span class="keyword">if</span> (t.waitStatus &lt;= <span class="number">0</span>)</span><br><span class="line">                    s = t;</span><br><span class="line">        &#125;</span><br><span class="line">	<span class="comment">//如果找到这么一个节点它的状态&lt;=0则唤醒该节点中的线程</span></span><br><span class="line">        <span class="keyword">if</span> (s != <span class="keyword">null</span>)</span><br><span class="line">            LockSupport.unpark(s.thread);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="synchronized和ReentrantLock的异同"><a href="#synchronized和ReentrantLock的异同" class="headerlink" title="synchronized和ReentrantLock的异同"></a>synchronized和ReentrantLock的异同</h1><p>同：</p>
+<ul>
+<li>它们都是加锁方式同步，而且都是阻塞式的同步，也就是说当如果一个线程获得了对象锁，进入了同步块，其他访问该同步块的线程都必须阻塞在同步块外面等待，而进行线程阻塞和唤醒的代价是比较高的</li>
+</ul>
+<p>异：</p>
+<ul>
+<li>对于<code>Synchronized</code>来说，它是<code>java</code>语言的关键字，是原生语法层面的互斥，需要<code>jvm</code>实现。而<code>ReentrantLock</code>它是<code>JDK 1.5</code>之后提供的<code>API</code>层面的互斥锁，需要<code>lock()</code>和<code>unlock()</code>方法配合<code>try/finally</code>语句块来完成。</li>
+<li>使用<code>Synchronized</code>。如果<code>Thread1</code>不释放，<code>Thread2</code>将一直等待，不能被中断；使用<code>ReentrantLock</code>。如果<code>Thread1</code>不释放，<code>Thread2</code>等待了很长时间以后，可以中断等待，转而去做别的事情。</li>
+<li><code>Synchronized</code>的锁是非公平锁，<code>ReentrantLock</code>默认情况下也是非公平锁，但可以通过带布尔值的构造函数要求使用公平锁。</li>
+<li>锁绑定多个条件，一个<code>ReentrantLock</code>对象可以同时绑定对个对象。<code>Synchronized</code>中，锁对象的<code>wait()</code>和<code>notify()</code>或<code>notifyAll()</code>方法可以实现一个隐含的条件。但如果要和多于一个的条件关联的时候，就不得不额外添加一个锁。</li>
+</ul>
+<h1 id="Synchronized修饰静态方法和成员方法的区别"><a href="#Synchronized修饰静态方法和成员方法的区别" class="headerlink" title="Synchronized修饰静态方法和成员方法的区别"></a>Synchronized修饰静态方法和成员方法的区别</h1><p>Synchronized 修饰静态方法以及同步代码块的 Synchronized  (类.class)用法锁的是类，线程想要执行对应同步代码，需要获得类锁。<br>Synchronized 修饰成员方法，线程获取的是当前调用该方法的对象实例的对象锁。</p>
+<p>对应的问题：那我现在有一个父类synchronized修饰非static方法和两个子类，现在两个子类调用这个方法会发生竞争吗？</p>
+<p>加载非 static 不会，加载 static 会，非 static 相当于对象锁吧，两个子类就是两个对象，static 相当于类锁</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/05/B树和B-树/" rel="next" title="B树和B+树">
+                <i class="fa fa-chevron-left"></i> B树和B+树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/07/阻塞队列以及生产者消费者的实现/" rel="prev" title="阻塞队列以及生产者消费者的实现">
+                阻塞队列以及生产者消费者的实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rui Zhou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiaorui2" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是线程安全"><span class="nav-number">1.</span> <span class="nav-text">什么是线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#产生线程不安全的原因"><span class="nav-number">1.1.</span> <span class="nav-text">产生线程不安全的原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java线程安全的类"><span class="nav-number">2.</span> <span class="nav-text">Java线程安全的类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁的种类和区别"><span class="nav-number">3.</span> <span class="nav-text">锁的种类和区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁-非公平锁"><span class="nav-number">3.1.</span> <span class="nav-text">公平锁/非公平锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可重入锁"><span class="nav-number">3.2.</span> <span class="nav-text">可重入锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#独享锁-共享锁"><span class="nav-number">3.3.</span> <span class="nav-text">独享锁/共享锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乐观锁-悲观锁"><span class="nav-number">3.4.</span> <span class="nav-text">乐观锁/悲观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁-轻量级锁-重量级锁"><span class="nav-number">3.5.</span> <span class="nav-text">偏向锁/轻量级锁/重量级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">3.6.</span> <span class="nav-text">自旋锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">4.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#三种应用方式"><span class="nav-number">4.1.</span> <span class="nav-text">三种应用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized代码块底层原理"><span class="nav-number">4.2.</span> <span class="nav-text">synchronized代码块底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized方法底层原理"><span class="nav-number">4.3.</span> <span class="nav-text">synchronized方法底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java虚拟机对synchronized的优化"><span class="nav-number">4.4.</span> <span class="nav-text">Java虚拟机对synchronized的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#偏向锁"><span class="nav-number">4.4.1.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轻量级锁"><span class="nav-number">4.4.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁-1"><span class="nav-number">4.4.3.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁消除"><span class="nav-number">4.4.4.</span> <span class="nav-text">锁消除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReentrantLock"><span class="nav-number">5.</span> <span class="nav-text">ReentrantLock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAS"><span class="nav-number">5.1.</span> <span class="nav-text">CAS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAS-原理"><span class="nav-number">5.1.1.</span> <span class="nav-text">CAS 原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSA-的问题"><span class="nav-number">5.1.2.</span> <span class="nav-text">CSA 的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">5.2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁的lock方法："><span class="nav-number">5.2.1.</span> <span class="nav-text">非公平锁的lock方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非公平锁的unlock方法"><span class="nav-number">5.2.2.</span> <span class="nav-text">非公平锁的unlock方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized和ReentrantLock的异同"><span class="nav-number">6.</span> <span class="nav-text">synchronized和ReentrantLock的异同</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Synchronized修饰静态方法和成员方法的区别"><span class="nav-number">7.</span> <span class="nav-text">Synchronized修饰静态方法和成员方法的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rui Zhou</span>
+  <div class="powered-by">
+    <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span></span>
+  </div>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
