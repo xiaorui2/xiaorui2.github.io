@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的key-value 数据库，和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。与memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘">
+<meta name="description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的 key-value 数据库，和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string (字符串)、list (链表)、set (集合)、zset ( sorted set –有序集合)和 hash（哈希类型）。与memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis">
 <meta property="og:url" content="http://yoursite.com/2019/06/27/Redis/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的key-value 数据库，和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。与memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘">
+<meta property="og:description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的 key-value 数据库，和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string (字符串)、list (链表)、set (集合)、zset ( sorted set –有序集合)和 hash（哈希类型）。与memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T01:57:11.501Z">
+<meta property="og:updated_time" content="2019-08-18T14:44:01.740Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis">
-<meta name="twitter:description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的key-value 数据库，和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。与memcached一样，为了保证效率，数据都是缓存在内存中。区别的是redis会周期性的把更新的数据写入磁盘">
+<meta name="twitter:description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的 key-value 数据库，和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string (字符串)、list (链表)、set (集合)、zset ( sorted set –有序集合)和 hash（哈希类型）。与memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis">
 
 
 
@@ -384,30 +384,30 @@
       
 
       
-        <h1 id="Redis是什么，用在哪"><a href="#Redis是什么，用在哪" class="headerlink" title="Redis是什么，用在哪"></a>Redis是什么，用在哪</h1><p><code>Redis</code> 是一个使用 C 语言写成的，开源的<code>key-value</code> 数据库，和<code>Memcached</code>类似，它支持存储的<code>value</code>类型相对更多，包括<code>string</code>(字符串)、<code>list</code>(链表)、<code>set</code>(集合)、<code>zset</code>(<code>sorted set</code> –有序集合)和<code>hash</code>（哈希类型）。与<code>memcached</code>一样，为了保证效率，数据都是缓存在内存中。区别的是<code>redis</code>会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了<code>master-slave</code>(主从)同步。</p>
-<p><code>Redis</code> 使用场景：</p>
+        <h1 id="Redis是什么，用在哪"><a href="#Redis是什么，用在哪" class="headerlink" title="Redis是什么，用在哪"></a>Redis是什么，用在哪</h1><p>Redis 是一个使用 C 语言写成的，开源的 key-value 数据库，和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string (字符串)、list (链表)、set (集合)、zset ( sorted set –有序集合)和 hash（哈希类型）。与memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis 会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了 master-slave(主从)同步。</p>
+<p>Redis 使用场景：</p>
 <ul>
 <li>记录帖子点赞数、点击数、评论数；</li>
 <li>缓存近期热帖；</li>
 <li>缓存文章详情信息；</li>
 <li>记录用户会话信息。</li>
 </ul>
-<p>个人感觉<code>Redis</code>有2个作用，一个是缓存的作用，就是<code>db</code>中的热点数据缓存在其中。第二是对于那些数据结构简单，性能要求高、一致性要求低的数据，直接存入<code>Redis</code>，它也会持久化的。</p>
-<p><code>Redis</code>的缺点<br>是数据库容量受到物理内存的限制,不能用作海量数据的高性能读写,因此<code>Redis</code>适合的场景主要局限在较小数据量的高性能操作和运算上。<code>Redis</code>不具备自动容错和恢复功能z</p>
+<p>个人感觉Redis有2个作用，一个是缓存的作用，就是db中的热点数据缓存在其中。第二是对于那些数据结构简单，性能要求高、一致性要求低的数据，直接存入Redis，它也会持久化的。</p>
+<p>Redis 的缺点<br>是数据库容量受到物理内存的限制,不能用作海量数据的高性能读写,因此 Redis 适合的场景主要局限在较小数据量的高性能操作和运算上。Redis 不具备自动容错和恢复功能</p>
 <h1 id="Redis是单线程的为什么速度那么快"><a href="#Redis是单线程的为什么速度那么快" class="headerlink" title="Redis是单线程的为什么速度那么快"></a>Redis是单线程的为什么速度那么快</h1><ul>
-<li><p>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于<code>HashMap</code>，<code>HashMap</code>的优势就是查找和操作的时间复杂度都是<code>O(1)</code>；</p>
+<li><p>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是 O(1)；</p>
 </li>
-<li><p>数据结构简单，对数据操作也简单，<code>Redis</code>中的数据结构是专门进行设计的；</p>
+<li><p>数据结构简单，对数据操作也简单，Redis 中的数据结构是专门进行设计的；</p>
 </li>
-<li><p>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗<code>CPU</code>，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</p>
+<li><p>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</p>
 </li>
-<li><p>使用多路<code>I/O</code>复用模型，非阻塞<code>IO</code>；</p>
+<li><p>使用多路 I/O 复用模型，非阻塞 IO；</p>
 </li>
-<li><p>使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，<code>Redis</code>直接自己构建了<code>VM</code>机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；</p>
+<li><p>使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis 直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；</p>
 </li>
 </ul>
-<p>那么为什么<code>Redis</code>是单线程？</p>
-<p>因为<code>Redis</code>是基于内存的操作，<code>CPU</code>不是<code>Redis</code>的瓶颈，<code>Redis</code>的瓶颈最有可能是机器内存的大小或者网络带宽。既然单线程容易实现，而且<code>CPU</code>不会成为瓶颈，那就顺理成章地采用单线程的方案了。多线程的话还需要考虑切换线程的损失，线程安全这些问题。</p>
+<p>那么为什么 Redis 是单线程？</p>
+<p>因为 Redis 是基于内存的操作，CPU不是Redis的瓶颈，Redis 的瓶颈最有可能是机器内存的大小或者网络带宽。既然单线程容易实现，而且 CPU 不会成为瓶颈，那就顺理成章地采用单线程的方案了。多线程的话还需要考虑切换线程的损失，线程安全这些问题。</p>
 <h1 id="Redis功能"><a href="#Redis功能" class="headerlink" title="Redis功能"></a>Redis功能</h1><ul>
 <li>数据缓存功能</li>
 <li>分布式锁的功能</li>
@@ -457,43 +457,43 @@
 <li>合理设置缓存的过期时间。</li>
 <li>新增、更改、删除数据库操作时同步更新 <code>Redis</code>，可以使用事务机制来保证数据的一致性。</li>
 </ul>
-<h1 id="缓存技术"><a href="#缓存技术" class="headerlink" title="缓存技术"></a>缓存技术</h1><h1 id="Redis持久化方式"><a href="#Redis持久化方式" class="headerlink" title="Redis持久化方式"></a>Redis持久化方式</h1><p><code>Redis</code>有两种持久化的方式：快照（<code>RDB</code>文件）和追加式文件（<code>AOF</code>文件）</p>
+<h1 id="缓存技术"><a href="#缓存技术" class="headerlink" title="缓存技术"></a>缓存技术</h1><h1 id="Redis持久化方式"><a href="#Redis持久化方式" class="headerlink" title="Redis持久化方式"></a>Redis持久化方式</h1><p>Redis 有两种持久化的方式：快照（RDB 文件）和追加式文件（AOF 文件）</p>
 <ul>
-<li><code>RDB</code>持久化方式会在一个特定的间隔保存那个时间点的一个数据快照。</li>
-<li><code>AOF</code>持久化方式则会记录每一个服务器收到的写操作。在服务启动时，这些记录的操作会逐条执行从而重建出原来的数据。写操作命令记录的格式跟<code>Redis</code>协议一致，以追加的方式进行保存。</li>
-<li><code>Redis</code>的持久化是可以禁用的，就是说你可以让数据的生命周期只存在于服务器的运行时间里。</li>
-<li>两种方式的持久化是可以同时存在的，但是当<code>Redis</code>重启时，<code>AOF</code>文件会被优先用于重建数据。</li>
+<li>RDB 持久化方式会在一个特定的间隔保存那个时间点的一个数据快照。</li>
+<li>AOF 持久化方式则会记录每一个服务器收到的写操作。在服务启动时，这些记录的操作会逐条执行从而重建出原来的数据。写操作命令记录的格式跟 Redis 协议一致，以追加的方式进行保存。</li>
+<li>Redis 的持久化是可以禁用的，就是说你可以让数据的生命周期只存在于服务器的运行时间里。</li>
+<li>两种方式的持久化是可以同时存在的，但是当 Redis 重启时，AOF 文件会被优先用于重建数据。</li>
 </ul>
 <h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><p>工作原理：</p>
 <ul>
-<li><code>Redis</code>调用<code>fork()</code>，产生一个子进程。</li>
-<li>子进程把数据写到一个临时的<code>RDB</code>文件。</li>
-<li>当子进程写完新的<code>RDB</code>文件后，把旧的<code>RDB</code>文件替换掉。</li>
+<li>Redis 调用 fork() ，产生一个子进程。</li>
+<li>子进程把数据写到一个临时的 RDB 文件。</li>
+<li>当子进程写完新的 RDB 文件后，把旧的 RDB 文件替换掉。</li>
 </ul>
 <p>优点：</p>
 <ul>
-<li><code>RDB</code>文件是一个很简洁的单文件，它保存了某个时间点的<code>Redis</code>数据，很适合用于做备份。你可以设定一个时间点对<code>RDB</code>文件进行归档，这样就能在需要的时候很轻易的把数据恢复到不同的版本。</li>
-<li>基于上面所描述的特性，<code>RDB</code>很适合用于灾备。单文件很方便就能传输到远程的服务器上。</li>
-<li><code>RDB</code>的性能很好，需要进行持久化时，主进程会<code>fork</code>一个子进程出来，然后把持久化的工作交给子进程，自己不会有相关的<code>I/O</code>操作。</li>
-<li>比起<code>AOF</code>，在数据量比较大的情况下，<code>RDB</code>的启动速度更快。</li>
+<li>RDB 文件是一个很简洁的单文件，它保存了某个时间点的 Redis 数据，很适合用于做备份。你可以设定一个时间点对 RDB 文件进行归档，这样就能在需要的时候很轻易的把数据恢复到不同的版本。</li>
+<li>基于上面所描述的特性，RDB 很适合用于灾备。单文件很方便就能传输到远程的服务器上。</li>
+<li>RDB 的性能很好，需要进行持久化时，主进程会 fork 一个子进程出来，然后把持久化的工作交给子进程，自己不会有相关的 I/O 操作。</li>
+<li>比起 AOF，在数据量比较大的情况下，RDB 的启动速度更快。</li>
 </ul>
 <p>缺点：</p>
 <ul>
-<li><code>RDB</code>容易造成数据的丢失。假设每<code>5</code>分钟保存一次快照，如果<code>Redis</code>因为某些原因不能正常工作，那么从上次产生快照到<code>Redis</code>出现问题这段时间的数据就会丢失了。</li>
-<li><code>RDB</code>使用<code>fork()</code>产生子进程进行数据的持久化，如果数据比较大的话可能就会花费点时间，造成<code>Redis</code>停止服务几毫秒。如果数据量很大且<code>CPU</code>性能不是很好的时候，停止服务的时间甚至会到<code>1</code>秒。</li>
+<li>RDB 容易造成数据的丢失。假设每 5 分钟保存一次快照，如果 Redis 因为某些原因不能正常工作，那么从上次产生快照到 Redis 出现问题这段时间的数据就会丢失了。</li>
+<li>RDB 使用 fork() 产生子进程进行数据的持久化，如果数据比较大的话可能就会花费点时间，造成 Redis 停止服务几毫秒。如果数据量很大且 CPU 性能不是很好的时候，停止服务的时间甚至会到 1 秒。</li>
 </ul>
-<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p>快照并不是很可靠。如果你的电脑突然宕机了，或者电源断了，又或者不小心杀掉了进程，那么最新的数据就会丢失。而<code>AOF</code>文件则提供了一种更为可靠的持久化方式。每当<code>Redis</code>接受到会修改数据集的命令时，就会把命令追加到<code>AOF</code>文件里，当你重启<code>Redis</code>时，<code>AOF</code>里的命令会被重新执行一次，重建数据。</p>
+<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p>快照并不是很可靠。如果你的电脑突然宕机了，或者电源断了，又或者不小心杀掉了进程，那么最新的数据就会丢失。而 AOF 文件则提供了一种更为可靠的持久化方式。每当 Redis 接受到会修改数据集的命令时，就会把命令追加到 AOF 文件里，当你重启 Redis 时，AOF里的命令会被重新执行一次，重建数据。</p>
 <p>优点：</p>
 <ul>
-<li>比<code>RDB</code>可靠。</li>
-<li>当<code>AOF</code>文件太大时，<code>Redis</code>会自动在后台进行重写。重写很安全，因为重写是在一个新的文件上进行，同时<code>Redis</code>会继续往旧的文件追加数据。</li>
-<li><code>AOF</code>把操作命令以简单易懂的格式一条接一条的保存在文件里，很容易导出来用于恢复数据。</li>
+<li>比 RDB 可靠。</li>
+<li>当 AOF 文件太大时，Redis 会自动在后台进行重写。重写很安全，因为重写是在一个新的文件上进行，同时Redis 会继续往旧的文件追加数据。</li>
+<li>AOF 把操作命令以简单易懂的格式一条接一条的保存在文件里，很容易导出来用于恢复数据。</li>
 </ul>
 <p>缺点</p>
 <ul>
-<li>在相同的数据集下，<code>AOF</code>文件的大小一般会比<code>RDB</code>文件大。</li>
-<li>在某些<code>fsync</code>策略下，<code>AOF</code>的速度会比<code>RDB</code>慢。通常<code>fsync</code>设置为每秒一次就能获得比较高的性能，而在禁止<code>fsync</code>的情况下速度可以达到<code>RDB</code>的水平。</li>
-<li>在过去曾经发现一些很罕见的<code>BUG</code>导致使用<code>AOF</code>重建的数据跟原数据不一致的问题。</li>
+<li>在相同的数据集下，AOF 文件的大小一般会比 RDB 文件大。</li>
+<li>在某些 fsync 策略下，AOF 的速度会比 RDB 慢。通常 fsync 设置为每秒一次就能获得比较高的性能，而在禁止fsync 的情况下速度可以达到 RDB 的水平。</li>
+<li>在过去曾经发现一些很罕见的 BUG 导致使用 AOF 重建的数据跟原数据不一致的问题。</li>
 </ul>
 <h1 id="Redis集群，持久化方式事务"><a href="#Redis集群，持久化方式事务" class="headerlink" title="Redis集群，持久化方式事务"></a>Redis集群，持久化方式事务</h1><h1 id="Redis实现PV，UV"><a href="#Redis实现PV，UV" class="headerlink" title="Redis实现PV，UV"></a>Redis实现PV，UV</h1>
       
