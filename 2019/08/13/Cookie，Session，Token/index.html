@@ -88,7 +88,7 @@
 <meta property="og:description" content="我们知道HTTP是一种无状态的协议，为了分辨链接是谁发起的，需自己去解决这个问题。而且一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。导致有些情况下即使是同一个网站每打开一个页面也都要登录一下。而Session和Cookie就是为解决这个问题而提出来的两个机制。 同样的Token也能解决这个问题，它们之间只是一个说法的差别，其实">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/08/13/Cookie，Session，Token/1.png">
-<meta property="og:updated_time" content="2019-08-13T11:58:50.774Z">
+<meta property="og:updated_time" content="2019-08-21T06:40:41.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cookie，Session，Token">
 <meta name="twitter:description" content="我们知道HTTP是一种无状态的协议，为了分辨链接是谁发起的，需自己去解决这个问题。而且一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。导致有些情况下即使是同一个网站每打开一个页面也都要登录一下。而Session和Cookie就是为解决这个问题而提出来的两个机制。 同样的Token也能解决这个问题，它们之间只是一个说法的差别，其实">
@@ -403,18 +403,22 @@
 </ul>
 <h1 id="Session的弊端以及Token的引入"><a href="#Session的弊端以及Token的引入" class="headerlink" title="Session的弊端以及Token的引入"></a>Session的弊端以及Token的引入</h1><p>弊端：</p>
 <ul>
-<li><p>服务器压力增大：通常<code>session</code>是存储在内存中的，每个用户通过认证之后都会将<code>session</code>数据保存在服务器的内存中，而当用户量增大时，服务器的压力增大。</p>
+<li><p>服务器压力增大：通常 session 是存储在内存中的，每个用户通过认证之后都会将 session 数据保存在服务器的内存中，而当用户量增大时，服务器的压力增大。</p>
 </li>
-<li><p><code>CSRF</code>跨站伪造请求攻击：<code>session</code>是基于<code>cookie</code>进行用户识别的, <code>cookie</code>如果被截获，用户就会很容易受到跨站请求伪造的攻击。</p>
+<li><p>CSRF 跨站伪造请求攻击：session 是基于 cookie 进行用户识别的, cookie 如果被截获，用户就会很容易受到跨站请求伪造的攻击。</p>
 </li>
 <li><p>扩展性不强</p>
 </li>
 </ul>
 <p><img src="1.png" alt></p>
-<p><code>token</code>，注册登录<code>-&gt;</code>服务端将生成一个<code>token</code>，并将<code>token</code>与<code>user</code>加密生成一个密文<code>-&gt;</code>将<code>token+user+</code>密文数据 返回给浏览器<code>-&gt;</code>再次访问时传递<code>token+user+</code>密文数据，后台会再次使用<code>token+user</code>，生成新密文，与传递过来的密文比较，一致则正确。就是<code>token</code>从设计上必须通过<code>get</code>参数或者<code>post</code>参数提交，一般是不允许保存在<code>cookies</code>当中的，容易产生<code>CSRF</code>漏洞。</p>
-<p><code>token</code>与<code>session</code>的不同主要在①认证成功后，会对当前用户数据进行加密，生成一个加密字符串<code>token</code>，返还给客户端（服务器端并不进行保存）</p>
-<p>②浏览器会将接收到的<code>token</code>值存储在<code>Local Storage</code>中，（通过<code>js</code>代码写入<code>Local Storage</code>，通过<code>js</code>获取，并不会像<code>cookie</code>一样自动携带）</p>
-<p>③再次访问时服务器端对<code>token</code>值的处理：服务器对浏览器传来的<code>token</code>值进行解密，解密完成后进行用户数据的查询，如果查询成功，则通过认证，实现状态保持，所以，即时有了多台服务器，服务器也只是做了<code>token</code>的解密和用户数据的查询，它不需要在服务端去保留用户的认证信息或者会话信息，这就意味着基于<code>token</code>认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利，解决了<code>session</code>扩展性的弊端。</p>
+<p>token，注册登录 -&gt; 服务端将生成一个 token，并将 token 与 user 加密生成一个密文 -&gt; 将 token + user + 密文数据 返回给浏览器 -&gt; 再次访问时传递 token + user + 密文数据，后台会再次使用 token + user，生成新密文，与传递过来的密文比较，一致则正确。就是 token 从设计上必须通过 get 参数或者 post 参数提交，一般是不允许保存在cookies 当中的，容易产生 CSRF 漏洞。</p>
+<p>token 与 session 的不同主要在①认证成功后，会对当前用户数据进行加密，生成一个加密字符串 token，返还给客户端（服务器端并不进行保存）</p>
+<p>②浏览器会将接收到的 token 值存储在 Local Storage 中，（通过 js 代码写入 Local Storage，通过 js 获取，并不会像 cookie 一样自动携带）</p>
+<p>③再次访问时服务器端对 token 值的处理：服务器对浏览器传来的 token 值进行解密，解密完成后进行用户数据的查询，如果查询成功，则通过认证，实现状态保持，所以，即时有了多台服务器，服务器也只是做了 token 的解密和用户数据的查询，它不需要在服务端去保留用户的认证信息或者会话信息，这就意味着基于 token 认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利，解决了 session 扩展性的弊端。</p>
+<h1 id="Cookie-和-Token-的区别"><a href="#Cookie-和-Token-的区别" class="headerlink" title="Cookie 和 Token 的区别"></a>Cookie 和 Token 的区别</h1><p>token 和 cookie 一样都是首次登陆时，由服务器下发，都是当交互时进行验证的功能，作用都是为无状态的 HTTP 提供的持久机制。</p>
+<p>token存在哪儿都行，localstorage （在 HTML5 中，新加入了一个 localStorage 特性，这个特性主要是用来作为本地存储来使用的，解决了 cookie 存储空间不足的问题）或者 cookie。</p>
+<p>对于 token 而言，服务器不需要去查看你是谁，不需要保存你的会话。当用户 logout 的时候 cookie 和服务器的session 都会注销；但是当 logout 时候 token 只是注销浏览器信息，不查库。</p>
+<p>token 优势在于，token 由于服务器端不存储会话，所以可扩展性强，token 还可用于 APP 中。（可以避免 CSRF 攻击，可以是无状态的，可以在多个服务间共享）。</p>
 
       
     </div>
@@ -528,7 +532,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -592,7 +596,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie"><span class="nav-number">1.</span> <span class="nav-text">Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#会话Cookie和持久Cookie"><span class="nav-number">1.1.</span> <span class="nav-text">会话Cookie和持久Cookie</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Session"><span class="nav-number">2.</span> <span class="nav-text">Session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#session的创建"><span class="nav-number">2.1.</span> <span class="nav-text">session的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session共享"><span class="nav-number">2.2.</span> <span class="nav-text">Session共享</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie和Session的区别"><span class="nav-number">3.</span> <span class="nav-text">Cookie和Session的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Session的弊端以及Token的引入"><span class="nav-number">4.</span> <span class="nav-text">Session的弊端以及Token的引入</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie"><span class="nav-number">1.</span> <span class="nav-text">Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#会话Cookie和持久Cookie"><span class="nav-number">1.1.</span> <span class="nav-text">会话Cookie和持久Cookie</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Session"><span class="nav-number">2.</span> <span class="nav-text">Session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#session的创建"><span class="nav-number">2.1.</span> <span class="nav-text">session的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session共享"><span class="nav-number">2.2.</span> <span class="nav-text">Session共享</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie和Session的区别"><span class="nav-number">3.</span> <span class="nav-text">Cookie和Session的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Session的弊端以及Token的引入"><span class="nav-number">4.</span> <span class="nav-text">Session的弊端以及Token的引入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie-和-Token-的区别"><span class="nav-number">5.</span> <span class="nav-text">Cookie 和 Token 的区别</span></a></li></ol></div>
             
 
           </div>
