@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/30/SpringBoot的一些面试题/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/30/SpringBoot的一些面试题/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/30/SpringBoot的一些面试题/1.png">
-<meta property="og:updated_time" content="2019-08-18T02:07:14.613Z">
+<meta property="og:updated_time" content="2019-08-23T01:39:33.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot的一些面试题">
 <meta name="twitter:description" content="SpringBoot的启动和运行原理SpringBoot的启动流程首先是@SpringBootApplication 注解，@SpringBootApplication 注解实际上是 SpringBoot 提供的一个复合注解：@SpringBootConfiguration  @EnableAutoConfiguration  @ComponentScan  @SpringBootConfigur">
@@ -463,7 +463,7 @@
 <h1 id="BeanFactory-和-FactoryBean-的区别"><a href="#BeanFactory-和-FactoryBean-的区别" class="headerlink" title="BeanFactory 和 FactoryBean 的区别"></a>BeanFactory 和 FactoryBean 的区别</h1><p>BeanFactory 是 IOC 最基本的容器，负责生产和管理 bean，它为其他具体的 IOC 容器提供了最基本的规范，例如 DefaultListableBeanFactory。</p>
 <p>FactoryBean 是一个接口，当在 IOC 容器中的 Bean 实现了 FactoryBean 后，通过 getBean(String BeanName)获取到的 Bean 对象并不是 FactoryBean 的实现类对象，而是这个实现类中的 getObject() 方法返回的对象。</p>
 <p> BeanFactory 和 FactoryBean 其实没有什么比较性的，只是两者的名称特别接近</p>
-<h1 id="注解的原理"><a href="#注解的原理" class="headerlink" title="注解的原理"></a>注解的原理</h1><p>注解相当于一种标记，在程序中加入注解就等于为程序打上某种标记在此以后，javac编译器、开发工具和其他程序可以通过反射来了解你的类及各种元素上有无何种标记，看你的程序有什么标记，就去干相应的事情，标记(注解)可以加在包、类，属性、方法，方法的参数以及局部变量上。springboot 注解主要用来配置 bean，切面相关配置。</p>
+<h1 id="注解的原理"><a href="#注解的原理" class="headerlink" title="注解的原理"></a>注解的原理</h1><p>注解相当于一种标记，在程序中加入注解就等于为程序打上某种标记在此以后，javac 编译器、开发工具和其他程序可以通过反射来了解你的类及各种元素上有无何种标记，看你的程序有什么标记，就去干相应的事情，标记(注解)可以加在包、类，属性、方法，方法的参数以及局部变量上。springboot 注解主要用来配置 bean，切面相关配置。</p>
 <h2 id="元注解和组合注解"><a href="#元注解和组合注解" class="headerlink" title="元注解和组合注解"></a>元注解和组合注解</h2><p> 元注解：注解的最小单位，有 4 个分别为 @Retention @Target @Document @Inherited</p>
 <p>组合注解：由元注解组合而成的注解，比如@Controller、@Override、@Component等我们平常用的所有注解都是由这 4 个注解所组成的</p>
 <h3 id="Retention"><a href="#Retention" class="headerlink" title="@Retention"></a>@Retention</h3><p>有三种取值</p>
@@ -506,7 +506,7 @@
 <li><code>Bean</code>可以使用了</li>
 <li>当容器关闭时，调用<code>Bean</code>的销毁方法</li>
 </ul>
-<h1 id="Spring-Boot-需要独立的容器运行吗？"><a href="#Spring-Boot-需要独立的容器运行吗？" class="headerlink" title="Spring Boot 需要独立的容器运行吗？"></a>Spring Boot 需要独立的容器运行吗？</h1><p>可以不需要，内置了 <code>Tomcat/ Jetty</code>等容器。</p>
+<h1 id="Spring-Boot-需要独立的容器运行吗？"><a href="#Spring-Boot-需要独立的容器运行吗？" class="headerlink" title="Spring Boot 需要独立的容器运行吗？"></a>Spring Boot 需要独立的容器运行吗？</h1><p>可以不需要，内置了 Tomcat / Jetty 等容器。</p>
 <h1 id="Spring事务管理"><a href="#Spring事务管理" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h1><h2 id="事务原理"><a href="#事务原理" class="headerlink" title="事务原理"></a>事务原理</h2><p>Spring 事务的本质其实就是数据库对事务的支持：加上了 @EnableTransctionManagement注解就表示使用Spring 事务机制来进行事务管理。</p>
 <ul>
 <li>配置文件开启注解驱动，在相关的类和方法上通过注解 @Transactional 标识。</li>
@@ -692,7 +692,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="SpringBoot,">
 
 
 
@@ -79,15 +79,18 @@
 
 
 
-<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta name="description" content="需求介绍使用 AJAX 异步通信实现网页能够增量的更新呈现到页面上而不需要刷新整个页面。 现在基本上都是服务器返回 JSON 字符串来解析 代码实现使用 JQuery 发送 AJAX 请求。 首先我们要有几个处理 JSON 字符串的方法，因为服务器要给浏览器返回 JSON 字符串，我们引入一个包下的 API 来处理。 12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;c">
+<meta name="keywords" content="SpringBoot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot开发十五-发布帖子">
 <meta property="og:url" content="http://yoursite.com/2019/08/18/SpringBoot开发十五-发布帖子/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="需求介绍使用 AJAX 异步通信实现网页能够增量的更新呈现到页面上而不需要刷新整个页面。 现在基本上都是服务器返回 JSON 字符串来解析 代码实现使用 JQuery 发送 AJAX 请求。 首先我们要有几个处理 JSON 字符串的方法，因为服务器要给浏览器返回 JSON 字符串，我们引入一个包下的 API 来处理。 12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;c">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T08:29:11.566Z">
+<meta property="og:updated_time" content="2019-08-30T03:25:14.652Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot开发十五-发布帖子">
+<meta name="twitter:description" content="需求介绍使用 AJAX 异步通信实现网页能够增量的更新呈现到页面上而不需要刷新整个页面。 现在基本上都是服务器返回 JSON 字符串来解析 代码实现使用 JQuery 发送 AJAX 请求。 首先我们要有几个处理 JSON 字符串的方法，因为服务器要给浏览器返回 JSON 字符串，我们引入一个包下的 API 来处理。 12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;c">
 
 
 
@@ -332,6 +335,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot项目/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot项目</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -359,7 +384,34 @@
       
 
       
-        
+        <h1 id="需求介绍"><a href="#需求介绍" class="headerlink" title="需求介绍"></a>需求介绍</h1><p>使用 AJAX 异步通信实现网页能够增量的更新呈现到页面上而不需要刷新整个页面。</p>
+<p>现在基本上都是服务器返回 JSON 字符串来解析</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>使用 JQuery 发送 AJAX 请求。</p>
+<p>首先我们要有几个处理 JSON 字符串的方法，因为服务器要给浏览器返回 JSON 字符串，我们引入一个包下的 API 来处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;fastjson&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.2.58&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用这个 API 开发工具方法，往往服务器向浏览器返回的JSON数据，这个JSON包含几个部分：编码，即时信息（成功还是失败啊这些），以及业务数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getJSONString</span><span class="params">(<span class="keyword">int</span> code, String msg, Map&lt;String, Object&gt; map)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 先定义一个JSON对象</span></span><br><span class="line">        JSONObject json = <span class="keyword">new</span> JSONObject();</span><br><span class="line">        json.put(<span class="string">"code"</span>, code);</span><br><span class="line">        json.put(<span class="string">"msg"</span>, msg);</span><br><span class="line">    	<span class="comment">// 把Hashmap打散放到json里面</span></span><br><span class="line">        <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (String  key : map.keySet()) &#123;</span><br><span class="line">                json.put(key, map.get(key));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> json.toJSONString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getJSONString</span><span class="params">(<span class="keyword">int</span> code, String msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getJSONString(code, msg, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getJSONString</span><span class="params">(<span class="keyword">int</span> code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getJSONString(code, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后写一个实例模拟 AJAX 的异步请求，那么需要在 AlphaController 里面声明一个方法处理这样的请求，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Ajax实例</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(path = <span class="string">"/ajax"</span>, method = RequestMethod.POST)</span><br><span class="line">	<span class="comment">// 异步请求是不返回网页的，所以是返回body</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">testAjax</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        System.out.println(name);</span><br><span class="line">        System.out.println(age);</span><br><span class="line">        <span class="keyword">return</span> CommunityUtil.getJSONString(<span class="number">0</span>, <span class="string">"ok"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后写页面处理，就不细致的说了。</p>
+<p>现在就写发布帖子的功能。</p>
+<p>那么就从数据访问层写起，那么要增加一个方法 insertDiscussPost 能增加帖子的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int insertDiscussPost(DiscussPost discussPost);</span><br></pre></td></tr></table></figure>
+
+<p>然后去 discusspost-mapper.xml 文件里面写方法的实现：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;sql id="insertFields"&gt;</span><br><span class="line">        user_id, title, content, type, status, create_time, comment_count, score</span><br><span class="line">&lt;/sql&gt;</span><br><span class="line"></span><br><span class="line">&lt;insert id="insertDiscussPost" parameterType="DiscussPost" keyProperty="id"&gt;</span><br><span class="line">        <span class="keyword">insert</span> <span class="keyword">into</span> discuss_post(&lt;<span class="keyword">include</span> refid=<span class="string">"insertFields"</span>&gt;&lt;/<span class="keyword">include</span>&gt;)</span><br><span class="line">        <span class="keyword">values</span>(<span class="comment">#&#123;userId&#125;,#&#123;title&#125;,#&#123;content&#125;,#&#123;type&#125;,#&#123;status&#125;,#&#123;createTime&#125;,#&#123;commentCount&#125;,#&#123;score&#125;)</span></span><br><span class="line">    &lt;/<span class="keyword">insert</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>数据访问层写完，写业务层，业务层需要提供一个能够保存帖子的业务方法 addDiscussPost，添加的帖子也要利用到之前写过的过滤敏感词的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先注入过滤敏感词的工具</span></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> SensitiveFilter sensitiveFilter;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addDiscussPost</span><span class="params">(DiscussPost discussPost)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (discussPost == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"参数不能为空！"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 转义Html标签</span></span><br><span class="line">        discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));</span><br><span class="line">        discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));</span><br><span class="line">        <span class="comment">// 过滤敏感词</span></span><br><span class="line">        discussPost.setTitle(sensitiveFilter.filter(discussPost.getTitle()));</span><br><span class="line">        discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> discussPostMapper.insertDiscussPost(discussPost);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后新建 DiscussPostController，控制视图层，那么以后涉及到帖子的都在这个 Controller 里面实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nowcoder.community.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.dao.CommentMapper;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.entity.*;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.event.EventProducer;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.service.CommentService;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.service.DiscussPostService;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.service.LikeService;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.service.UserService;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.util.CommunityConstant;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.util.CommunityUtil;</span><br><span class="line"><span class="keyword">import</span> com.nowcoder.community.util.HostHolder;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xpath.internal.operations.Mod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.Model;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/discuss"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscussPostController</span> <span class="keyword">implements</span> <span class="title">CommunityConstant</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DiscussPostService discussPostService;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前用户</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> HostHolder hostHolder;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(path = <span class="string">"/add"</span>, method = RequestMethod.POST)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">addDiscussPost</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        User user = hostHolder.getUser();</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> CommunityUtil.getJSONString(<span class="number">403</span>, <span class="string">"您还没有登录"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        DiscussPost discussPost = <span class="keyword">new</span> DiscussPost();</span><br><span class="line">        discussPost.setUserId(user.getId());</span><br><span class="line">        discussPost.setTitle(title);</span><br><span class="line">        discussPost.setContent(content);</span><br><span class="line">        discussPost.setCreateTime(<span class="keyword">new</span> Date());</span><br><span class="line">        discussPostService.addDiscussPost(discussPost);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 报错的情况以后统一处理</span></span><br><span class="line">        <span class="keyword">return</span> CommunityUtil.getJSONString(<span class="number">0</span>, <span class="string">"发布成功！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就开始处理页面，要写异步请求，就可以了。</p>
+
       
     </div>
     
@@ -373,6 +425,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+        </div>
       
 
       
@@ -447,8 +505,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -463,7 +530,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -517,6 +584,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#需求介绍"><span class="nav-number">1.</span> <span class="nav-text">需求介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

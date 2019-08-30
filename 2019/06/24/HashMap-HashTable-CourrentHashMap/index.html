@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/3.png">
-<meta property="og:updated_time" content="2019-08-12T11:12:14.519Z">
+<meta property="og:updated_time" content="2019-08-23T01:30:25.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap,HashTable，CourrentHashMap">
 <meta name="twitter:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap原理基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，返回的hashCode用于找到bucket位置来储">
@@ -398,32 +398,32 @@
 第三个键值对 <code>C</code>,<code>index</code>也等于<code>0</code>,那么<code>C.next = B</code>,<code>Entry[0] = C</code>；这样我们发现<code>index=0</code>的地方事实上存取了<code>A</code>,<code>B</code>,<code>C</code>三个键值对,它们通过<code>next</code>这个属性链接在一起。所以当<code>hash</code>冲突很多时，<code>HashMap</code>退化成链表。</p>
 <p><code>put</code>过程：</p>
 <ul>
-<li>先判断键值对数组<code>table[i]</code> 是否为空否则进行扩容操作<code>（resize（））</code>；</li>
-<li>根据键值<code>key</code>计算<code>hash</code>值得到插入的数组索引<code>i</code>，如果<code>table[i]==null</code>，直接新建节点添加到最后一步，如果<code>table[i]</code>不为空进行下一步； </li>
-<li>判断<code>table[i]</code>的首个元素是否和<code>key</code>一样，如果相同直接覆盖<code>value</code>，否则进行下一步，这里的相同指的是<code>hashCode</code>以及<code>equals</code>； </li>
-<li>判断<code>table[i]</code>是否为<code>treeNode</code>，即<code>table[i]</code>是否是红黑树，如果是红黑树，则直接在树中插入键值对，否则进行下一步； </li>
-<li>遍历<code>table[i]</code>，判断链表长度是否大于<code>8</code>，大于<code>8</code>的话把链表转换为红黑树，在红黑树中执行插入操作，否则进行链表的插入操作；遍历过程中若发现<code>key</code>已经存在直接覆盖<code>value</code>即可； </li>
-<li>插入成功后，判断实际存在的键值对数量<code>size</code>是否超多了最大容量<code>threshold</code>，如果超过，进行扩容。</li>
+<li>对 key 的 hashCode() 做 hash，然后再计算 index;</li>
+<li>如果没碰撞直接放到 bucket 里；</li>
+<li>如果碰撞了，以链表的形式存在 buckets 后；</li>
+<li>如果碰撞导致链表过长(大于等于 TREEIFY_THRESHOLD)，就把链表转换成红黑树；</li>
+<li>如果节点已经存在就替换 old value(保证 key 的唯一性)</li>
+<li>如果 bucket 满了(超过 load factor*current capacity)，就要 resize。</li>
 </ul>
 <p><code>get</code>过程：</p>
 <ul>
-<li>先通过<code>key</code>值进行哈哈希函数的运算得到<code>hash</code>值；</li>
-<li>调用<code>getNode()</code>，得到桶号；</li>
-<li>在桶里面找元素和<code>key</code>值相等的即可，未找到返回空。</li>
+<li>先通过 key 值进行哈哈希函数的运算得到 hash 值；</li>
+<li>调用 getNode()，得到桶号；</li>
+<li>在桶里面找元素和 key 值相等的即可，未找到返回空。</li>
 </ul>
-<h1 id="hashmap的负载因子"><a href="#hashmap的负载因子" class="headerlink" title="hashmap的负载因子"></a>hashmap的负载因子</h1><h2 id="HashMap的初始化容量为什么为2的次幂？"><a href="#HashMap的初始化容量为什么为2的次幂？" class="headerlink" title="HashMap的初始化容量为什么为2的次幂？"></a>HashMap的初始化容量为什么为2的次幂？</h2><p>因为在<code>get（）</code>方法中，获得元素的位置是通过<code>(length- 1) &amp; h</code>来得到的，其中<code>h</code>:为插入元素的<code>hashcode length</code>:为<code>map</code>的容量大小。如果<code>length</code>为<code>2</code>的次幂 则<code>length-1</code> 转化为二进制必定是<code>11111……</code>的形式，在于h的二进制与操作效率会非常的快，而且空间不浪费。如果是其他的话，空间不够，碰撞的几率变大，查询变慢，空间会浪费。　</p>
+<h1 id="hashmap的负载因子"><a href="#hashmap的负载因子" class="headerlink" title="hashmap的负载因子"></a>hashmap的负载因子</h1><h2 id="HashMap的初始化容量为什么为2的次幂？"><a href="#HashMap的初始化容量为什么为2的次幂？" class="headerlink" title="HashMap的初始化容量为什么为2的次幂？"></a>HashMap的初始化容量为什么为2的次幂？</h2><p>因为在 get（）方法中，获得元素的位置是通过 (length- 1) &amp; h 来得到的，其中  h：为插入元素的 hashcode length：为 map 的容量大小。如果 length 为 2 的次幂 则 length-1 转化为二进制必定是 1111…… 的形式，在于 h的二进制与操作效率会非常的快，而且空间不浪费。如果是其他的话，空间不够，碰撞的几率变大，查询变慢，空间会浪费。　</p>
 <h2 id="为什么HashMap是非线程安全的？"><a href="#为什么HashMap是非线程安全的？" class="headerlink" title="为什么HashMap是非线程安全的？"></a>为什么HashMap是非线程安全的？</h2><p>首先我们知道为了减少冲突，我们需要时刻留意当前的<code>size</code>是否太大，检查是否需要扩容，一旦超过设定的<code>threshold</code>，那么就要重新增大数组尺寸，此时所有元素都需要重新计算应该放置的下标。同时<code>HashMap</code>在扩容的时候，是通过重新创建一个新的<code>hash</code>表，把原来旧数组中的<code>Entry</code>一个个迁移到新数组的，注意一点就是计算在<code>newTable</code>中的位置，原来在同一条链上的元素可能被分配到不同的位置，看下面的源码。每次会扩容长度为以前的<code>2</code>倍，原因看上面。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Entry[] newTable)</span> </span>&#123;</span><br><span class="line">        Entry[] src = table;</span><br><span class="line">        <span class="keyword">int</span> newCapacity = newTable.length;</span><br><span class="line">        <span class="comment">//将每条链中的元素迁移过去</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; src.length; j++) &#123;</span><br><span class="line">            Entry&lt;K,V&gt; e = src[j];</span><br><span class="line">            <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">                src[j] = <span class="keyword">null</span>;   </span><br><span class="line">            <span class="comment">//遍历第j条链</span></span><br><span class="line">                <span class="keyword">do</span> &#123;</span><br><span class="line">                    Entry&lt;K,V&gt; next = e.next;</span><br><span class="line">                    <span class="comment">// 计算在newTable中的位置，原来在同一条链上的元素可能被分配到不同的位置</span></span><br><span class="line">                    <span class="keyword">int</span> i = indexFor(e.hash, newCapacity);   </span><br><span class="line">                    e.next = newTable[i];</span><br><span class="line">                    newTable[i] = e;</span><br><span class="line">                    e = next;</span><br><span class="line">                &#125; <span class="keyword">while</span> (e != <span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-<p>单线程的情况<code>resize（）</code>是没有问题的，但是多线程的时候就可能会出现形成环形链表的情况，导致扩容失败。具体详细的图可以看<a href="https://blog.csdn.net/andy_budd/article/details/81413464" target="_blank" rel="noopener">https://blog.csdn.net/andy_budd/article/details/81413464</a></p>
-<h2 id="HashMap和HashTable的区别："><a href="#HashMap和HashTable的区别：" class="headerlink" title="HashMap和HashTable的区别："></a>HashMap和HashTable的区别：</h2><p><code>HashTable</code> 是不能接受<code>NULL</code>，<code>NULL</code>值组合的，而<code>HashMap</code>可以。（因为<code>HashMap</code>做了对应的<code>NULL</code>值处理，会把<code>NULL</code>值的键值对放到<code>hashcode</code>为<code>0</code>的链表里面）。</p>
-<p><code>HashTable</code>是线程安全的，<code>HashMap</code>是线程非安全的。因为<code>HashTable</code>是<code>synchronized</code>，要想是<code>HashMap</code>线程安全<code>Map m = Collections.synchronizeMap(hashMap)</code>.</p>
+<p>单线程的情况 resize（）是没有问题的，但是多线程的时候就可能会出现形成环形链表的情况，导致扩容失败。具体详细的图可以看<a href="https://blog.csdn.net/andy_budd/article/details/81413464" target="_blank" rel="noopener">https://blog.csdn.net/andy_budd/article/details/81413464</a></p>
+<h2 id="HashMap和HashTable的区别："><a href="#HashMap和HashTable的区别：" class="headerlink" title="HashMap和HashTable的区别："></a>HashMap和HashTable的区别：</h2><p>HashTable 是不能接受 NULL，NULL 值组合的，而 HashMap 可以。（因为 HashMap 做了对应的 NULL 值处理，会把 NULL 值的键值对放到 hashcode 为 0 的链表里面）。</p>
+<p>HashTable 是线程安全的，HashMap 是线程非安全的。因为 HashTable 是 synchronized，要想是 HashMap 线程安全 Map m = Collections.synchronizeMap(hashMap)</p>
 <h2 id="HashMap和TreeMap比较"><a href="#HashMap和TreeMap比较" class="headerlink" title="HashMap和TreeMap比较"></a>HashMap和TreeMap比较</h2><ul>
-<li><code>HashMap</code>适用于在<code>Map</code>中插入、删除和定位元素。 </li>
-<li><code>Treemap</code>适用于按自然顺序或自定义顺序遍历键<code>（key）</code>。 </li>
-<li><code>HashMap</code>通常比<code>TreeMap</code>快一点（树和哈希表的数据结构使然），建议多使用<code>HashMap</code>,在需要排序的<code>Map</code>时候才用<code>TreeMap</code>。<code>TreeMap</code>的底层是红黑树。</li>
-<li><code>HashMap</code>非线程安全 <code>TreeMap</code>非线程安全 </li>
-<li><code>HashMap</code>的结果是没有排序的，而<code>TreeMap</code>输出的结果是排好序的。</li>
+<li>HashMap 适用于在 Map 中插入、删除和定位元素。 </li>
+<li>Treemap 适用于按自然顺序或自定义顺序遍历键（key）。 </li>
+<li>HashMap 通常比 TreeMap 快一点（树和哈希表的数据结构使然），建议多使用 HashMap,在需要排序的Map时候才用 TreeMap。TreeMap 的底层是红黑树。</li>
+<li>HashMap 非线程安全 TreeMap 非线程安全 </li>
+<li>HashMap 的结果是没有排序的，而 TreeMap 输出的结果是排好序的。</li>
 </ul>
 <h2 id="为什么HashMap长度大于8才转换为红黑树，而不是6"><a href="#为什么HashMap长度大于8才转换为红黑树，而不是6" class="headerlink" title="为什么HashMap长度大于8才转换为红黑树，而不是6"></a>为什么HashMap长度大于8才转换为红黑树，而不是6</h2><p>红黑树的平均查找长度是<code>log(n)</code>，长度为<code>8</code>，查找长度为<code>log(8)=3</code>，链表的平均查找长度为<code>n/2</code>，当长度为<code>8</code>时，平均查找长度为<code>8/2=4</code>，这才有转换成树的必要；链表长度如果是小于等于<code>6</code>，<code>6/2=3</code>，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。中间有个差值<code>7</code>可以防止链表和树之间频繁的转换。</p>
 <p>这个只是简单的说法个人感觉，正确的说话应该是理想情况下随机<code>hashCode</code>算法下所有<code>bin</code>中节点的分布频率会遵循泊松分布，据概率统计决定的。</p>
@@ -566,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

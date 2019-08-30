@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="操作系统,">
 
 
 
@@ -79,15 +79,18 @@
 
 
 
-<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta name="description" content="孤儿进程如果父进程先退出,子进程还没退出那么子进程将被托孤给 init 进程,这是子进程的父进程就是 init 进程( 1 号进程).用到的 Linux 函数有：  fork 创建一个新进程 vfork 创建一个子进程，以供执行新程序，常与execve等同时使用 execve 运行可执行文件 getpid 获取进程标识号 getppid 获取父进程标识号 wait 等待子进程终止 waitpid">
+<meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="僵尸进程，孤儿进程以及守护进程">
 <meta property="og:url" content="http://yoursite.com/2019/08/20/僵尸进程，孤儿进程以及守护进程/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="孤儿进程如果父进程先退出,子进程还没退出那么子进程将被托孤给 init 进程,这是子进程的父进程就是 init 进程( 1 号进程).用到的 Linux 函数有：  fork 创建一个新进程 vfork 创建一个子进程，以供执行新程序，常与execve等同时使用 execve 运行可执行文件 getpid 获取进程标识号 getppid 获取父进程标识号 wait 等待子进程终止 waitpid">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-20T13:07:30.238Z">
+<meta property="og:updated_time" content="2019-08-30T03:34:53.085Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="僵尸进程，孤儿进程以及守护进程">
+<meta name="twitter:description" content="孤儿进程如果父进程先退出,子进程还没退出那么子进程将被托孤给 init 进程,这是子进程的父进程就是 init 进程( 1 号进程).用到的 Linux 函数有：  fork 创建一个新进程 vfork 创建一个子进程，以供执行新程序，常与execve等同时使用 execve 运行可执行文件 getpid 获取进程标识号 getppid 获取父进程标识号 wait 等待子进程终止 waitpid">
 
 
 
@@ -332,6 +335,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -359,7 +384,35 @@
       
 
       
-        
+        <h1 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a>孤儿进程</h1><p>如果父进程先退出,子进程还没退出那么子进程将被托孤给 init 进程,这是子进程的父进程就是 init 进程( 1 号进程).用到的 Linux 函数有：</p>
+<ul>
+<li>fork 创建一个新进程</li>
+<li>vfork 创建一个子进程，以供执行新程序，常与execve等同时使用</li>
+<li>execve 运行可执行文件</li>
+<li>getpid 获取进程标识号</li>
+<li>getppid 获取父进程标识号</li>
+<li>wait 等待子进程终止</li>
+<li>waitpid 等待指定子进程终止</li>
+<li>exit 中止进程</li>
+<li>pause 挂起进程，等待信号</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">pid_t</span> pid ;</span><br><span class="line">        signal(SIGCHLD,SIG_IGN);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"before fork pid:%d\n"</span>,getpid());</span><br><span class="line">        <span class="keyword">int</span> abc = <span class="number">10</span>;</span><br><span class="line">        pid = fork();</span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                perror(<span class="string">"tile"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(pid &gt; <span class="number">0</span>)           <span class="comment">//父进程先退出</span></span><br><span class="line">        &#123;</span><br><span class="line">                abc++;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"parent:pid:%d \n"</span>,getpid());</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"abc:%d \n"</span>,abc);</span><br><span class="line">                sleep(<span class="number">5</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;  <span class="comment">//值进程后退出,被托付给init进程</span></span><br><span class="line">                abc++;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"child:%d,parent: %d\n"</span>,getpid(),getppid());</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"abc:%d"</span>,abc);</span><br><span class="line">                sleep(<span class="number">100</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"fork after...\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：我们执行程序后由于子进程进入 sleep(100) ,而父进程先退出.通过 ps -ef 命令我们可以知道,此时 27710 号进程的父进程编程了 1 号进程.也就是我们所说的 init 进程.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">before fork pid:27709</span><br><span class="line">parent:pid:27709 </span><br><span class="line">abc:11 </span><br><span class="line">child:27710,parent: 27709</span><br><span class="line">fork after...</span><br><span class="line"></span><br><span class="line">disda 27710 1 0 10:47 pts/1 00:00:00 ./review</span><br><span class="line">disda 27713 25948 47 10:47 pts/3 00:00:00 ps -ef</span><br></pre></td></tr></table></figure>
+
+<h1 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h1><p>一个进程使用 fork 创建子进程，如果子进程退出，而父进程并没有调用 wait 或 waitpid 获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵尸进程。僵尸进程还会消耗一定的系统资源,并且还保留一些概要信息供父进程查询子进程的状态可以提供父进程想要的信息。一旦父进程得到想要的信息，僵尸进程就会结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">pid_t</span> pid ;</span><br><span class="line">        <span class="comment">//signal(SIGCHLD,SIG_IGN);</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"before fork pid:%d\n"</span>,getpid());</span><br><span class="line">        <span class="keyword">int</span> abc = <span class="number">10</span>;</span><br><span class="line">        pid = fork();</span><br><span class="line">        <span class="keyword">if</span>(pid == <span class="number">-1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                perror(<span class="string">"tile"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(pid &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                abc++;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"parent:pid:%d \n"</span>,getpid());</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"abc:%d \n"</span>,abc);</span><br><span class="line">                sleep(<span class="number">20</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">                abc++;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"child:%d,parent: %d\n"</span>,getpid(),getppid());</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"abc:%d"</span>,abc);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"fork after...\n"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>同样通过 ps -ef 我们可以得知进程信息和进程 pid,可以看到子进程就是处于 defunct 状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">disda 27881 23047 0 11:12 pts/1 00:00:00 ./fork01</span><br><span class="line">disda 27882 27881 0 11:12 pts/1 00:00:00 [fork01] &lt;defunct&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="僵尸进程危害"><a href="#僵尸进程危害" class="headerlink" title="僵尸进程危害"></a>僵尸进程危害</h2><p>如果进程不调用 wait / waitpid 的话， 那么保留的那段信息就不会释放，其进程号就会一直被占用，但是系统所能使用的进程号是有限的，如果大量的产生僵死进程，将因为没有可用的进程号而导致系统不能产生新的进程. 此即为僵尸进程的危害，应当避免　　　</p>
+<h2 id="避免僵尸进程的方式"><a href="#避免僵尸进程的方式" class="headerlink" title="避免僵尸进程的方式"></a>避免僵尸进程的方式</h2><ul>
+<li>通过信号机制，子进程退出时向父进程发送 SIGCHILD 信号，父进程处理 SIGCHILD 信号。在信号处理函数中调用 wait 进行处理僵尸进程。</li>
+<li>fork 两次，原理是将子进程成为孤儿进程，从而其的父进程变为 init 进程，通过 init 进程可以处理僵尸进程。</li>
+</ul>
+<h1 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h1>
       
     </div>
     
@@ -373,6 +426,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+        </div>
       
 
       
@@ -447,8 +506,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -463,7 +531,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -517,6 +585,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#孤儿进程"><span class="nav-number">1.</span> <span class="nav-text">孤儿进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#僵尸进程"><span class="nav-number">2.</span> <span class="nav-text">僵尸进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#僵尸进程危害"><span class="nav-number">2.1.</span> <span class="nav-text">僵尸进程危害</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#避免僵尸进程的方式"><span class="nav-number">2.2.</span> <span class="nav-text">避免僵尸进程的方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#守护进程"><span class="nav-number">3.</span> <span class="nav-text">守护进程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

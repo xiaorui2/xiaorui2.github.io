@@ -88,7 +88,7 @@
 <meta property="og:description" content="我们知道HTTP是一种无状态的协议，为了分辨链接是谁发起的，需自己去解决这个问题。而且一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。导致有些情况下即使是同一个网站每打开一个页面也都要登录一下。而Session和Cookie就是为解决这个问题而提出来的两个机制。 同样的Token也能解决这个问题，它们之间只是一个说法的差别，其实">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/08/13/Cookie，Session，Token/1.png">
-<meta property="og:updated_time" content="2019-08-21T06:40:41.800Z">
+<meta property="og:updated_time" content="2019-08-23T00:54:36.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cookie，Session，Token">
 <meta name="twitter:description" content="我们知道HTTP是一种无状态的协议，为了分辨链接是谁发起的，需自己去解决这个问题。而且一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。导致有些情况下即使是同一个网站每打开一个页面也都要登录一下。而Session和Cookie就是为解决这个问题而提出来的两个机制。 同样的Token也能解决这个问题，它们之间只是一个说法的差别，其实">
@@ -389,7 +389,7 @@
         <p>我们知道<code>HTTP</code>是一种无状态的协议，为了分辨链接是谁发起的，需自己去解决这个问题。而且一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。导致有些情况下即使是同一个网站每打开一个页面也都要登录一下。而<code>Session</code>和<code>Cookie</code>就是为解决这个问题而提出来的两个机制。</p>
 <p>同样的<code>Token</code>也能解决这个问题，它们之间只是一个说法的差别，其实做的事情都是一样的。</p>
 <h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>实际上是一小段的文本信息是访问某些网站后在本地存储的一些网站相关信息，下次访问时减少一些步骤。更准确的说法是：<code>Cookie</code>是服务器在本地机器上存储的小段文本信息并随每一个请求发送至同一服务器，是在客户端保持状态的方案。主要包括：名字，值，过期时间，路径和域。路径与域一起构成<code>Cookie</code>的作用范围。</p>
-<h2 id="会话Cookie和持久Cookie"><a href="#会话Cookie和持久Cookie" class="headerlink" title="会话Cookie和持久Cookie"></a>会话Cookie和持久Cookie</h2><p>若不设置过期时间，则表示这个<code>cookie</code>的生命期为浏览器会话期间，关闭浏览器窗口，<code>cookie</code>就消失。这种生命期为浏览器会话期的<code>cookie</code>被称为会话<code>cookie</code>。会话<code>cookie</code>一般不存储在硬盘上而是保存在内存里，当然这种行为并不是规范规定的。若设置了过期时间，浏览器就会把<code>cookie</code>保存到硬盘上，关闭后再次打开浏览器，这些<code>cookie</code>仍然有效直到超过设定的过期时间。存储在硬盘上的<code>cookie</code>可以在浏览器的不同进程间共享。这种称为持久<code>Cookie</code>。</p>
+<h2 id="会话Cookie和持久Cookie"><a href="#会话Cookie和持久Cookie" class="headerlink" title="会话Cookie和持久Cookie"></a>会话Cookie和持久Cookie</h2><p>若不设置过期时间，则表示这个 cookie 的生命期为浏览器会话期间，关闭浏览器窗口，<code>cookie</code>就消失。这种生命期为浏览器会话期的<code>cookie</code>被称为会话<code>cookie</code>。会话<code>cookie</code>一般不存储在硬盘上而是保存在内存里，当然这种行为并不是规范规定的。若设置了过期时间，浏览器就会把<code>cookie</code>保存到硬盘上，关闭后再次打开浏览器，这些<code>cookie</code>仍然有效直到超过设定的过期时间。存储在硬盘上的<code>cookie</code>可以在浏览器的不同进程间共享。这种称为持久<code>Cookie</code>。</p>
 <h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><p>它存在服务器的一种用来存放用户数据的类<code>HashTable</code>结构，是另一种记录客户状态的机制，不同的是<code>Cookie</code>保存在客户端浏览器中，而<code>Session</code>保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是<code>Session</code>。客户端浏览器再次访问时只需要从该<code>Session</code>中查找该客户的状态就可以了。</p>
 <h2 id="session的创建"><a href="#session的创建" class="headerlink" title="session的创建"></a>session的创建</h2><p>当程序需要为某个客户端的请求创建一个<code>session</code>时，服务器首先检查这个客户端的请求里是否已包含了<code>sessionId</code>，如果已包含则说明以前已经为此客户端创建过<code>session</code>，服务器就按照<code>sessionId</code>把这个<code>session</code>检索出来使用（检索不到，会新建一个），如果客户端请求不包含<code>sessionId</code>，则为此客户端创建一个<code>session</code>并且生成一个与此<code>session</code>相关联的<code>sessionId</code>，<code>sessionId</code>的值是一个既不会重复，又不容易被找到规律以仿造的字符串，这个<code>sessionId</code>将被在本次响应中返回给客户端保存。</p>
 <p>当服务器为用户建立一次会话，可以在用户授权成功时给他一个唯一的<code>cookie</code>。当一个用户提交了表单时，浏览器会将用户的<code>SessionId</code>自动附加在<code>HTTP</code>头信息中，服务器通过<code>SessionId</code>作为<code>key</code>，读写到对应的<code>value</code>，这就达到了保持会话信息的目的。</p>
@@ -532,7 +532,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
