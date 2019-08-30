@@ -1,5 +1,5 @@
 ---
-**title**: Java线程安全
+title: Java线程安全
 date: 2019-08-06 23:41:22
 tags: 
 categories: Java入门

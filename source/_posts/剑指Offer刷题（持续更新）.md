@@ -2269,29 +2269,29 @@ public:
 
 `Java`版：
 
-```java
-
-/**
-public class TreeNode {
-    int val = 0;
-    TreeNode left = null;
-    TreeNode right = null;
-
-    public TreeNode(int val) {
-        this.val = val;
-
+```c++
+// 非递归版本
+int GetBTreeDepth( BTreeNode_t *pRoot){
+    if( pRoot == NULL )
+        return 0;
+    queue< BTreeNode_t *> que;
+    que.push( pRoot );
+    int depth = 0;
+    while( !que.empty() ){
+        ++depth;
+        int curLevelNodesTotal = que.size();
+        int cnt = 0;
+        while( cnt < curLevelNodesTotal ){
+            ++cnt;
+            pRoot = que.front();
+            que.pop();
+            if( pRoot->m_pLeft )
+                que.push( pRoot->m_pLeft);
+            if( pRoot->m_pRight)
+                que.push( pRoot->m_pRight);
+        }
     }
-
-}
-*/
-public class Solution {
-    public int TreeDepth(TreeNode root) {
-        if(root == null)
-			return 0;
-		int nLeft = TreeDepth(root.left);
-		int nRight = TreeDepth(root.right);
-		return (nLeft > nRight)?(nLeft+1):(nRight+1);
-    }
+    return cnt;
 }
 ```
 

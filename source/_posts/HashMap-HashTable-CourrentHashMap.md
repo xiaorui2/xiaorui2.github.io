@@ -27,24 +27,24 @@ categories: Java入门
 
 `put`过程：
 
-- 先判断键值对数组`table[i]` 是否为空否则进行扩容操作`（resize（））`；
-- 根据键值`key`计算`hash`值得到插入的数组索引`i`，如果`table[i]==null`，直接新建节点添加到最后一步，如果`table[i]`不为空进行下一步； 
-- 判断`table[i]`的首个元素是否和`key`一样，如果相同直接覆盖`value`，否则进行下一步，这里的相同指的是`hashCode`以及`equals`； 
-- 判断`table[i]`是否为`treeNode`，即`table[i] `是否是红黑树，如果是红黑树，则直接在树中插入键值对，否则进行下一步； 
-- 遍历`table[i]`，判断链表长度是否大于`8`，大于`8`的话把链表转换为红黑树，在红黑树中执行插入操作，否则进行链表的插入操作；遍历过程中若发现`key`已经存在直接覆盖`value`即可； 
-- 插入成功后，判断实际存在的键值对数量`size`是否超多了最大容量`threshold`，如果超过，进行扩容。
+- 对 key 的 hashCode() 做 hash，然后再计算 index;
+- 如果没碰撞直接放到 bucket 里；
+- 如果碰撞了，以链表的形式存在 buckets 后；
+- 如果碰撞导致链表过长(大于等于 TREEIFY_THRESHOLD)，就把链表转换成红黑树；
+- 如果节点已经存在就替换 old value(保证 key 的唯一性)
+- 如果 bucket 满了(超过 load factor*current capacity)，就要 resize。
 
 `get`过程：
 
-- 先通过`key`值进行哈哈希函数的运算得到`hash`值；
-- 调用`getNode()`，得到桶号；
-- 在桶里面找元素和`key`值相等的即可，未找到返回空。
+- 先通过 key 值进行哈哈希函数的运算得到 hash 值；
+- 调用 getNode()，得到桶号；
+- 在桶里面找元素和 key 值相等的即可，未找到返回空。
 
 # hashmap的负载因子
 
 ## HashMap的初始化容量为什么为2的次幂？
 
-因为在`get（）`方法中，获得元素的位置是通过`(length- 1) & h `来得到的，其中` h`:为插入元素的`hashcode length`:为`map`的容量大小。如果`length`为`2`的次幂 则`length-1` 转化为二进制必定是`11111……`的形式，在于h的二进制与操作效率会非常的快，而且空间不浪费。如果是其他的话，空间不够，碰撞的几率变大，查询变慢，空间会浪费。　
+因为在 get（）方法中，获得元素的位置是通过 (length- 1) & h 来得到的，其中  h：为插入元素的 hashcode length：为 map 的容量大小。如果 length 为 2 的次幂 则 length-1 转化为二进制必定是 1111…… 的形式，在于 h的二进制与操作效率会非常的快，而且空间不浪费。如果是其他的话，空间不够，碰撞的几率变大，查询变慢，空间会浪费。　
 
 ## 为什么HashMap是非线程安全的？
 
@@ -73,20 +73,20 @@ void transfer(Entry[] newTable) {
     }
 ```
 
-单线程的情况`resize（）`是没有问题的，但是多线程的时候就可能会出现形成环形链表的情况，导致扩容失败。具体详细的图可以看<https://blog.csdn.net/andy_budd/article/details/81413464>
+单线程的情况 resize（）是没有问题的，但是多线程的时候就可能会出现形成环形链表的情况，导致扩容失败。具体详细的图可以看<https://blog.csdn.net/andy_budd/article/details/81413464>
 
 ## HashMap和HashTable的区别：
 
-`HashTable` 是不能接受`NULL`，`NULL`值组合的，而`HashMap`可以。（因为`HashMap`做了对应的`NULL`值处理，会把`NULL`值的键值对放到`hashcode `为`0 `的链表里面）。
+HashTable 是不能接受 NULL，NULL 值组合的，而 HashMap 可以。（因为 HashMap 做了对应的 NULL 值处理，会把 NULL 值的键值对放到 hashcode 为 0 的链表里面）。
 
-`HashTable`是线程安全的，`HashMap`是线程非安全的。因为`HashTable`是`synchronized`，要想是`HashMap`线程安全`Map m = Collections.synchronizeMap(hashMap)`.
+HashTable 是线程安全的，HashMap 是线程非安全的。因为 HashTable 是 synchronized，要想是 HashMap 线程安全 Map m = Collections.synchronizeMap(hashMap)
 
 ## HashMap和TreeMap比较
-- `HashMap`适用于在`Map`中插入、删除和定位元素。 
-- `Treemap`适用于按自然顺序或自定义顺序遍历键`（key）`。 
-- `HashMap`通常比`TreeMap`快一点（树和哈希表的数据结构使然），建议多使用`HashMap`,在需要排序的`Map`时候才用`TreeMap`。`TreeMap`的底层是红黑树。
-- `HashMap `非线程安全 `TreeMap `非线程安全 
-- `HashMap`的结果是没有排序的，而`TreeMap`输出的结果是排好序的。
+- HashMap 适用于在 Map 中插入、删除和定位元素。 
+- Treemap 适用于按自然顺序或自定义顺序遍历键（key）。 
+- HashMap 通常比 TreeMap 快一点（树和哈希表的数据结构使然），建议多使用 HashMap,在需要排序的Map时候才用 TreeMap。TreeMap 的底层是红黑树。
+- HashMap 非线程安全 TreeMap 非线程安全 
+- HashMap 的结果是没有排序的，而 TreeMap 输出的结果是排好序的。
 
 ## 为什么HashMap长度大于8才转换为红黑树，而不是6
 
