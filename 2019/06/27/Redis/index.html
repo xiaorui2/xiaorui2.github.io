@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="九八年生于晚秋">
 <meta property="og:description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的 key-value 数据库，和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string (字符串)、list (链表)、set (集合)、zset ( sorted set –有序集合)和 hash（哈希类型）。与memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T14:44:01.740Z">
+<meta property="og:updated_time" content="2019-09-02T13:31:00.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis">
 <meta name="twitter:description" content="Redis是什么，用在哪Redis 是一个使用 C 语言写成的，开源的 key-value 数据库，和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string (字符串)、list (链表)、set (集合)、zset ( sorted set –有序集合)和 hash（哈希类型）。与memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis">
@@ -446,8 +446,8 @@
 <li>客户端角度，为保证每个客户端间正常有序与<code>Redis</code>进行通信，对连接进行池化，同时对客户端读写<code>Redis</code>操作采用内部锁<code>synchronized</code>。</li>
 <li>服务器角度，利用<code>setnx</code>实现锁。</li>
 </ul>
-<h1 id="Redis缓存穿透，缓存雪崩，缓存击穿"><a href="#Redis缓存穿透，缓存雪崩，缓存击穿" class="headerlink" title="Redis缓存穿透，缓存雪崩，缓存击穿"></a>Redis缓存穿透，缓存雪崩，缓存击穿</h1><p><code>Redis</code>缓存的使用，极大的提升了应用程序的性能和效率，特别是数据查询方面。但同时，它也带来了一些问题。其中，最要害的问题，就是数据的一致性问题，从严格意义上讲，这个问题无解。如果对数据的一致性要求很高，那么就不能使用缓存。除此之外一些典型问题就是，缓存穿透、缓存雪崩和缓存击穿。</p>
-<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>缓存穿透，是指查询一个数据库一定不存在的数据。正常的使用缓存流程大致是，数据查询先进行缓存查询，如果<code>key</code>不存在或者<code>key</code>已经过期，再对数据库进行查询，并把查询到的对象，放进缓存。如果数据库查询对象为空，则不放进缓存。</p>
+<h1 id="Redis缓存穿透，缓存雪崩，缓存击穿"><a href="#Redis缓存穿透，缓存雪崩，缓存击穿" class="headerlink" title="Redis缓存穿透，缓存雪崩，缓存击穿"></a>Redis缓存穿透，缓存雪崩，缓存击穿</h1><p>Redis 缓存的使用，极大的提升了应用程序的性能和效率，特别是数据查询方面。但同时，它也带来了一些问题。其中，最要害的问题，就是数据的一致性问题，从严格意义上讲，这个问题无解。如果对数据的一致性要求很高，那么就不能使用缓存。除此之外一些典型问题就是，缓存穿透、缓存雪崩和缓存击穿。</p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p>缓存穿透，是指查询一个数据库一定不存在的数据。正常的使用缓存流程大致是，数据查询先进行缓存查询，如果key 不存在或者 key 已经过期，再对数据库进行查询，并把查询到的对象，放进缓存。如果数据库查询对象为空，则不放进缓存。</p>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>有很多种方法可以有效地解决缓存穿透问题，最常见的则是采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的 bitmap 中，一个一定不存在的数据会被 这个 bitmap 拦截掉，从而避免了对底层存储系统的查询压力。另外也有一个更为简单粗暴的方法（我们采用的就是这种），如果一个查询返回的数据为空（不管是数 据不存在，还是系统故障），我们仍然把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟</p>
 <h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p>在某一个时间段，缓存集中过期失效。特别是电商中。</p>
 <h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>缓存失效时的雪崩效应对底层系统的冲击非常可怕。大多数系统设计者考虑用加锁或者队列的方式保证缓存的单线 程（进程）写，从而避免失效时大量的并发请求落到底层存储系统上。这里分享一个简单方案就时讲缓存失效时间分散开，比如我们可以在原有的失效时间基础上增加一个随机值，比如 1-5 分钟随机，这样每一个缓存的过期时间的重复率就会降低，就很难引发集体失效的事件。</p>

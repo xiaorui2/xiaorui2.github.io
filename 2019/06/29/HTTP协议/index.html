@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/29/HTTP协议/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/29/HTTP协议/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/29/HTTP协议/3.png">
-<meta property="og:updated_time" content="2019-08-18T11:06:29.682Z">
+<meta property="og:updated_time" content="2019-09-02T13:19:19.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP协议">
 <meta name="twitter:description" content="HTTP协议是啥？在Web应用中，服务器把网页传给浏览器，实际上就是把网页的HTML代码发送给浏览器，让浏览器显示出来。而浏览器和服务器之间的传输协议是HTTP协议。 HTTP（超文本传输协议）是一个基于请求与响应模式的、无状态的、应用层的协议，常基于TCP的连接方式。绝大多数Web开发都是建立在HTTP协议之上的Web应用。HTTP URL是一种特殊类型的URI，包含了用于查找某个资源的足够的信">
@@ -431,26 +431,25 @@
 </li>
 </ul>
 <h1 id="HTTP的SSL加密"><a href="#HTTP的SSL加密" class="headerlink" title="HTTP的SSL加密"></a>HTTP的SSL加密</h1><p>摘自：<a href="https://blog.csdn.net/shw372029857/article/details/52687906" target="_blank" rel="noopener">https://blog.csdn.net/shw372029857/article/details/52687906</a></p>
-<p>假设<code>A</code>与<code>B</code>通信，<code>A</code>是<code>SSL</code>客户端，<code>B</code>是<code>SSL</code>服务器端，加密后的消息放在方括号<code>[]</code>里，以突出明文消息的区别。双方的处理动作的说明用圆括号<code>（）</code>括起。</p>
-<p><code>A</code>：我想和你安全的通话，我这里的对称加密算法有<code>DES</code>,<code>RC5</code>,密钥交换算法有<code>RSA</code>和<code>DH</code>，摘要算法有<code>MD5</code>和<code>SHA</code>。</p>
-<p><code>B</code>：我们用<code>DES－RSA－SHA</code>这对组合好了。</p>
-<p>这是我的证书，里面有我的名字和公钥，你拿去验证一下我的身份（把证书发给<code>A</code>）。</p>
-<p><code>A</code>：（查看证书上<code>B</code>的名字是否无误，并通过手头早已有的数字的证书验证了<code>B</code>的证书的真实性，如果其中一项有误，发出警告并断开连接，这一步保证了<code>B</code>的公钥的真实性）</p>
-<p>（产生一份秘密消息，这份秘密消息处理后将用作对称加密密钥，加密初始化向量和<code>hmac</code>的密钥。将这份秘密消息-协议中称为<code>per_master_secret-</code>用<code>B</code>的公钥加密，封装成称作<code>ClientKeyExchange</code>的消息。由于用了<code>B</code>的公钥，保证了第三方无法窃听）</p>
-<p>我生成了一份秘密消息，并用你的公钥加密了，给你（把<code>ClientKeyExchange</code>发给<code>B</code>）</p>
+<p>假设 A 与 B 通信，A 是 SSL 客户端，B 是 SSL 服务器端，加密后的消息放在方括号 [] 里，以突出明文消息的区别。双方的处理动作的说明用圆括号（）括起。（包含 SSL 的四次握手的过程）</p>
+<p>A：我想和你安全的通话，我这里的对称加密算法有 DES , RC5,密钥交换算法有 RSA 和 DH，摘要算法有 MD5 和SHA。（客户端请求建立 SSL 链接）</p>
+<p>B：我们用 DES－RSA－SHA这对组合好了。这是我的证书，里面有我的名字和公钥，你拿去验证一下我的身份（把证书发给 A）。（服务端回复一种客户端支持的加密方法授信的服务器证书和非对称加密的公钥）</p>
+<p>A：（查看证书上 B 的名字是否无误，并通过手头早已有的数字的证书验证了 B 的证书的真实性，如果其中一项有误，发出警告并断开连接，这一步保证了 B 的公钥的真实性）</p>
+<p>（产生一份秘密消息，这份秘密消息处理后将用作对称加密密钥，加密初始化向量和 hmac 的密钥。将这份秘密消息-协议中称为 per_master_secret- 用 B 的公钥加密，封装成称作 ClientKeyExchange 的消息。由于用了 B 的公钥，保证了第三方无法窃听）</p>
+<p>我生成了一份秘密消息，并用你的公钥加密了，给你（把 ClientKeyExchange 发给 B）</p>
 <p>注意，下面我就要用加密的办法给你发消息了！</p>
-<p>（将秘密消息进行处理，生成加密密钥，加密初始化向量和<code>hmac</code>的密钥）</p>
+<p>（将秘密消息进行处理，生成加密密钥，加密初始化向量和 hmac 的密钥）</p>
 <p>[我说完了]</p>
-<p><code>B</code>：（用自己的私钥将<code>ClientKeyExchange</code>中的秘密消息解密出来，然后将秘密消息进行处理，生成加密密钥，加密初始化向量和<code>hmac</code>的密钥，这时双方已经安全的协商出一套加密办法了）</p>
+<p>B：（用自己的私钥将 ClientKeyExchange 中的秘密消息解密出来，然后将秘密消息进行处理，生成加密密钥，加密初始化向量和 hmac 的密钥，这时双方已经安全的协商出一套加密办法了）</p>
 <p>注意，我也要开始用加密的办法给你发消息了！</p>
 <p>[我说完了]</p>
-<p><code>A</code>: [我的秘密是…]</p>
-<p><code>B</code>: [其它人不会听到的…]</p>
+<p>A： [我的秘密是…]</p>
+<p>B： [其它人不会听到的…]</p>
 <p>补充：</p>
 <ul>
-<li>对称密码算法：是指加密和解密使用相同的密钥，典型的有<code>DES</code>、<code>RC5</code>、<code>IDEA</code>（分组加密），<code>RC4</code>（序列加密）；</li>
-<li>非对称密码算法：又称为公钥加密算法，是指加密和解密使用不同的密钥（公开的公钥用于加密，私有的私钥用于解密）。比如<code>A</code>发送，<code>B</code>接收，<code>A</code>想确保消息只有<code>B</code>看到，需要<code>B</code>生成一对公私钥，并拿到<code>B</code>的公钥。于是A用这个公钥加密消息，<code>B</code>收到密文后用自己的与之匹配的私钥解密即可。反过来也可以用私钥加密公钥解密。也就是说对于给定的公钥有且只有与之匹配的私钥可以解密，对于给定的私钥，有且只有与之匹配的公钥可以解密。典型的算法有<code>RSA</code>，<code>DSA</code>，<code>DH</code>；</li>
-<li>散列算法：散列变换是指把文件内容通过某种公开的算法，变成固定长度的值（散列值），这个过程可以使用密钥也可以不使用。这种散列变换是不可逆的，也就是说不能从散列值变成原文。因此，散列变换通常用于验证原文是否被篡改。典型的算法有：<code>MD5</code>，<code>SHA</code>，<code>Base64</code>，<code>CRC</code>等。</li>
+<li>对称密码算法：是指加密和解密使用相同的密钥，典型的有 DES、RC5、IDEA（分组加密），RC4（序列加密）；</li>
+<li>非对称密码算法：又称为公钥加密算法，是指加密和解密使用不同的密钥（公开的公钥用于加密，私有的私钥用于解密）。比如 A 发送，B 接收，A 想确保消息只有 B 看到，需要 B 生成一对公私钥，并拿到 B 的公钥。于是A用这个公钥加密消息，B 收到密文后用自己的与之匹配的私钥解密即可。反过来也可以用私钥加密公钥解密。也就是说对于给定的公钥有且只有与之匹配的私钥可以解密，对于给定的私钥，有且只有与之匹配的公钥可以解密。典型的算法有 RSA，DSA，DH；</li>
+<li>散列算法：散列变换是指把文件内容通过某种公开的算法，变成固定长度的值（散列值），这个过程可以使用密钥也可以不使用。这种散列变换是不可逆的，也就是说不能从散列值变成原文。因此，散列变换通常用于验证原文是否被篡改。典型的算法有：MD5，SHA，Base64，CRC等。</li>
 </ul>
 <h1 id="HTTP-和-HTTPS-建立连接后哪个性能低"><a href="#HTTP-和-HTTPS-建立连接后哪个性能低" class="headerlink" title="HTTP 和 HTTPS 建立连接后哪个性能低"></a>HTTP 和 HTTPS 建立连接后哪个性能低</h1><p>个人理解应该是 HTTP 性能更好一些，因为 HTTPS 对两个方面产生影响：协议交互所增加的网络 RTT 还有加解密相关的计算耗时。</p>
 <h1 id="GET和POST的区别"><a href="#GET和POST的区别" class="headerlink" title="GET和POST的区别"></a>GET和POST的区别</h1><ul>

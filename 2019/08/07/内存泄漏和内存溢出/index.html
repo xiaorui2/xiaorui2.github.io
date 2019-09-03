@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="内存泄漏和内存溢出内存溢出简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。 常见的内存溢出创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出 内存泄漏内存泄漏指程序运行过程中分配内存给临时变量，用完之后却没有被 GC 回收，始终占用着内存，既不能被使用也不能分配给其他">
+<meta name="description" content="内存泄漏和内存溢出内存溢出简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。 常见的内存溢出创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出 场景：是一个没有实现hasCode 和 equals 方法的 Key 类在 HashMap 中保存的情况。最后会生成很多重复的">
 <meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内存泄漏和内存溢出">
 <meta property="og:url" content="http://yoursite.com/2019/08/07/内存泄漏和内存溢出/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="内存泄漏和内存溢出内存溢出简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。 常见的内存溢出创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出 内存泄漏内存泄漏指程序运行过程中分配内存给临时变量，用完之后却没有被 GC 回收，始终占用着内存，既不能被使用也不能分配给其他">
+<meta property="og:description" content="内存泄漏和内存溢出内存溢出简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。 常见的内存溢出创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出 场景：是一个没有实现hasCode 和 equals 方法的 Key 类在 HashMap 中保存的情况。最后会生成很多重复的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T02:22:06.508Z">
+<meta property="og:updated_time" content="2019-09-02T12:03:25.221Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内存泄漏和内存溢出">
-<meta name="twitter:description" content="内存泄漏和内存溢出内存溢出简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。 常见的内存溢出创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出 内存泄漏内存泄漏指程序运行过程中分配内存给临时变量，用完之后却没有被 GC 回收，始终占用着内存，既不能被使用也不能分配给其他">
+<meta name="twitter:description" content="内存泄漏和内存溢出内存溢出简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。 常见的内存溢出创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出 场景：是一个没有实现hasCode 和 equals 方法的 Key 类在 HashMap 中保存的情况。最后会生成很多重复的">
 
 
 
@@ -386,14 +386,19 @@
       
         <h1 id="内存泄漏和内存溢出"><a href="#内存泄漏和内存溢出" class="headerlink" title="内存泄漏和内存溢出"></a>内存泄漏和内存溢出</h1><h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><p>简单地说内存溢出就是指程序运行过程中申请的内存大于系统能够提供的内存，导致无法申请到足够的内存，于是就发生了内存溢出。</p>
 <h3 id="常见的内存溢出"><a href="#常见的内存溢出" class="headerlink" title="常见的内存溢出"></a>常见的内存溢出</h3><p>创建的对象太多，在进行垃圾回收之前对象数量达到了最大堆的容量限制造成堆溢出；常量池溢出；虚拟机栈和本地方法栈溢出</p>
+<p>场景：是一个没有实现hasCode 和 equals 方法的 Key 类在 HashMap 中保存的情况。最后会生成很多重复的对象</p>
 <h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><p>内存泄漏指程序运行过程中分配内存给临时变量，用完之后却没有被 GC 回收，始终占用着内存，既不能被使用也不能分配给其他程序，于是就发生了内存泄漏。</p>
-<h3 id="常见的内存泄露"><a href="#常见的内存泄露" class="headerlink" title="常见的内存泄露"></a>常见的内存泄露</h3><p>静态集合类（如 HashMap，Vector）引起的内存泄漏；修改 HashSet 中对象的参数值，且参数是计算哈希值的字段；监听器；各种连接（如数据库连接）。</p>
+<h3 id="常见的内存泄露"><a href="#常见的内存泄露" class="headerlink" title="常见的内存泄露"></a>常见的内存泄露</h3><p>静态集合类（如 HashMap，Vector）引起的内存泄漏；修改 HashSet 中对象的参数值，且参数是计算哈希值的字段；监听器忘了释放；各种连接（如数据库连接）</p>
+<p>比方说 HashMap 当集合里面的对象属性被修改后，再调用 remove() 方法时不起作用</p>
 <h3 id="避免内存泄漏的几点建议："><a href="#避免内存泄漏的几点建议：" class="headerlink" title="避免内存泄漏的几点建议："></a>避免内存泄漏的几点建议：</h3><ul>
 <li>尽早释放无用对象的引用。</li>
 <li>避免在循环中创建对象。</li>
 <li>使用字符串处理时避免使用<code>String</code>，应使用<code>StringBuffer</code>。</li>
 <li>尽量少使用静态变量，因为静态变量存放在永久代，基本不参与垃圾回收。</li>
 </ul>
+<h1 id="如何定位找到内存泄漏"><a href="#如何定位找到内存泄漏" class="headerlink" title="如何定位找到内存泄漏"></a>如何定位找到内存泄漏</h1><p>使用 top 指令，动态的观察进程的动态内存总额。</p>
+<p>可以使用 ps、kill 两个命令检测内存使用情况和进行回收。</p>
+<p>或者使用 VLD 这个内存泄露检测系统</p>
 
       
     </div>
@@ -571,7 +576,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存泄漏和内存溢出"><span class="nav-number">1.</span> <span class="nav-text">内存泄漏和内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出"><span class="nav-number">1.1.</span> <span class="nav-text">内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的内存溢出"><span class="nav-number">1.1.1.</span> <span class="nav-text">常见的内存溢出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄漏"><span class="nav-number">1.2.</span> <span class="nav-text">内存泄漏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的内存泄露"><span class="nav-number">1.2.1.</span> <span class="nav-text">常见的内存泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免内存泄漏的几点建议："><span class="nav-number">1.2.2.</span> <span class="nav-text">避免内存泄漏的几点建议：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存泄漏和内存溢出"><span class="nav-number">1.</span> <span class="nav-text">内存泄漏和内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存溢出"><span class="nav-number">1.1.</span> <span class="nav-text">内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的内存溢出"><span class="nav-number">1.1.1.</span> <span class="nav-text">常见的内存溢出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄漏"><span class="nav-number">1.2.</span> <span class="nav-text">内存泄漏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的内存泄露"><span class="nav-number">1.2.1.</span> <span class="nav-text">常见的内存泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免内存泄漏的几点建议："><span class="nav-number">1.2.2.</span> <span class="nav-text">避免内存泄漏的几点建议：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何定位找到内存泄漏"><span class="nav-number">2.</span> <span class="nav-text">如何定位找到内存泄漏</span></a></li></ol></div>
             
 
           </div>

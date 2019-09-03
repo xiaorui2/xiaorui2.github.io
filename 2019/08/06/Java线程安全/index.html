@@ -88,7 +88,7 @@
 <meta property="og:description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/08/06/Java线程安全/1.png">
-<meta property="og:updated_time" content="2019-08-18T15:20:18.610Z">
+<meta property="og:updated_time" content="2019-09-02T12:09:16.060Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程安全">
 <meta name="twitter:description" content="什么是线程安全线程安全可以简单理解为一个方法或者一个实例可以在多线程环境中使用而不会出现问题。多说一点就是线程安全就是多线程访问时，采用了加锁机制，当一个线程访问该类的某个数据时，进行保护，其他线程不能进行访问直到该线程读取完，其他线程才可使用。不会出现数据不一致或者数据污染。 线程不安全就是不提供数据访问保护，有可能出现多个线程先后更改数据造成所得到的数据是“脏”数据。 比方说ArrayList">
@@ -459,10 +459,10 @@
 </ul>
 <p>异：</p>
 <ul>
-<li>对于<code>Synchronized</code>来说，它是<code>java</code>语言的关键字，是原生语法层面的互斥，需要<code>jvm</code>实现。而<code>ReentrantLock</code>它是<code>JDK 1.5</code>之后提供的<code>API</code>层面的互斥锁，需要<code>lock()</code>和<code>unlock()</code>方法配合<code>try/finally</code>语句块来完成。</li>
-<li>使用<code>Synchronized</code>。如果<code>Thread1</code>不释放，<code>Thread2</code>将一直等待，不能被中断；使用<code>ReentrantLock</code>。如果<code>Thread1</code>不释放，<code>Thread2</code>等待了很长时间以后，可以中断等待，转而去做别的事情。</li>
-<li><code>Synchronized</code>的锁是非公平锁，<code>ReentrantLock</code>默认情况下也是非公平锁，但可以通过带布尔值的构造函数要求使用公平锁。</li>
-<li>锁绑定多个条件，一个<code>ReentrantLock</code>对象可以同时绑定对个对象。<code>Synchronized</code>中，锁对象的<code>wait()</code>和<code>notify()</code>或<code>notifyAll()</code>方法可以实现一个隐含的条件。但如果要和多于一个的条件关联的时候，就不得不额外添加一个锁。</li>
+<li>对于 Synchronized 来说，它是 java 语言的关键字，是原生语法层面的互斥，需要 jvm 实现。而 ReentrantLock 它是 JDK 1.5 之后提供的 API 层面的互斥锁，需要 lock() 和 unlock() 方法配合 try/finally 语句块来完成。</li>
+<li>使用 Synchronized。如果 Thread1不释放，Thread2 将一直等待，不能被中断；使用 ReentrantLock。如果Thread1 不释放，Thread2 等待了很长时间以后，可以中断等待，转而去做别的事情。ReentrantLock 在锁定期间， 是可以被其他线程打断的 （interrupt），但是 Synchronized 不行，也就是尝试获取一个内部锁的操作（进入一个 Synchronized 块）是不能被中断的，但是 ReentrantLock 支持可中断的获取模式即 tryLock(long time, TimeUnit unit)。</li>
+<li>Synchronized 的锁是非公平锁，ReentrantLock 默认情况下也是非公平锁，但可以通过带布尔值的构造函数要求使用公平锁。</li>
+<li>锁绑定多个条件，一个 ReentrantLock 对象可以同时绑定对个对象。Synchronized 中，锁对象的 wait() 和notify() 或 notifyAll() 方法可以实现一个隐含的条件。但如果要和多于一个的条件关联的时候，就不得不额外添加一个锁。</li>
 </ul>
 <h1 id="Synchronized修饰静态方法和成员方法的区别"><a href="#Synchronized修饰静态方法和成员方法的区别" class="headerlink" title="Synchronized修饰静态方法和成员方法的区别"></a>Synchronized修饰静态方法和成员方法的区别</h1><p>Synchronized 修饰静态方法以及同步代码块的 Synchronized  (类.class)用法锁的是类，线程想要执行对应同步代码，需要获得类锁。<br>Synchronized 修饰成员方法，线程获取的是当前调用该方法的对象实例的对象锁。</p>
 <p>对应的问题：那我现在有一个父类synchronized修饰非static方法和两个子类，现在两个子类调用这个方法会发生竞争吗？</p>

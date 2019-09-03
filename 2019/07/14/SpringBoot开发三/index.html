@@ -79,23 +79,23 @@
 
 
 
-<meta name="description" content="需求介绍-SpringMVC理解HTTP； 服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据  SpringMVC是一种设计模式，也是分为三层。  使用的核心组件是：DispatcherServlet  ViewresResolver：视图解析视图层 HandleMa">
+<meta name="description" content="需求介绍-SpringMVC服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据  SpringMVC 是一种设计模式，也是分为三层。  使用的核心组件是：DispatcherServlet  ViewresResolver：视图解析视图层 HandleMapping：处">
 <meta name="keywords" content="SpringBoot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot开发三">
 <meta property="og:url" content="http://yoursite.com/2019/07/14/SpringBoot开发三/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="需求介绍-SpringMVC理解HTTP； 服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据  SpringMVC是一种设计模式，也是分为三层。  使用的核心组件是：DispatcherServlet  ViewresResolver：视图解析视图层 HandleMa">
+<meta property="og:description" content="需求介绍-SpringMVC服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据  SpringMVC 是一种设计模式，也是分为三层。  使用的核心组件是：DispatcherServlet  ViewresResolver：视图解析视图层 HandleMapping：处">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/07/14/SpringBoot开发三/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/14/SpringBoot开发三/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/14/SpringBoot开发三/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/14/SpringBoot开发三/4.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/14/SpringBoot开发三/5.png">
-<meta property="og:updated_time" content="2019-07-14T02:59:43.326Z">
+<meta property="og:updated_time" content="2019-09-02T06:04:27.202Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot开发三">
-<meta name="twitter:description" content="需求介绍-SpringMVC理解HTTP； 服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据  SpringMVC是一种设计模式，也是分为三层。  使用的核心组件是：DispatcherServlet  ViewresResolver：视图解析视图层 HandleMa">
+<meta name="twitter:description" content="需求介绍-SpringMVC服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据  SpringMVC 是一种设计模式，也是分为三层。  使用的核心组件是：DispatcherServlet  ViewresResolver：视图解析视图层 HandleMapping：处">
 <meta name="twitter:image" content="http://yoursite.com/2019/07/14/SpringBoot开发三/1.png">
 
 
@@ -390,18 +390,33 @@
       
 
       
-        <h1 id="需求介绍-SpringMVC"><a href="#需求介绍-SpringMVC" class="headerlink" title="需求介绍-SpringMVC"></a>需求介绍-SpringMVC</h1><p>理解<code>HTTP</code>；</p>
-<p>服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据</p>
+        <h1 id="需求介绍-SpringMVC"><a href="#需求介绍-SpringMVC" class="headerlink" title="需求介绍-SpringMVC"></a>需求介绍-SpringMVC</h1><p>服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据</p>
 <p><img src="1.png" alt></p>
-<p><code>SpringMVC</code>是一种设计模式，也是分为三层。</p>
+<p>SpringMVC 是一种设计模式，也是分为三层。</p>
 <p><img src="2.png" alt></p>
-<p>使用的核心组件是：<code>DispatcherServlet</code></p>
+<p>使用的核心组件是：DispatcherServlet</p>
 <p><img src="3.png" alt></p>
-<p><code>ViewresResolver</code>：视图解析视图层</p>
-<p><code>HandleMapping</code>：处理映射的一个组件，我们敲一个路径与Controller相匹配。</p>
+<p>ViewresResolver：视图解析视图层</p>
+<p>HandleMapping：处理映射的一个组件，我们敲一个路径与Controller相匹配。</p>
 <p>更细节的可以看：</p>
 <p><img src="4.png" alt></p>
-<p>然后码一个实现的<code>MVC</code>的代码有助理解一下</p>
+<p>MVC 架构的优缺点：</p>
+<p>优点</p>
+<ul>
+<li>开发人员可以只关注整个结构中的其中某一层； </li>
+<li>可以很容易的用新的实现来替换原有层次的实现； </li>
+<li>可以降低层与层之间的依赖； </li>
+<li>有利于标准化； </li>
+<li>利于各层逻辑的复用。 </li>
+<li>扩展性强。不同层负责不同的层面</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>降低了系统的性能。这是不言而喻的。如果不采用分层式结构，很多业务可以直接造访数据库，以此获取相应的数据，如今却必须通过中间层来完成。 </li>
+<li>有时会导致级联的修改。这种修改尤其体现在自上而下的方向。如果在表示层中需要增加一个功能，为保证其设计符合分层式结构，可能需要在相应的业务逻辑层和数据访问层中都增加相应的代码 </li>
+<li>增加了代码量，增加了工作量</li>
+</ul>
+<p>然后码一个实现的 MVC 的代码有助理解一下</p>
 <h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>首先要理解怎么获取请求对象和响应对象以及如何确定发送方法：</p>
 <p>第一个返回请求对象的结果</p>
 <p><img src="5.png" alt></p>
