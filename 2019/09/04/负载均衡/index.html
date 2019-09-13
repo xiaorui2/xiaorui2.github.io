@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/09/04/负载均衡/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/04/负载均衡/2.png">
-<meta property="og:updated_time" content="2019-09-04T05:02:49.716Z">
+<meta property="og:updated_time" content="2019-09-13T06:12:13.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="负载均衡">
 <meta name="twitter:description" content="什么是负载均衡它是一种计算机技术，用来在多个计算机（计算机集群）、网络连接、CPU、磁盘驱动器或其他资源中分配负载，以达到最优化资源使用、最大化吞吐率、最小化响应时间、同时避免过载的目的。 使用带有负载平衡的多个服务器组件，取代单一的组件，可以通过冗余提高可靠性。负载平衡服务通常是由专用软件和硬件来完成。 主要作用是将大量作业合理地分摊到多个操作单元上进行执行，用于解决互联网架构中的高并发和高可用">
@@ -389,12 +389,12 @@
       
         <h1 id="什么是负载均衡"><a href="#什么是负载均衡" class="headerlink" title="什么是负载均衡"></a>什么是负载均衡</h1><p>它是一种计算机技术，用来在多个计算机（计算机集群）、网络连接、CPU、磁盘驱动器或其他资源中分配负载，以达到最优化资源使用、最大化吞吐率、最小化响应时间、同时避免过载的目的。 使用带有负载平衡的多个服务器组件，取代单一的组件，可以通过冗余提高可靠性。负载平衡服务通常是由专用软件和硬件来完成。 主要作用是将大量作业合理地分摊到多个操作单元上进行执行，用于解决互联网架构中的高并发和高可用的问题。</p>
 <p>个人理解使用场景：在一个没有负载均衡的的 Web 架构下，User 通过 Internet 发送消息到 Web Server，然后Web server 向数据库请求返回数据到 User 那，那么这样的话如果这个服务器宕机了，那么用户就没办法访问了或者同时有很多用户试图访问服务器超过了处理的极限，就会出现加载缓慢或者无法连接的情况发生。那么通过在后端引入一个负载均衡器和至少一个额外的 Web 服务器来解决以上的场景，也就是负载均衡的初始轮廓，通常情况下，用户就不会直接访问到 Web 服务器了，而是是访问到负载均衡器，然后负载均衡器将请求转发给后端服务器，这个时候有个点就是所有的后端服务器需要保证提供相同的内容，以便用户无论哪个服务器响应，都能收到一致的内容。</p>
-<h1 id="负载均衡的实现方式"><a href="#负载均衡的实现方式" class="headerlink" title="负载均衡的实现方式"></a>负载均衡的实现方式</h1><h2 id="数据链路层负载均衡"><a href="#数据链路层负载均衡" class="headerlink" title="数据链路层负载均衡"></a>数据链路层负载均衡</h2><p>通过在数据链路层修改 mac 地址进行负载均衡。把所有机器的虚拟 IP 配置成跟负载均衡机器的 IP 一致，不需要进行地址准换就能直接返回响应数据，避免负载均衡服务器网卡成为瓶颈，常用于大型站点的外网入口，LVS</p>
+<h1 id="负载均衡的实现方式-负载均衡有几种"><a href="#负载均衡的实现方式-负载均衡有几种" class="headerlink" title="负载均衡的实现方式(负载均衡有几种)"></a>负载均衡的实现方式(负载均衡有几种)</h1><h2 id="数据链路层负载均衡"><a href="#数据链路层负载均衡" class="headerlink" title="数据链路层负载均衡"></a>数据链路层负载均衡</h2><p>通过在数据链路层修改 mac 地址进行负载均衡。把所有机器的虚拟 IP 配置成跟负载均衡机器的 IP 一致，不需要进行地址准换就能直接返回响应数据，避免负载均衡服务器网卡成为瓶颈，常用于大型站点的外网入口，LVS</p>
 <h2 id="IP-负载均衡"><a href="#IP-负载均衡" class="headerlink" title="IP 负载均衡"></a>IP 负载均衡</h2><p>通过在在网络层修改目标地址进行负载均衡。负载均衡服务器在内核进程获取网络数据包，修改目的 IP，待真实响应服务器处理完成后，负载均衡服务器再将数据包源地址修改成自身 IP 地址。负载均衡服务器网卡容易成为瓶颈，并且没有反向代理灵活，不常用。</p>
 <h2 id="反向代理负载均衡"><a href="#反向代理负载均衡" class="headerlink" title="反向代理负载均衡"></a>反向代理负载均衡</h2><p>利用反向代理服务器进行负载均衡。在应用层将请求转发到 web 服务器，待 web 服务器处理完成后，再将响应返回给用户。部署简单可灵活配置，常位于内网的 web 服务器前，nginx。</p>
 <h2 id="HTTP重定向负载均衡"><a href="#HTTP重定向负载均衡" class="headerlink" title="HTTP重定向负载均衡"></a>HTTP重定向负载均衡</h2><p>利用 HTTP 重定向协议实现负载均衡。重定向服务器将真实服务器的地址写入重定向响应中，返回 302 进行负载均衡。需要两次请求，性能较差，不常用</p>
 <h2 id="DNS域名解析负载均衡"><a href="#DNS域名解析负载均衡" class="headerlink" title="DNS域名解析负载均衡"></a>DNS域名解析负载均衡</h2><p>利用 DNS 处理域名解析请求的同时进行负载均衡的一种方案。在 DNS 服务器配置多个 A 记录，每次域名解析根据负载均衡算法返回不同的 IP 地址。常用于大型网站的第一级负载均衡。</p>
-<h1 id="负载均衡涉及到的算法"><a href="#负载均衡涉及到的算法" class="headerlink" title="负载均衡涉及到的算法"></a>负载均衡涉及到的算法</h1><h2 id="Random-随机调度"><a href="#Random-随机调度" class="headerlink" title="Random (随机调度)"></a>Random (随机调度)</h2><p>随机算法，通过 i = rand() % n 选取第 i 台服务器</p>
+<h1 id="负载均衡涉及到的算法（负载均衡策略）"><a href="#负载均衡涉及到的算法（负载均衡策略）" class="headerlink" title="负载均衡涉及到的算法（负载均衡策略）"></a>负载均衡涉及到的算法（负载均衡策略）</h1><h2 id="Random-随机调度"><a href="#Random-随机调度" class="headerlink" title="Random (随机调度)"></a>Random (随机调度)</h2><p>随机算法，通过 i = rand() % n 选取第 i 台服务器</p>
 <p><img src="1.png" alt></p>
 <h2 id="WeightRandom（加权随机调度）"><a href="#WeightRandom（加权随机调度）" class="headerlink" title="WeightRandom（加权随机调度）"></a>WeightRandom（加权随机调度）</h2><p>与随机算法类似，需要考虑下权重因素</p>
 <ul>
@@ -535,7 +535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -557,7 +557,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -599,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是负载均衡"><span class="nav-number">1.</span> <span class="nav-text">什么是负载均衡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡的实现方式"><span class="nav-number">2.</span> <span class="nav-text">负载均衡的实现方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据链路层负载均衡"><span class="nav-number">2.1.</span> <span class="nav-text">数据链路层负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-负载均衡"><span class="nav-number">2.2.</span> <span class="nav-text">IP 负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向代理负载均衡"><span class="nav-number">2.3.</span> <span class="nav-text">反向代理负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP重定向负载均衡"><span class="nav-number">2.4.</span> <span class="nav-text">HTTP重定向负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS域名解析负载均衡"><span class="nav-number">2.5.</span> <span class="nav-text">DNS域名解析负载均衡</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡涉及到的算法"><span class="nav-number">3.</span> <span class="nav-text">负载均衡涉及到的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-随机调度"><span class="nav-number">3.1.</span> <span class="nav-text">Random (随机调度)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WeightRandom（加权随机调度）"><span class="nav-number">3.2.</span> <span class="nav-text">WeightRandom（加权随机调度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoundRobin（轮询调度）"><span class="nav-number">3.3.</span> <span class="nav-text">RoundRobin（轮询调度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WeightRoundRobin-加权轮询算法"><span class="nav-number">3.4.</span> <span class="nav-text">WeightRoundRobin(加权轮询算法)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashWeight（普通哈希）"><span class="nav-number">3.5.</span> <span class="nav-text">HashWeight（普通哈希）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConsistHash（一致性hash）"><span class="nav-number">3.6.</span> <span class="nav-text">ConsistHash（一致性hash）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡处理什么样的请求"><span class="nav-number">4.</span> <span class="nav-text">负载均衡处理什么样的请求</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是负载均衡"><span class="nav-number">1.</span> <span class="nav-text">什么是负载均衡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡的实现方式-负载均衡有几种"><span class="nav-number">2.</span> <span class="nav-text">负载均衡的实现方式(负载均衡有几种)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据链路层负载均衡"><span class="nav-number">2.1.</span> <span class="nav-text">数据链路层负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-负载均衡"><span class="nav-number">2.2.</span> <span class="nav-text">IP 负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向代理负载均衡"><span class="nav-number">2.3.</span> <span class="nav-text">反向代理负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP重定向负载均衡"><span class="nav-number">2.4.</span> <span class="nav-text">HTTP重定向负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS域名解析负载均衡"><span class="nav-number">2.5.</span> <span class="nav-text">DNS域名解析负载均衡</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡涉及到的算法（负载均衡策略）"><span class="nav-number">3.</span> <span class="nav-text">负载均衡涉及到的算法（负载均衡策略）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Random-随机调度"><span class="nav-number">3.1.</span> <span class="nav-text">Random (随机调度)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WeightRandom（加权随机调度）"><span class="nav-number">3.2.</span> <span class="nav-text">WeightRandom（加权随机调度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoundRobin（轮询调度）"><span class="nav-number">3.3.</span> <span class="nav-text">RoundRobin（轮询调度）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WeightRoundRobin-加权轮询算法"><span class="nav-number">3.4.</span> <span class="nav-text">WeightRoundRobin(加权轮询算法)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashWeight（普通哈希）"><span class="nav-number">3.5.</span> <span class="nav-text">HashWeight（普通哈希）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConsistHash（一致性hash）"><span class="nav-number">3.6.</span> <span class="nav-text">ConsistHash（一致性hash）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡处理什么样的请求"><span class="nav-number">4.</span> <span class="nav-text">负载均衡处理什么样的请求</span></a></li></ol></div>
             
 
           </div>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="删除目录下的TXT文件用什么命令 新建一个文件用什么命令 新建一个目录用什么命令 快速找到进程和对应的服务端口号 https://blog.csdn.net/cyp331203/article/details/37567353/ 给定名称找到对应进程 https://blog.csdn.net/hongweigg/article/details/44828353">
+<meta name="description" content="删除目录下的TXT文件用什么命令rm -f 文件名 新建一个文件用什么命令要创建一个名为ll的文件，那么输入：【touch  ll】 新建一个目录用什么命令要创建文件夹，那么命令修改为：【mkdir】+文件夹名即可 看端口ps -aux | grep tomcat netstat –apn：查看所有的进程和端口使用情况 看被占用的端口的进程netstat -tunpl |grep 端口号 查看进程">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux常用的命令">
 <meta property="og:url" content="http://yoursite.com/2019/08/18/Linux常用的命令/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="删除目录下的TXT文件用什么命令 新建一个文件用什么命令 新建一个目录用什么命令 快速找到进程和对应的服务端口号 https://blog.csdn.net/cyp331203/article/details/37567353/ 给定名称找到对应进程 https://blog.csdn.net/hongweigg/article/details/44828353">
+<meta property="og:description" content="删除目录下的TXT文件用什么命令rm -f 文件名 新建一个文件用什么命令要创建一个名为ll的文件，那么输入：【touch  ll】 新建一个目录用什么命令要创建文件夹，那么命令修改为：【mkdir】+文件夹名即可 看端口ps -aux | grep tomcat netstat –apn：查看所有的进程和端口使用情况 看被占用的端口的进程netstat -tunpl |grep 端口号 查看进程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-21T01:20:51.215Z">
+<meta property="og:updated_time" content="2019-09-09T09:00:17.553Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux常用的命令">
-<meta name="twitter:description" content="删除目录下的TXT文件用什么命令 新建一个文件用什么命令 新建一个目录用什么命令 快速找到进程和对应的服务端口号 https://blog.csdn.net/cyp331203/article/details/37567353/ 给定名称找到对应进程 https://blog.csdn.net/hongweigg/article/details/44828353">
+<meta name="twitter:description" content="删除目录下的TXT文件用什么命令rm -f 文件名 新建一个文件用什么命令要创建一个名为ll的文件，那么输入：【touch  ll】 新建一个目录用什么命令要创建文件夹，那么命令修改为：【mkdir】+文件夹名即可 看端口ps -aux | grep tomcat netstat –apn：查看所有的进程和端口使用情况 看被占用的端口的进程netstat -tunpl |grep 端口号 查看进程">
 
 
 
@@ -384,13 +384,28 @@
       
 
       
-        <p>删除目录下的TXT文件用什么命令</p>
-<p>新建一个文件用什么命令</p>
-<p>新建一个目录用什么命令</p>
-<p>快速找到进程和对应的服务端口号</p>
-<p><a href="https://blog.csdn.net/cyp331203/article/details/37567353/" target="_blank" rel="noopener">https://blog.csdn.net/cyp331203/article/details/37567353/</a></p>
-<p>给定名称找到对应进程</p>
-<p><a href="https://blog.csdn.net/hongweigg/article/details/44828353" target="_blank" rel="noopener">https://blog.csdn.net/hongweigg/article/details/44828353</a></p>
+        <h1 id="删除目录下的TXT文件用什么命令"><a href="#删除目录下的TXT文件用什么命令" class="headerlink" title="删除目录下的TXT文件用什么命令"></a>删除目录下的TXT文件用什么命令</h1><p>rm -f 文件名</p>
+<h1 id="新建一个文件用什么命令"><a href="#新建一个文件用什么命令" class="headerlink" title="新建一个文件用什么命令"></a>新建一个文件用什么命令</h1><p>要创建一个名为ll的文件，那么输入：【touch  ll】</p>
+<h1 id="新建一个目录用什么命令"><a href="#新建一个目录用什么命令" class="headerlink" title="新建一个目录用什么命令"></a>新建一个目录用什么命令</h1><p>要创建文件夹，那么命令修改为：【mkdir】+文件夹名即可</p>
+<h1 id="看端口"><a href="#看端口" class="headerlink" title="看端口"></a>看端口</h1><p>ps -aux | grep tomcat</p>
+<p>netstat –apn：查看所有的进程和端口使用情况</p>
+<h1 id="看被占用的端口的进程"><a href="#看被占用的端口的进程" class="headerlink" title="看被占用的端口的进程"></a>看被占用的端口的进程</h1><p>netstat -tunpl |grep 端口号</p>
+<h1 id="查看进程的详细信息"><a href="#查看进程的详细信息" class="headerlink" title="查看进程的详细信息"></a>查看进程的详细信息</h1><p>ps -ef|grep 进程ID</p>
+<h1 id="查看所有进程"><a href="#查看所有进程" class="headerlink" title="查看所有进程"></a>查看所有进程</h1><p>ps -ef </p>
+<h1 id="查看一个进程的端口号："><a href="#查看一个进程的端口号：" class="headerlink" title="查看一个进程的端口号："></a>查看一个进程的端口号：</h1><p>如果知道进程ID的话就直接利用：netstat -anp | grep 进程ID 就可以查询出来了。不然就用ps命令查看进程ID：ps -ef | grep 进程名 </p>
+<h1 id="显示CPU的信息"><a href="#显示CPU的信息" class="headerlink" title="显示CPU的信息"></a>显示CPU的信息</h1><p>cat /proc/cpuinfo</p>
+<h1 id="查看目录中的文件"><a href="#查看目录中的文件" class="headerlink" title="查看目录中的文件"></a>查看目录中的文件</h1><p>ls</p>
+<h1 id="查看内存使用情况"><a href="#查看内存使用情况" class="headerlink" title="查看内存使用情况"></a>查看内存使用情况</h1><p>free</p>
+<p>输出内容的解释：</p>
+<ul>
+<li>total:总计物理内存的大小。</li>
+<li>used:已使用多大。</li>
+<li>free:可用有多少。</li>
+<li>Shared:多个进程共享的内存总额。</li>
+<li>Buffers/cached:磁盘缓存的大小。</li>
+</ul>
+<h1 id="查询进程内部当前运行了多少线程"><a href="#查询进程内部当前运行了多少线程" class="headerlink" title="查询进程内部当前运行了多少线程"></a>查询进程内部当前运行了多少线程</h1><p>#pstree -p 19135（进程号）</p>
+<h1 id="使用top命令查看（可以查看到线程情况）"><a href="#使用top命令查看（可以查看到线程情况）" class="headerlink" title="使用top命令查看（可以查看到线程情况）"></a>使用top命令查看（可以查看到线程情况）</h1><p>top -Hp 19135  </p>
 
       
     </div>
@@ -485,8 +500,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -501,7 +525,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -523,7 +547,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -555,6 +579,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#删除目录下的TXT文件用什么命令"><span class="nav-number">1.</span> <span class="nav-text">删除目录下的TXT文件用什么命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建一个文件用什么命令"><span class="nav-number">2.</span> <span class="nav-text">新建一个文件用什么命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建一个目录用什么命令"><span class="nav-number">3.</span> <span class="nav-text">新建一个目录用什么命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#看端口"><span class="nav-number">4.</span> <span class="nav-text">看端口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#看被占用的端口的进程"><span class="nav-number">5.</span> <span class="nav-text">看被占用的端口的进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看进程的详细信息"><span class="nav-number">6.</span> <span class="nav-text">查看进程的详细信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看所有进程"><span class="nav-number">7.</span> <span class="nav-text">查看所有进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看一个进程的端口号："><span class="nav-number">8.</span> <span class="nav-text">查看一个进程的端口号：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显示CPU的信息"><span class="nav-number">9.</span> <span class="nav-text">显示CPU的信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看目录中的文件"><span class="nav-number">10.</span> <span class="nav-text">查看目录中的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看内存使用情况"><span class="nav-number">11.</span> <span class="nav-text">查看内存使用情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查询进程内部当前运行了多少线程"><span class="nav-number">12.</span> <span class="nav-text">查询进程内部当前运行了多少线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用top命令查看（可以查看到线程情况）"><span class="nav-number">13.</span> <span class="nav-text">使用top命令查看（可以查看到线程情况）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

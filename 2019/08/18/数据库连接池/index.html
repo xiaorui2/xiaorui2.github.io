@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="连接池,">
 
 
 
@@ -79,15 +79,18 @@
 
 
 
-<meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
+<meta name="description" content="为什么要连接池首先，每一次 web 请求都要建立一次数据库连接。建立连接是一个费时的活动，每次都得花费 0.05s～1s 的时间，而且系统还要分配内存资源，在这种情况下，频繁的进行数据库连接操作势必占用很多的系统资源，网站的响应速度必定下降，所以通过连接池管理连接，查询完数据库后不关闭连接，而是暂时存放起来，当别人使用时，把这个连接给他们使用，就避免了一次建立数据库连接和断开的操作时间消耗。 工作">
+<meta name="keywords" content="连接池">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库连接池">
 <meta property="og:url" content="http://yoursite.com/2019/08/18/数据库连接池/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
+<meta property="og:description" content="为什么要连接池首先，每一次 web 请求都要建立一次数据库连接。建立连接是一个费时的活动，每次都得花费 0.05s～1s 的时间，而且系统还要分配内存资源，在这种情况下，频繁的进行数据库连接操作势必占用很多的系统资源，网站的响应速度必定下降，所以通过连接池管理连接，查询完数据库后不关闭连接，而是暂时存放起来，当别人使用时，把这个连接给他们使用，就避免了一次建立数据库连接和断开的操作时间消耗。 工作">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T03:16:45.164Z">
+<meta property="og:updated_time" content="2019-09-09T08:45:59.126Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库连接池">
+<meta name="twitter:description" content="为什么要连接池首先，每一次 web 请求都要建立一次数据库连接。建立连接是一个费时的活动，每次都得花费 0.05s～1s 的时间，而且系统还要分配内存资源，在这种情况下，频繁的进行数据库连接操作势必占用很多的系统资源，网站的响应速度必定下降，所以通过连接池管理连接，查询完数据库后不关闭连接，而是暂时存放起来，当别人使用时，把这个连接给他们使用，就避免了一次建立数据库连接和断开的操作时间消耗。 工作">
 
 
 
@@ -332,6 +335,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -359,7 +384,32 @@
       
 
       
-        
+        <h1 id="为什么要连接池"><a href="#为什么要连接池" class="headerlink" title="为什么要连接池"></a>为什么要连接池</h1><p>首先，每一次 web 请求都要建立一次数据库连接。建立连接是一个费时的活动，每次都得花费 0.05s～1s 的时间，而且系统还要分配内存资源，在这种情况下，频繁的进行数据库连接操作势必占用很多的系统资源，网站的响应速度必定下降，所以通过连接池管理连接，查询完数据库后不关闭连接，而是暂时存放起来，当别人使用时，把这个连接给他们使用，就避免了一次建立数据库连接和断开的操作时间消耗。</p>
+<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><p>和线程池一样核心思想是连接的复用，通过建立一个数据库连接池以及一套连接使用、分配和管理策略，使得该连接池中的连接可以得到高效，安全的复用，避免了数据库连接频繁建立和关闭的开销。</p>
+<p>连接池的工作原理主要由三部分组成，分别为连接池的建立，连接池中连接的使用管理，连接池的关闭。也就是在内部对象池中维护一定数量的数据库连接，并对外暴露数据库连接获取和返回方法。外部使用者可通过getConnection 方法获取连接，使用完毕后再通过releaseConnection 方法将连接返回，注意此时连接并没有关闭，而是由连接池管理器回收，并为下一次使用做好准备。</p>
+<p>连接池的建立。一般在系统初始化时，连接池会根据系统配置建立，并在池中建立几个连接对象，以便使用时能从连接池中获取。java 中提供了很多容器类，可以方便的构建连接池，例如 Vector（线程安全类），linkedlist 等。</p>
+<p>连接池的管理。 连接池管理策略是连接池机制的核心，连接池内连接的分配和释放对系统的性能有很大的影响。其策略是：当客户请求数据库连接时，首先查看连接池中是否有空闲连接，如果存在空闲连接，则将连接分配给客户使用并作相应处理（即标记该连接为正在使用，引用计数加 1）；如果没有空闲连接，则查看当前所开的连接数是否已经达到最大连接数，如果没有达到最大连接数，就重新创建一个连接给请求的客户；如果达到，就按设定的最大等待时间进行等待，如果超出最大等待时间，则抛出异常给客户。当客户释放数据库连接时，先判断该连接的引用次数是否超过了规定值，如果超过了就从连接池中删除该连接，并判断当前连接池内总的连接数是否小于最小连接数，若小于就将连接池充满；如果没超过就将该连接标记为开放状态，可供再次复用。</p>
+<p>连接池的关闭。当应用程序退出时，关闭连接池中所有的链接，释放连接池相关资源，该过程正好与创建相反。</p>
+<h1 id="连接池代码"><a href="#连接池代码" class="headerlink" title="连接池代码"></a>连接池代码</h1><p>创建连接池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyDataSource</span> <span class="keyword">implements</span> <span class="title">DataSource</span> </span>&#123;  </span><br><span class="line">          <span class="comment">//链表 --- 实现栈结构  </span></span><br><span class="line">          privateLinkedList&lt;Connection&gt; dataSources = <span class="keyword">new</span> LinkedList&lt;Connection&gt;();  </span><br><span class="line">  </span><br><span class="line">          <span class="comment">//初始化连接数量  </span></span><br><span class="line">          publicMyDataSource() &#123;  </span><br><span class="line">                 <span class="comment">//一次性创建10个连接  </span></span><br><span class="line">                 <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;  </span><br><span class="line">                        <span class="keyword">try</span> &#123;  </span><br><span class="line">                           <span class="comment">//1、装载sqlserver驱动对象  </span></span><br><span class="line">                           DriverManager.registerDriver(<span class="keyword">new</span> SQLServerDriver());  </span><br><span class="line">                           <span class="comment">//2、通过JDBC建立数据库连接  </span></span><br><span class="line">                           Connection con =DriverManager.getConnection(  </span><br><span class="line">                              <span class="string">"jdbc:sqlserver://192.168.2.6:1433;DatabaseName=customer"</span>, <span class="string">"sa"</span>, <span class="string">"123"</span>);  </span><br><span class="line">                           <span class="comment">//3、将连接加入连接池中  </span></span><br><span class="line">                           dataSources.add(con);  </span><br><span class="line">                        &#125; <span class="keyword">catch</span> (Exception e) &#123;  </span><br><span class="line">                           e.printStackTrace();  </span><br><span class="line">                        &#125;  </span><br><span class="line">                 &#125;  </span><br><span class="line">          &#125;  </span><br><span class="line">  </span><br><span class="line">          <span class="meta">@Override</span>  </span><br><span class="line">          <span class="function">publicConnection <span class="title">getConnection</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;  </span><br><span class="line">                 <span class="comment">//取出连接池中一个连接  </span></span><br><span class="line">                 finalConnection conn = dataSources.removeFirst(); <span class="comment">// 删除第一个连接返回  </span></span><br><span class="line">                 returnconn;  </span><br><span class="line">          &#125;  </span><br><span class="line">  </span><br><span class="line">          <span class="comment">//将连接放回连接池  </span></span><br><span class="line">          <span class="function">publicvoid <span class="title">releaseConnection</span><span class="params">(Connection conn)</span> </span>&#123;  </span><br><span class="line">                 dataSources.add(conn);  </span><br><span class="line">                 &#125;  </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用连接池：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询所有用户  </span></span><br><span class="line"><span class="function">Public <span class="keyword">void</span> <span class="title">FindAllUsers</span><span class="params">()</span></span>&#123;  </span><br><span class="line">       <span class="comment">//1、使用连接池建立数据库连接  </span></span><br><span class="line">       MyDataSource dataSource = <span class="keyword">new</span> MyDataSource();  </span><br><span class="line">       Connection conn =dataSource.getConnection();          </span><br><span class="line">       <span class="comment">//2、创建状态  </span></span><br><span class="line">       Statement state =con.createStatement();             </span><br><span class="line">       <span class="comment">//3、查询数据库并返回结果  </span></span><br><span class="line">       ResultSet result =state.executeQuery(<span class="string">"select * from users"</span>);             </span><br><span class="line">       <span class="comment">//4、输出查询结果  </span></span><br><span class="line">       <span class="keyword">while</span>(result.next())&#123;  </span><br><span class="line">              System.out.println(result.getString(<span class="string">"email"</span>));  </span><br><span class="line">       &#125;              </span><br><span class="line">       <span class="comment">//5、断开数据库连接  </span></span><br><span class="line">       result.close();  </span><br><span class="line">       state.close();  </span><br><span class="line">       <span class="comment">//6、归还数据库连接给连接池  </span></span><br><span class="line">       dataSource.releaseConnection(conn);  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h1><p>Connection Timeout：连接请求等待超时时间。默认为15秒，单位为秒。</p>
+<p>Max Pool Size: 连接池中最大连接数。默认为100。</p>
+<p>Min Pool Size: 连接池中最小连接数。默认为0。</p>
+<p>Pooling: 是否启用连接池。ADO.NET默认是启用连接池的，因此，你需要手动设置Pooling=false来禁用连接池。</p>
+<p>最大连接数分配多了效果也不大了，并且维护大量的连接进行分配使用对cpu也是一个不小的负荷，因此不宜太大。配少了系统会变慢，数据库连接会经常打开和关闭，性能上有压力，用户体验也不好。</p>
+<h1 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h1><p>dbcp：是使用最多的开源连接池。这个连接池可以设置最大和最小连接，连接等待时间等，基本功能都有优缺点：稳定性还是可以，不过速度稍慢，在大并发量的压力下稳定性有所下降，此外不提供连接池监控</p>
+<p>c3p0：是另外一个开源的连接池，在业界也是比较有名的，这个连接池可以设置最大和最小连接，连接等待时间等，基本功能都有。优缺点：连接池的持续运行的稳定性相当不错，在大并发量的压力下稳定性也有一定保证，此外不提供连接池监控。</p>
+<p>proxool：这个连接池可能用到的人比较少，但也有一定知名度，这个连接池可以设置最大和最小连接，连接等待时间等，基本功能都有。优缺点：稳定性有一定问题，有一个需要长时间跑批的任务场景任务，优势–连接池监控</p>
+<p>Druid：Druid是Java语言中最好的数据库连接池。Druid能够提供强大的监控和扩展功能。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>并发问题：为了使连接管理服务具有最大的通用性，必须考虑多线程环境，即并发问题。这个问题相对比较好解决，因为java语言自身提供了对并发管理的支持，使用synchronized关键字即可确保线程是同步的。使用方法为直接在getconnection方法前面加上synchronized关键字</p>
+<p>事务问题：在 java 语言中，connection 类本身提供了对事务的支持，可以通过设置 connection 的 autocommit属性为 false 然后显式的调用 commit 或 rollback 方法来实现。但要高效的进行 connection 复用，就必须提供相应的事务支持机制。可采用每一个事务独占一个连接来实现，这种方法可以大大降低事务管理的复杂性。</p>
+<p>连接池的分配与释放：连接池的分配与释放，对系统的性能有很大的影响。合理的分配与释放，可以提高连接的复用度，从而降低建立新连接的开销，同时还可以加快用户的访问速度。</p>
+<p>对于连接的管理可使用空闲池。即把已经创建但尚未分配出去的连接按创建时间存放到一个空闲池中。每当用户请求一个连接时，系统首先检查空闲池内有没有空闲连接。如果有就把建立时间最长（通过容器的顺序存放实现）的那个连接分配给他（实际是先做连接是否有效的判断，如果可用就分配给用户，如不可用就把这个连接从空闲池删掉，重新检测空闲池是否还有连接）；如果没有则检查当前所开连接池是否达到连接池所允许的最大连接数。如果没有达到，就新建一个连接，如果已经达到，就等待一定的时间。如果在等待的时间内有连接被释放出来就可以把这个连接分配给等待的用户，如果等待时间超过预定时间timeout 则返回空值（null）。系统对已经分配出去正在使用的连接只做计数，当使用完后再返还给空闲池。对于空闲连接的状态，可开辟专门的线程定时检测，这样会花费一定的系统开销，但可以保证较快的响应速度。也可采取不开辟专门线程，只是在分配前检测的方法。</p>
+
       
     </div>
     
@@ -373,6 +423,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/连接池/" rel="tag"># 连接池</a>
+          
+        </div>
       
 
       
@@ -447,8 +503,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -463,7 +528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -485,7 +550,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -517,6 +582,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要连接池"><span class="nav-number">1.</span> <span class="nav-text">为什么要连接池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作原理"><span class="nav-number">2.</span> <span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#连接池代码"><span class="nav-number">3.</span> <span class="nav-text">连接池代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参数"><span class="nav-number">4.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#种类"><span class="nav-number">5.</span> <span class="nav-text">种类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
