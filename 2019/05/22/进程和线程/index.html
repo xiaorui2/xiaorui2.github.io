@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/22/进程和线程/2.png">
-<meta property="og:updated_time" content="2019-09-10T01:55:17.911Z">
+<meta property="og:updated_time" content="2019-09-14T05:47:26.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程和线程">
 <meta name="twitter:description" content="概念与区别从本质上来说，一个进程就是一个正在执行的程序，它是系统进行资源分配和调度的基本单位，是操作系统结构的基础。每个进程都有自己的地址空间，包括可执行程序，程序的数据，栈，一组寄存器（程序计算器，栈指针以及其他运行程序需要的信息 线程有时被称为轻量级进程，是程序执行的最小执行流，它是进程的一个实体，是系统独立调度和分派的基本单位 进程和线程的区别：  地址空间：同一进程的线程共享本进程的地址空">
@@ -397,7 +397,8 @@
 <li>线程是处理器调度的基本单位，但是进程不是。</li>
 <li>两者均可并发执行。</li>
 </ol>
-<h1 id="进程和线程占有的资源"><a href="#进程和线程占有的资源" class="headerlink" title="进程和线程占有的资源"></a>进程和线程占有的资源</h1><p>首先我们知道线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和栈)，但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源.。</p>
+<h1 id="进程和线程占有的资源"><a href="#进程和线程占有的资源" class="headerlink" title="进程和线程占有的资源"></a>进程和线程占有的资源</h1><p>首先我们知道线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和栈)，但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源，不包含堆栈，如果要修改共享空间里的资源，需要加锁。</p>
+<p>进程的话占有堆栈</p>
 <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程的创建和终止"><a href="#进程的创建和终止" class="headerlink" title="进程的创建和终止"></a>进程的创建和终止</h2><p>进程的创建主要有四个原因：系统初始化，正在运行的进程执行了创建进程的系统调用，用户请求创建一个进程以及批处理作业的初始化。</p>
 <p>常见的就是一个进程调用了 fork() 函数创建新的进程。</p>
 <p>操作系统创建一个新的进程的过程</p>

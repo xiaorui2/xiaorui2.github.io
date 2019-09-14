@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/24/HashMap-HashTable-CourrentHashMap/3.png">
-<meta property="og:updated_time" content="2019-08-23T01:30:25.929Z">
+<meta property="og:updated_time" content="2019-09-14T05:55:02.653Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap,HashTable，CourrentHashMap">
 <meta name="twitter:description" content="HashMap我们知道Map是一个key-val的集合，HashMap是基于Hash表的Map接口的非同步实现。HashMap的基本数据结构是数组和链表。  HashMap原理基于hashing原理，我们通过put()和get()方法储存和获取对象。当我们将键值对传递给put()方法时，它调用键对象的hashCode()方法来计算hashcode，返回的hashCode用于找到bucket位置来储">
@@ -427,7 +427,7 @@
 </ul>
 <h2 id="为什么HashMap长度大于8才转换为红黑树，而不是6"><a href="#为什么HashMap长度大于8才转换为红黑树，而不是6" class="headerlink" title="为什么HashMap长度大于8才转换为红黑树，而不是6"></a>为什么HashMap长度大于8才转换为红黑树，而不是6</h2><p>红黑树的平均查找长度是<code>log(n)</code>，长度为<code>8</code>，查找长度为<code>log(8)=3</code>，链表的平均查找长度为<code>n/2</code>，当长度为<code>8</code>时，平均查找长度为<code>8/2=4</code>，这才有转换成树的必要；链表长度如果是小于等于<code>6</code>，<code>6/2=3</code>，虽然速度也很快的，但是转化为树结构和生成树的时间并不会太短。中间有个差值<code>7</code>可以防止链表和树之间频繁的转换。</p>
 <p>这个只是简单的说法个人感觉，正确的说话应该是理想情况下随机<code>hashCode</code>算法下所有<code>bin</code>中节点的分布频率会遵循泊松分布，据概率统计决定的。</p>
-<h1 id="CourrentHashMap"><a href="#CourrentHashMap" class="headerlink" title="CourrentHashMap"></a>CourrentHashMap</h1><p><code>Java 7</code>中的<code>ConcurrentHashMap</code>的底层数据结构仍然是数组和链表。与<code>HashMap</code>不同的是，<code>ConcurrentHashMap</code>最外层不是一个大的数组，而是一个<code>Segment</code>的数组。每个<code>Segment</code>包含一个与<code>HashMap</code>数据结构差不多的链表数组。整体数据结构如下图所示。</p>
+<h1 id="CourrentHashMap"><a href="#CourrentHashMap" class="headerlink" title="CourrentHashMap"></a>CourrentHashMap</h1><p>Java 7 中的 ConcurrentHashMap 的底层数据结构仍然是数组和链表。与 HashMap 不同的是，ConcurrentHashMap 最外层不是一个大的数组，而是一个 Segment 的数组。每个 Segment 包含一个与HashMap 数据结构差不多的链表数组。整体数据结构如下图所示。</p>
 <p><img src="2.png" alt></p>
 <p><code>get</code>过程</p>
 <p>在读写某个<code>Key</code>时，先取该<code>Key</code>的哈希值。并将哈希值的高<code>N</code>位对<code>Segment</code>个数取模从而得到该<code>Key</code>应该属于哪个<code>Segment</code>，接着如同操作<code>HashMap</code>一样操作这个<code>Segment</code>。为了保证不同的值均匀分布到不同的<code>Segment</code>，需要通过如下方法计算哈希值。</p>
@@ -445,7 +445,7 @@
 <p><code>ConcurrentHashMap</code>，<code>HahTable</code>对象的<code>key</code>、<code>value</code>值均不可为<code>null</code>。</p>
 <p><code>HashMap</code>在<code>put</code>的时候会调用<code>hash()</code>方法来计算<code>key</code>的<code>hashcode</code>值，可以从<code>hash</code>算法中看出当<code>key==null</code>时返回的值为0。因此<code>key</code>为<code>null</code>时，<code>hash</code>算法返回值为0，不会调用<code>key</code>的<code>hashcode</code>方法。但是<code>HashTable</code>存入的<code>value</code>为<code>null</code>时，抛出<code>NullPointerException</code>异常。如果<code>value</code>不为<code>null</code>，而<code>key</code>为空，在执行到<code>int  hash = key.hashCode()</code>时同样会抛出<code>NullPointerException</code>异常。</p>
 <p>那为什么这么设计？</p>
-<p><code>ConcurrentHashmap</code>和<code>Hashtable</code>都是支持并发的，这样会有一个问题，当你通过<code>get(k)</code>获取对应的<code>value</code>时，如果获取到的是<code>null</code>时，你无法判断，它是<code>put（k,v）</code>的时候<code>value</code>为<code>null</code>，还是这个<code>key</code>从来没有做过映射。<code>HashMap</code>是非并发的，可以通过<code>contains(key)</code>来做这个判断。</p>
+<p>ConcurrentHashmap 和 Hashtable 都是支持并发的，这样会有一个问题，当你通过 get(k) 获取对应的 value时，如果获取到的是 null 时，你无法判断，它是 put（k,v）的时候 value 为 null，还是这个 key 从来没有做过映射。HashMap 是非并发的，可以通过 contains(key) 来做这个判断。</p>
 <p>对于<code>TreeMap</code>的话<code>value</code>是可以为<code>null</code>的，对于<code>key</code>的话未实现 <code>Comparator</code> 接口时，<code>key</code> 不可以为<code>null</code>，否则抛 <code>NullPointerException</code> 异常；当实现<code>Comparator</code>接口时，若未对<code>null</code>情况进行判断，则可能抛 <code>NullPointerException</code> 异常。如果针对<code>null</code>情况实现了，可以存入，但是却不能正常使用<code>get()</code>访问，只能通过遍历去访问。</p>
 
       
