@@ -88,7 +88,7 @@
 <meta property="og:description" content="在平时的时候，我们使用线程的时候就去创建一个线程，但并发的线程数量很多，并且每个线程都是执行一个时间很短的任务就结束了，这样频繁创建线程就会大大降低系统的效率，因为频繁创建线程和销毁线程需要时间。所以我们会使用线程池。线程池的优势很明显，如下：  降低系统资源消耗，通过重用已存在的线程，降低线程创建和销毁造成的消耗； 提高系统响应速度，当有任务到达时，无需等待新线程的创建便能立即执行； 方便线程并">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/07/25/线程池/1.png">
-<meta property="og:updated_time" content="2019-08-15T15:38:41.675Z">
+<meta property="og:updated_time" content="2019-09-15T01:43:27.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="在平时的时候，我们使用线程的时候就去创建一个线程，但并发的线程数量很多，并且每个线程都是执行一个时间很短的任务就结束了，这样频繁创建线程就会大大降低系统的效率，因为频繁创建线程和销毁线程需要时间。所以我们会使用线程池。线程池的优势很明显，如下：  降低系统资源消耗，通过重用已存在的线程，降低线程创建和销毁造成的消耗； 提高系统响应速度，当有任务到达时，无需等待新线程的创建便能立即执行； 方便线程并">
@@ -393,6 +393,12 @@
 <li>方便线程并发数的管控，线程若是无限制的创建，不仅会额外消耗大量系统资源，更是占用过多资源而阻塞系统或<code>oom</code>等状况，从而降低系统的稳定性。线程池能有效管控线程，统一分配、调优，提供资源使用率；</li>
 <li>更强大的功能，线程池提供了定时、定期以及可控线程数等功能的线程池，使用方便简单；</li>
 </ul>
+<h1 id="一个线程池包括以下四个基本组成部分："><a href="#一个线程池包括以下四个基本组成部分：" class="headerlink" title="一个线程池包括以下四个基本组成部分："></a>一个线程池包括以下四个基本组成部分：</h1><ol>
+<li>线程池管理器（ThreadPool）：用于创建并管理线程池，包括 创建线程池，销毁线程池，添加新任务；</li>
+<li>工作线程（WorkThread）：线程池中线程，在没有任务时处于等待状态，可以循环的执行任务；</li>
+<li>任务接口（Task）：每个任务必须实现的接口，以供工作线程调度任务的执行，它主要规定了任务的入口，任务执行完后的收尾工作，任务的执行状态等；</li>
+<li>任务队列（taskQueue）：用于存放没有处理的任务。提供一种缓冲机制。</li>
+</ol>
 <h1 id="Java中的ThreadPoolExecutor类"><a href="#Java中的ThreadPoolExecutor类" class="headerlink" title="Java中的ThreadPoolExecutor类"></a>Java中的ThreadPoolExecutor类</h1><p><code>java.uitl.concurrent.ThreadPoolExecutor</code>类是线程池中最核心的一个类，在<code>ThreadPoolExecutor</code>类中提供了四个构造方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolExecutor</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span> </span>&#123;</span><br><span class="line">    .....</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,<span class="keyword">int</span> maximumPoolSize,<span class="keyword">long</span> keepAliveTime,TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue)</span></span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,<span class="keyword">int</span> maximumPoolSize,<span class="keyword">long</span> keepAliveTime,TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory)</span></span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,<span class="keyword">int</span> maximumPoolSize,<span class="keyword">long</span> keepAliveTime,TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler)</span></span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,<span class="keyword">int</span> maximumPoolSize,<span class="keyword">long</span> keepAliveTime,TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler)</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -476,6 +482,7 @@
 <li>如果是<code>IO</code>密集型任务，参考值可以设置为<code>2*NCPU</code></li>
 </ul>
 <p>当然，这只是一个参考值，具体的设置还需要根据实际情况进行调整，比如可以先将线程池大小设置为参考值，再观察任务运行情况和系统负载、资源利用率来进行适当调整。</p>
+<h1 id="手写线程池"><a href="#手写线程池" class="headerlink" title="手写线程池"></a>手写线程池</h1><p><a href="https://blog.csdn.net/qq_16038125/article/details/80225610" target="_blank" rel="noopener">看解析</a>，体现复用的思想，利用 List 实现。</p>
 
       
     </div>
@@ -589,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -653,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java中的ThreadPoolExecutor类"><span class="nav-number">1.</span> <span class="nav-text">Java中的ThreadPoolExecutor类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池的状态"><span class="nav-number">2.</span> <span class="nav-text">线程池的状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池任务执行流程"><span class="nav-number">3.</span> <span class="nav-text">线程池任务执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池中的线程初始化"><span class="nav-number">4.</span> <span class="nav-text">线程池中的线程初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务缓存队列及排队策略"><span class="nav-number">5.</span> <span class="nav-text">任务缓存队列及排队策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务拒绝策略"><span class="nav-number">6.</span> <span class="nav-text">任务拒绝策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#几种线程池"><span class="nav-number">7.</span> <span class="nav-text">几种线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">7.1.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">7.2.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">7.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newScheduledThreadPool"><span class="nav-number">7.4.</span> <span class="nav-text">newScheduledThreadPool</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置线程池大小"><span class="nav-number">8.</span> <span class="nav-text">配置线程池大小</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一个线程池包括以下四个基本组成部分："><span class="nav-number">1.</span> <span class="nav-text">一个线程池包括以下四个基本组成部分：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java中的ThreadPoolExecutor类"><span class="nav-number">2.</span> <span class="nav-text">Java中的ThreadPoolExecutor类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池的状态"><span class="nav-number">3.</span> <span class="nav-text">线程池的状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池任务执行流程"><span class="nav-number">4.</span> <span class="nav-text">线程池任务执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池中的线程初始化"><span class="nav-number">5.</span> <span class="nav-text">线程池中的线程初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务缓存队列及排队策略"><span class="nav-number">6.</span> <span class="nav-text">任务缓存队列及排队策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务拒绝策略"><span class="nav-number">7.</span> <span class="nav-text">任务拒绝策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#几种线程池"><span class="nav-number">8.</span> <span class="nav-text">几种线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">8.1.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">8.2.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">8.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newScheduledThreadPool"><span class="nav-number">8.4.</span> <span class="nav-text">newScheduledThreadPool</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置线程池大小"><span class="nav-number">9.</span> <span class="nav-text">配置线程池大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#手写线程池"><span class="nav-number">10.</span> <span class="nav-text">手写线程池</span></a></li></ol></div>
             
 
           </div>
