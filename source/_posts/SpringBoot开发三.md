@@ -7,29 +7,58 @@ categories: SpringBoot项目
 
 # 需求介绍-SpringMVC
 
-理解`HTTP`；
-
 服务层的三层架构：表现层，业务层，数据层，浏览器访问服务器先访问表现层，期待表现层返回一些数据，表现层呢就访问业务层处理业务，而业务层在处理业务的时候会调用数据层请求数据和处理数据
 
 ![](1.png)
 
-`SpringMVC`是一种设计模式，也是分为三层。
+SpringMVC 是一种设计模式，也是分为三层。
 
 ![](2.png)
 
-使用的核心组件是：`DispatcherServlet`
+使用的核心组件是：DispatcherServlet
 
 ![](3.png)
 
-`ViewresResolver`：视图解析视图层
+ViewresResolver：视图解析视图层
 
-`HandleMapping`：处理映射的一个组件，我们敲一个路径与Controller相匹配。
+HandleMapping：处理映射的一个组件，我们敲一个路径与Controller相匹配。
 
 更细节的可以看：
 
 ![](4.png)
 
-然后码一个实现的`MVC`的代码有助理解一下
+MVC 架构的优缺点：
+
+优点
+
+- 开发人员可以只关注整个结构中的其中某一层； 
+- 可以很容易的用新的实现来替换原有层次的实现； 
+- 可以降低层与层之间的依赖； 
+- 有利于标准化； 
+- 利于各层逻辑的复用。 
+- 扩展性强。不同层负责不同的层面
+
+缺点：
+
+- 降低了系统的性能。这是不言而喻的。如果不采用分层式结构，很多业务可以直接造访数据库，以此获取相应的数据，如今却必须通过中间层来完成。 
+- 有时会导致级联的修改。这种修改尤其体现在自上而下的方向。如果在表示层中需要增加一个功能，为保证其设计符合分层式结构，可能需要在相应的业务逻辑层和数据访问层中都增加相应的代码 
+- 增加了代码量，增加了工作量
+
+SpringMVC的流程
+
+- 发起请求到前端控制器(DispatcherServlet)
+- 前端控制器请求 HandlerMapping 查找 Handler （可以根据xml配置、注解进行查找）
+- 处理器映射器 HandlerMapping 向前端控制器返回 Handler，HandlerMapping 会把请求映射为HandlerExecutionChain 对象（包含一个Handler 处理器（页面控制器）对象，多个 HandlerInterceptor对象），通过这种策略模式，很容易添加新的映射策略
+- 前端控制器调用处理器适配器去执行 Handler
+- 处理器适配器 HandlerAdapter 将会根据适配的结果去执行 Handler
+- Handler 执行完成给适配器返回 ModelAndView
+- 处理器适配器向前端控制器返回 ModelAndView （ModelAndView 是 springmvc 框架的一个底层对象，包括 Model 和 view）
+- 前端控制器请求视图解析器去进行视图解析 （根据逻辑视图名解析成真正的视图），通过这种策略很容易更换其他视图技术，只需要更改视图解析器即可
+- 视图解析器向前端控制器返回 View
+- 前端控制器进行视图渲染 （视图渲染将模型数据(在 ModelAndView 对象中)填充到 request 域）
+- 前端控制器向用户响应结果
+
+然后码一个实现的 MVC 的代码有助理解一下
 
 # 代码
 

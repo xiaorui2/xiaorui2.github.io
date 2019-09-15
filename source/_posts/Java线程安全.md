@@ -87,6 +87,15 @@ categories: Java入门
 
 `Java` 虚拟机中的同步(`Synchronization`)基于进入和退出管程(`Monitor`)对象（存在于每个`Java`对象的对象头）实现， 无论是显式同步(有明确的 `monitorenter `和 `monitorexit `指令,即同步代码块)还是隐式同步都是如此。
 
+## synchronized 实现内存可见性
+
+JMM 关于 synchronized 的两条规定：
+
+- 线程解锁前，必须把共享变量的最新值刷新到主内存中
+- 线程加锁时，将清空工作内存中共享变量的值，从而使用共享变量时需要从主内存中重新获取最新的值
+
+通过以上两点，可以看到 synchronized 能够实现可见性。
+
 ## synchronized代码块底层原理
 
 同步语句块的实现使用的是`monitorenter` 和 `monitorexit `指令，其中`monitorenter`指令指向同步代码块的开始位置，`monitorexit`指令则指明同步代码块的结束位置，当执行`monitorenter`指令时，当前线程将试图获取 `objectref`(即对象锁) 所对应的 `monitor `的持有权，当 `objectref `的`monitor `的进入计数器为 0，那线程可以成功取得` monitor`，并将计数器值设置为 1，取锁成功。如果当前线程已经拥有 `objectref` 的 `monitor `的持有权，那它可以重入这个 `monitor` (关于重入性稍后会分析)，重入时计数器的值也会加 1。倘若其他线程已经拥有 `objectref` 的 `monitor` 的所有权，那当前线程将被阻塞，直到正在执行线程执行完毕，即`monitorexit`指令被执行，执行线程将释放 `monitor`(锁)并设置计数器值为0 ，其他线程将有机会持有` monitor` 。
@@ -308,10 +317,10 @@ private void unparkSuccessor(Node node) {
 
 异：
 
-- 对于`Synchronized`来说，它是`java`语言的关键字，是原生语法层面的互斥，需要`jvm`实现。而`ReentrantLock`它是`JDK 1.5`之后提供的`API`层面的互斥锁，需要`lock()`和`unlock()`方法配合`try/finally`语句块来完成。
-- 使用`Synchronized`。如果`Thread1`不释放，`Thread2`将一直等待，不能被中断；使用`ReentrantLock`。如果`Thread1`不释放，`Thread2`等待了很长时间以后，可以中断等待，转而去做别的事情。
-- `Synchronized`的锁是非公平锁，`ReentrantLock`默认情况下也是非公平锁，但可以通过带布尔值的构造函数要求使用公平锁。
-- 锁绑定多个条件，一个`ReentrantLock`对象可以同时绑定对个对象。`Synchronized`中，锁对象的`wait()`和`notify()`或`notifyAll()`方法可以实现一个隐含的条件。但如果要和多于一个的条件关联的时候，就不得不额外添加一个锁。
+- 对于 Synchronized 来说，它是 java 语言的关键字，是原生语法层面的互斥，需要 jvm 实现。而 ReentrantLock 它是 JDK 1.5 之后提供的 API 层面的互斥锁，需要 lock() 和 unlock() 方法配合 try/finally 语句块来完成。
+- 使用 Synchronized。如果 Thread1不释放，Thread2 将一直等待，不能被中断；使用 ReentrantLock。如果Thread1 不释放，Thread2 等待了很长时间以后，可以中断等待，转而去做别的事情。ReentrantLock 在锁定期间， 是可以被其他线程打断的 （interrupt），但是 Synchronized 不行，也就是尝试获取一个内部锁的操作（进入一个 Synchronized 块）是不能被中断的，但是 ReentrantLock 支持可中断的获取模式即 tryLock(long time, TimeUnit unit)。
+- Synchronized 的锁是非公平锁，ReentrantLock 默认情况下也是非公平锁，但可以通过带布尔值的构造函数要求使用公平锁。
+- 锁绑定多个条件，一个 ReentrantLock 对象可以同时绑定对个对象。Synchronized 中，锁对象的 wait() 和notify() 或 notifyAll() 方法可以实现一个隐含的条件。但如果要和多于一个的条件关联的时候，就不得不额外添加一个锁。
 
 # Synchronized修饰静态方法和成员方法的区别
 

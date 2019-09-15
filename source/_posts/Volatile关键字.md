@@ -91,3 +91,29 @@ flag = true;          //语句2
 - `Thread-B`发现对应地址的缓存行被锁了，等待锁的释放，缓存一致性协议会保证它读取到最新的值
 
 由此可以看出，`volatile`关键字的读和普通变量的读取相比基本没差别，差别主要还是在变量的写操作上。
+
+# 手写一个计数器，开10个线程,保证最后计数输出为10
+
+```java
+public class Test {
+    public volatile int inc = 0;
+
+    public synchronized void increase() {
+        inc++;
+    }
+    public static void main(String[] args) throws InterruptedException {
+        final Test test = new Test();
+        for(int i=0;i<10;i++){
+            new Thread(){
+                public void run() {
+                    test.increase();
+                };
+            }.start();
+        }
+
+        Thread.sleep(100);
+        System.out.println(test.inc);
+    }
+}
+```
+

@@ -266,6 +266,20 @@ Dao 层中的方法更多的是一种对数据库的增删改查的原子性操�
 - `Bean`可以使用了
 - 当容器关闭时，调用`Bean`的销毁方法
 
+## Spring 实例化 Bean 的过程
+
+![](6.png)
+
+1. 实例化 bean 对象，类似于 new XXObject()
+2. 将配置文件中配置的属性填充到刚刚创建的 bean 对象中。
+3. 检查 bean 对象是否实现了 Aware 一类的接口，如果实现了则把相应的依赖设置到 bean 对象中。比如如果 bean 实现了 BeanFactoryAware 接口，Spring 容器在实例化bean的过程中，会将 BeanFactory 容器注入到 bean 中。
+4. 调用 BeanPostProcessor 前置处理方法，即 postProcessBeforeInitialization(Object bean, String beanName)。
+5. 检查 bean 对象是否实现了 InitializingBean 接口，如果实现，则调用 afterPropertiesSet 方法。或者检查配置文件中是否配置了 init-method 属性，如果配置了，则去调用 init-method 属性配置的方法。
+6. 调用 BeanPostProcessor 后置处理方法，即 postProcessAfterInitialization(Object bean, String beanName)。我们所熟知的 AOP 就是在这里将 Adivce 逻辑织入到 bean 中的。
+7. 注册 Destruction 相关回调方法。
+8. bean 对象处于就绪状态，可以使用了。
+9. 应用上下文被销毁，调用注册的 Destruction 相关方法。如果 bean 实现了 DispostbleBean 接口，Spring 容器会调用 destroy 方法。如果在配置文件中配置了 destroy 属性，Spring 容器则会调用 destroy 属性对应的方法。
+
 # Spring Boot 需要独立的容器运行吗？
 
 可以不需要，内置了 Tomcat / Jetty 等容器。
@@ -379,18 +393,4 @@ public interface TransactionDefinition {
 ### 声明式事务
 
 不需要通过编程的方式管理事务，这样就不需要在业务逻辑代码中掺杂事务管理的代码，只需在配置文件中做相关的事务规则声明(或通过基于`@Transactional`注解的方式)，便可以将事务规则应用到业务逻辑中。
-
-# SpringMVC的流程
-
-- 发起请求到前端控制器(DispatcherServlet)
-- 前端控制器请求 HandlerMapping 查找 Handler （可以根据xml配置、注解进行查找）
-- 处理器映射器 HandlerMapping 向前端控制器返回 Handler，HandlerMapping 会把请求映射为HandlerExecutionChain 对象（包含一个Handler 处理器（页面控制器）对象，多个 HandlerInterceptor对象），通过这种策略模式，很容易添加新的映射策略
-- 前端控制器调用处理器适配器去执行 Handler
-- 处理器适配器 HandlerAdapter 将会根据适配的结果去执行 Handler
-- Handler 执行完成给适配器返回 ModelAndView
-- 处理器适配器向前端控制器返回 ModelAndView （ModelAndView 是 springmvc 框架的一个底层对象，包括 Model 和 view）
-- 前端控制器请求视图解析器去进行视图解析 （根据逻辑视图名解析成真正的视图），通过这种策略很容易更换其他视图技术，只需要更改视图解析器即可
-- 视图解析器向前端控制器返回 View
-- 前端控制器进行视图渲染 （视图渲染将模型数据(在 ModelAndView 对象中)填充到 request 域）
-- 前端控制器向用户响应结果
 

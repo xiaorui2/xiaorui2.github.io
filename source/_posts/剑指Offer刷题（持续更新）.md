@@ -1047,6 +1047,66 @@ public class Solution {
 }
 ```
 
+# 题目十七 树的子结构
+
+## 题目描述
+
+输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+
+## 思路
+
+如果找到了对应Tree2的根节点的点，
+以这个根节点为为起点判断是否包含Tree
+如果找不到，那么就再去root的左孩子当作起点，去判断时候包含Tree2
+如果还找不到，那么就再去root的右孩子当作起点，去判断时候包含Tree2
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+        if(root1==null || root2==null){
+            return false;
+        }
+        return isSubtree(root1,root2) || HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
+    }
+    
+    public boolean isSubtree(TreeNode root1,TreeNode root2){
+        if(root2==null){
+            return true;
+        }
+        if(root1==null){
+            return false;
+        }
+        if(root1.val==root2.val){
+            return isSubtree(root1.left,root2.left) && isSubtree(root1.right,root2.right);
+        }
+        return false;
+    }
+}
+```
+
 # 题目十八 二叉树的镜像
 
 ## 题目描述
@@ -1652,7 +1712,191 @@ public class Solution {
 }
 ```
 
-# 
+# 题目二十五 二叉搜索树与双向链表
+
+## 题目描述
+
+输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），返回结果为复制后复杂链表的head。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+
+## 思路
+
+1. 遍历该链表,复制每一个节点,插入到当前节点的后面.形成如下链表.
+   1->1'->2->2'....
+2. 将每个拷贝节点的随机指针域,指向原节点(即拷贝节点的上一个节点)的随即指针域指向(**注意随机指针域可能为空**)的下一个节点.即1的随机指针域指向3,则1'的随机指针域指向3的下一个指针3'.
+3. 拆分链表,返回1'->2'->3'...
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+/*
+public class RandomListNode {
+    int label;
+    RandomListNode next = null;
+    RandomListNode random = null;
+
+    RandomListNode(int label) {
+        this.label = label;
+    }
+}
+*/
+public class Solution {
+    public RandomListNode Clone(RandomListNode pHead)
+    {
+        if(pHead==null)return null;
+        RandomListNode runner=pHead;
+        RandomListNode copyCat=null;
+        //First round: make copy of each nodes
+        while(runner!=null){
+            copyCat=new RandomListNode(runner.label);
+            copyCat.next=runner.next;
+            runner.next=copyCat;
+            runner=copyCat.next;
+        }
+        
+        //Second Round: assign random pointers for the copy nodes
+        runner=pHead;       
+        while(runner!=null){
+            copyCat=runner.next;
+            //notice random pointers could be null
+            copyCat.random=runner.random==null?null:runner.random.next;
+            runner=runner.next.next;
+        }
+        
+        //Third round: restore the original list, and extract the copy list.
+        runner=pHead;
+        pHead=runner.next;
+        while(true){
+            copyCat=runner.next;
+            runner.next=copyCat.next;
+            runner=copyCat.next;
+            if(runner==null){
+                break;
+            }
+            else{
+               copyCat.next=runner.next;
+            }           
+        }
+        return pHead;
+    }
+}
+```
+
+# 题目二十六 二叉搜索树与双向链表
+
+## 题目描述
+
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+## 思路
+
+![](2.png)
+
+由于要求转换之后的链表是排好序的，我们可疑中序遍历树中的每一个结点，这是因为中序遍历算法的特点是按照从小到达的顺序遍历二叉树的每一个结点。当遍历到根节点的时候，我们把树堪称三部分：值为10的结点，根节点为6的左子树、根节点为14的右子树。根据排序链表的定义，值为10的结点将和它的左子树的最大的一个结点（即值为8的结点）链接起来，同时它还将和右子树最小的结点（即值为12的结点）链接起来，
+按照中序遍历的顺序，当我们遍历转换到根节点（值为10的结点）时，它的左子树已经转换成一个排序的链表了，并且处在链表中的最后一个结点是当前值的最大的结点。我们把值为8的结点根节点链接起来，此时链表中的最后一个结点是10了。接着我们去遍历转换右子树，并把根节点和右子树最小的结点链接起来。至于怎么去转换它的左子树和右子树，由于遍历和转换过程是一样的，我们自然的想到了递归。
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+import utils.BinaryTreeNode;
+public class E27ConvertBinarySearchTree {
+	public BinaryTreeNode convert(BinaryTreeNode root){
+		BinaryTreeNode node = null;
+		convert(root,node);
+		while(node != null && node.leftNode != null){
+			node = node.leftNode;
+		}
+		return node;
+	}
+	public void convert(BinaryTreeNode root,BinaryTreeNode lastNode){
+		if(root == null)
+			return;
+		BinaryTreeNode current = root;
+		if(current.leftNode != null)
+			convert(current.leftNode,lastNode);
+		current.leftNode = lastNode;
+		if(lastNode != null)
+			lastNode.rightNode = current;
+		if(current.rightNode != null)
+			convert(current.rightNode,lastNode);
+	}
+}
+```
+
+# 题目二十七 字符串的排列
+
+## 题目描述
+
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+
+## 思路
+
+我们以三个字符abc为例来分析一下求字符串排列的过程。首先我们固定第一个字符a，求后面两个字符bc的排列。当两个字符bc的排列求好之后，我们把第一个字符a和后面的b交换，得到bac，接着我们固定第一个字符b，求后面两个字符ac的排列。现在是把c放到第一位置的时候了。记住前面我们已经把原先的第一个字符a和后面的b做了交换，为了保证这次c仍然是和原先处在第一位置的a交换，我们在拿c和第一个字符交换之前，先要把b和a交换回来。在交换b和a之后，再拿c和处在第一位置的a进行交换，得到cba。我们再次固定第一个字符c，求后面两个字符b、a的排列。
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+		ArrayList<String> list = new ArrayList<String>();
+		char[] ch = str.toCharArray();
+		Permu(ch, 0, list);
+		Collections.sort(list);
+		return  list;
+	}
+ 
+	public void Permu(char[] str, int i, ArrayList<String> list) {
+		if (str == null) {
+			return;
+		}
+		if (i == str.length - 1) {
+			if(list.contains(String.valueOf(str))){
+				return;
+			}
+			list.add(String.valueOf(str));
+		} else {
+			boolean num=true;
+			for (int j = i; j < str.length; j++) {
+				char temp = str[j];
+				str[j] = str[i];
+				str[i] = temp;
+ 
+				Permu(str, i + 1, list);
+ 
+				temp = str[j];
+				str[j] = str[i];
+				str[i] = temp;
+			}
+		}
+ 
+	}
+}
+```
 
 # 题目二十八 数组中出现次数超过一半的数字
 
@@ -1892,6 +2136,65 @@ public class Solution {
             }
         }
         return count;
+    }
+}
+```
+
+# 题目三十二 把数组排成最小的数
+
+## 题目描述
+
+输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+
+## 思路
+
+我们需要定义一种新的比较大小规则，数组根据这个规则可以排成一个最小的数字。
+
+排序规则：两个数字 m 和 n，我们比较 mn 和 nm 的大小，来确定在新的比较规则下 n 和 m 的大小关系，来确定哪个应该排在前面
+
+## AC代码
+
+`c++`版：
+
+```c++
+
+```
+
+`Java`版：
+
+```java
+import java.util.ArrayList;
+ 
+public class Solution {
+    public String PrintMinNumber(int [] num) {
+		if(num==null||num.length==0)
+            return "";
+		int len = num.length;
+        String[] str = new String[len];
+        for(int i = 0; i < len; i++){
+            str[i] = String.valueOf(num[i]);
+        }
+        for (int i = 0; i < str.length; i++) {
+        	for (int j = i+1; j < str.length; j++) {
+				if(compare(str[i], str[j])){
+					String temp = str[j];
+					str[j] = str[i];
+					str[i] = temp;
+				}
+			}
+		}
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i<str.length;i++){
+        	sb = sb.append(str[i]);
+        }
+        return sb.toString();
+       
+    }
+    private boolean compare(String s1,String s2){
+    	if(Integer.parseInt(s1+s2)>Integer.parseInt(s2+s1))
+            return true;
+        return false;
+        
     }
 }
 ```
@@ -3506,6 +3809,8 @@ public class Solution {
 
 就是一个思路，奇数次从左到右入栈然后偶数次从右到左入栈，我们就开两个栈来实现就可以了，其他的就跟平时的打印二叉树一样。
 
+不用辅助空间就递归完成即可。
+
 ## AC代码
 
 `c++`版：
@@ -3580,6 +3885,69 @@ public:
 
 ```java
 
+    public static void print(TreeNode root){
+
+        if (root == null) {
+            System.out.println("该树为null");
+            return;
+        }
+        int level = 1;//从根节点第一层遍历
+        Stack<TreeNode> stackOne = new Stack<>();//用来记录当前遍历的层结点
+        stackOne.push(root);
+        printTree(level,stackOne);
+    }
+
+    /**
+     * 递归遍历整个树
+     * @param level 当前树的层次
+     * @param from 当前层的所有结点信息
+     */
+    public static void printTree(int level,Stack<TreeNode> from){
+        if (from == null || from.empty()) {
+            return;
+        }
+
+        //用来存储下一层所有结点的信息
+        Stack<TreeNode> to = new Stack<>();
+
+        System.out.print(level+" : ");
+        //当前层次为奇数，从左向右遍历
+        if (level %2 != 0) {
+            while(!from.empty()){
+                TreeNode node = from.pop();
+                if (node != null) {
+                    System.out.print(node.val+"\t");
+                    if (node.left != null) {
+                        to.push(node.left);
+                    }
+                    if (node.right != null) {
+                        to.push(node.right);
+                    }
+                }
+            }
+        }else{
+
+            //当前为偶数层，需要从右向左遍历
+            while(!from.empty()){
+                TreeNode node = from.pop();
+                //当前节点不为null，或者不是叶子结点
+                if (node != null) {
+                    System.out.print(node.val+"\t");
+                    if (node.right != null) {
+                        to.push(node.right);
+                    }
+                    if (node.left != null) {
+                        to.push(node.left);
+                    }
+                }
+            }
+
+        }
+
+        System.out.println();
+        //递归
+        printTree(++level,to);
+    }
 ```
 
 # 题目六十 把二叉树打印成多行
@@ -3972,6 +4340,69 @@ public class Solution {
     }
 }
 ```
+
+# 题目六十七 剪绳子
+
+## 题目描述
+
+给定一根长度为n的绳子，请把绳子剪成m段（m、n都是整数，n>1并且m>1），每段绳子的长度记为k[0],k[1],…,k[m]。请问k[0]* k[1] * … *k[m]可能的最大乘积是多少？
+
+## 思路
+
+定义函数f(n)表示为把长度为n的绳子剪成若干段后各段长度乘积的最大值。
+对于第一刀，我们有n-1种可能的选择，可推导出f(n)=max{f(i)*f(n-i)};
+很明显这是一个从上至下的递归，但是这个递归存在很多重复的计算，所以使用至下而上的动态规划，将子问题的最优解保存。
+注意绳子剪成ix(n-i)和(n-i)xi是相同的；
+注意不符合切割条件的输入n，以及输入为2、3长度时的结果，因为题中规定m>1。
+
+## AC代码
+
+`c++`版：
+
+```c++
+class Solution {
+public:
+    int cutRope(int length) {
+        if (length < 2) return 0;
+        if (length == 2) return 1;
+        if (length == 3) return 2;
+
+        int* products = new int[length + 1];
+        products[0] = 0;
+        products[1] = 1;
+        products[2] = 2;
+        products[3] = 3;
+
+        int max = 0;
+        for (int i = 4; i <= length; ++i) {
+            max = 0;
+            for (int j = 1; j <= i / 2; ++j) {
+                int product = products[j] * products[i - j];
+                if (max < product)
+                    max = product;
+
+                products[i] = max;
+            }
+        }
+
+        max = products[length];
+        delete[] products;
+
+        return max;
+        
+    }
+};
+```
+
+`Java`版：
+
+```java
+
+```
+
+
+
+
 
 
 

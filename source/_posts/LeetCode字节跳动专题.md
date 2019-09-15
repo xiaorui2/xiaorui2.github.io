@@ -66,6 +66,109 @@ public:
 };
 ```
 
+## 至多k个无重复字符的最长子串
+
+```c++
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <sstream>
+using namespace std;
+typedef long long LL;
+const int maxn=110;
+const int MOD=1e9+7;
+int k;
+string s;
+int main(){
+    cin>>k;
+    cin>>s;
+    int ans=0;
+    int l=0,r=0;
+    map<char,int>m;
+    for(int i=0;i<s.length();i++){
+        m[s[i]]++;
+        r=i;
+        while(m.size()>k){
+            m[s[l]]--;
+            if(m[s[l]]==0)
+                m.erase(m.find(s[l]));
+            l++;
+        }
+        ans=max(ans,r-l+1);
+    }
+    cout<<ans<<endl;
+    return 0;
+}
+```
+
+## 至少有K个重复字符的最长子串
+
+找到给定字符串（由小写字符组成）中的最长子串 T ， 要求 T 中的每一字符出现次数都不少于 k 。输出 T 的长度。
+
+```
+输入:
+s = "ababbc", k = 2
+输出:
+5
+最长子串为 "ababb" ，其中 'a' 重复了 2 次， 'b' 重复了 3 次。
+```
+
+### 解法
+
+使用两个指针left、right，和小写字母计数器统计字符段中各个字符出现的次数，然后调整当前的left、right指针。再遍历一遍修正后的字符段，如果中间有出现次数小于k的字符，那么将修正后的字符段拆开为[left, index - 1]和[index + 1, right]两个字符段重新寻找。
+
+### 代码
+
+```java
+class Solution {
+public:
+	int longestSubstring(string s, int k) {
+		return myHelper(s, k, 0, s.size() - 1);//left == 0, right = s.size() - 1
+	}
+    //寻找s串中[left, right]字符段中至少有K个重复数字的最长子串
+	int myHelper(string &s, int k, int left, int right) {
+		if (left > right) {//特殊情况
+			return 0;
+		}
+		vector<int> chCnt(26, 0);//字母计数器
+        //统计s串中[left, right]各个字符出现的次数
+		for (int index = left; index <= right; ++index) {
+			chCnt[s[index] - 'a'] += 1;
+		}
+		int maxRes = INT_MIN;//保存结果
+        //修正left指针
+		while (left <= right && chCnt[s[left] - 'a'] < k) {
+			chCnt[s[left] - 'a'] -= 1;
+			left += 1;
+		}
+        //修正right指针
+		while (left <= right && chCnt[s[right] - 'a'] < k) {
+			chCnt[s[right] - 'a'] -= 1;
+			right -= 1;
+		}
+        //在修正后的区域[left, right]中寻找，看是否有出现次数少于k的字符
+		for (int index = left + 1; index < right; ++index) {
+			if (chCnt[s[index] - 'a'] < k) {//如果出现了
+                //将[left, right]拆开为两个区间[left, index - 1], [index + 1, right]
+				maxRes = max(myHelper(s, k, left, index - 1), myHelper(s, k, index + 1, right));
+			}
+		}
+        //如果之前没有拆开区间，说明，[left, right]就是当前段的结果
+		if (maxRes == INT_MIN) {
+			maxRes = right - left + 1;
+		}
+		return maxRes;
+	}
+};
+```
+
 ## 最长公共前缀
 
 最长公共前缀
@@ -465,6 +568,48 @@ public class Solution {
 
 # 数组和排序
 
+## 两数之和
+
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+```
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+```
+
+### 解法
+
+用线性的时间复杂度来解决问题，那么就是说只能遍历一个数字，那么另一个数字呢，我们可以事先将其存储起来，使用一个HashMap，来建立数字和其坐标位置之间的映射，我们都知道HashMap是常数级的查找效率，这样，我们在遍历数组的时候，用target减去遍历到的数字，就是另一个需要的数字了，直接在HashMap中查找其是否存在即可。
+
+### AC代码
+
+```java
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> m = new HashMap<Integer, Integer>();
+        int[] res = new int[2];
+        for (int i = 0; i < nums.length; ++i) {
+            m.put(nums[i], i);
+        }
+        for (int i = 0; i < nums.length; ++i) {
+            int t = target - nums[i];
+            if (m.containsKey(t) && m.get(t) != i) {
+                res[0] = i;
+                res[1] = m.get(t);
+                break;
+            }
+        }
+        return res;
+    }
+}
+```
+
 ## 三数之和
 
 给定一个包含 *n* 个整数的数组 `nums`，判断 `nums` 中是否存在三个元素 *a，b，c ，*使得 *a + b + c =* 0 ？找出所有满足条件且不重复的三元组。
@@ -514,6 +659,94 @@ public:
                     ++i; --j;
                 } else if (nums[i] + nums[j] < target) ++i;
                 else --j;
+            }
+        }
+        return res;
+    }
+};
+```
+
+## 最近三数之和
+
+Given an array `nums` of *n* integers and an integer `target`, find three integers in `nums` such that the sum is closest to `target`. Return the sum of the three integers. You may assume that each input would have exactly one solution.
+
+```
+Example:
+
+Given array nums = [-1, 2, 1, -4], and target = 1.
+
+The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+```
+
+### 解法
+
+求最接近给定值的三数之和即我们要保证当前三数和跟给定值之间的差的绝对值最小，所以我们需要定义一个变量 diff 用来记录差的绝对值，然后我们还是要先将数组排个序，然后开始遍历数组，思路跟那道三数之和很相似，都是先确定一个数，然后用两个指针 left 和 right 来滑动寻找另外两个数，每确定两个数，我们求出此三数之和，然后算和给定值的差的绝对值存在 newDiff 中，然后和 diff 比较并更新 diff 和结果 closest 即可，代码如下：
+
+### AC代码
+
+```c++
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        int closest = nums[0] + nums[1] + nums[2];
+        int diff = abs(closest - target);
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size() - 2; ++i) {
+            int left = i + 1, right = nums.size() - 1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                int newDiff = abs(sum - target);
+                if (diff > newDiff) {
+                    diff = newDiff;
+                    closest = sum;
+                }
+                if (sum < target) ++left;
+                else --right;
+            }
+        }
+        return closest;
+    }
+};
+```
+
+## 三数之和较小值
+
+Given an array of *n* integers *nums* and a *target*, find the number of index triplets `i, j, k` with `0 <= i < j < k < n` that satisfy the condition `nums[i] + nums[j] + nums[k] < target`.
+
+```
+For example, given nums = [-2, 0, 1, 3], and target = 2.
+
+Return 2. Because there are two triplets which sums are less than 2:
+
+[-2, 0, 1]
+[-2, 0, 3]
+Follow up:
+Could you solve it in O(n2) runtime?
+```
+
+### 解法
+
+让我们求三数之和小于一个目标值，那么最简单的方法就是穷举法，将所有的可能的三个数字的组合都遍历一遍，比较三数之和跟目标值之间的大小，小于的话则结果自增1，但是
+
+### AC代码
+
+```c++
+// O(n^2)
+class Solution {
+public:
+    int threeSumSmaller(vector<int>& nums, int target) {
+        if (nums.size() < 3) return 0;
+        int res = 0, n = nums.size();
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < n - 2; ++i) {
+            int left = i + 1, right = n - 1;
+            while (left < right) {
+                if (nums[i] + nums[left] + nums[right] < target) {
+                    res += right - left;
+                    ++left;
+                } else {
+                    --right;
+                }
             }
         }
         return res;
@@ -1645,6 +1878,92 @@ public class Solution {
     }
 }
 
+```
+
+## 判断一颗二叉树是不是一颗二叉搜索树
+
+![](2.png)
+
+### 解法
+
+什么是二叉搜索树？任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值；任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值;　　　
+
+根据性质怎么判断一颗二叉树是不是搜索二叉树呢? 其实很简单，只要这颗二叉树的中序遍历的顺序是升序的，那么就是一颗二叉搜索树，因为中序遍历的顺序是左->中->右，所以当中序遍历升序的时候，就有左<中<右，所以就可以判断。
+
+### AC代码
+
+```java
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if(root == null)
+            return true;
+        Stack<TreeNode>stack = new Stack<>();
+        TreeNode cur = root;
+        TreeNode pre = null;
+        while(!stack.isEmpty() || cur != null){
+            if(cur != null){
+                stack.push(cur);
+                cur = cur.left;
+            }else {
+                cur = stack.pop();
+                if(pre != null && cur.val <= pre.val)
+                    return false;
+                pre = cur;
+                cur = cur.right;
+            }
+        }
+        return true;
+    }
+}
+```
+
+## 判断一个二叉树为完全二叉树
+
+### 解法
+
+判断过程：
+
+按照层次遍历的顺序遍历二叉树，每一层从左到右；
+
+如果当前结点有右孩子但没有左孩子，直接返回 false；
+
+如果当前结点不是左右孩子都全(包括两种情况)，那之后的结点必须都为叶节点，否则返回 false；
+
+遍历过程中如果没有返回 false，就返回 true；
+
+### AC代码
+
+```java
+//判断一棵二叉树是不是完全二叉树
+    static boolean isCBT(TreeNode root){
+        if(root == null)
+            return true;
+        Queue<TreeNode>queue = new LinkedList<>();
+        boolean leaf = false; //如果碰到了 某个结点孩子不全就开始　判断是不是叶子这个过程
+        queue.add(root);
+        TreeNode top = null,L = null,R = null;
+        while(!queue.isEmpty()){
+            top = queue.poll();
+            L = top.left;  R = top.right;
+            //第一种情况
+            if((R != null && L == null))
+                return false;
+            //第二种情况  开启了判断叶子的过程 而且又不是叶子 就返回false
+            if(leaf && (L != null || R != null)) //以后的结点必须是 左右孩子都是null
+                return false;
+
+            if(L != null)
+                queue.add(L);
+
+            //准确的说是　只要孩子不全就开启leaf，
+            //但是前面已经否定了有右无左的情况，这里只要判断一下右孩子是不是为空就可以了(如果为空就开启leaf)
+            if(R != null)
+                queue.add(R);
+            else
+                leaf = true;
+        }
+        return true;
+    }
 ```
 
 # 动态或贪心

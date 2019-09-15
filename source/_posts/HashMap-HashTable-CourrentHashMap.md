@@ -96,7 +96,7 @@ HashTable 是线程安全的，HashMap 是线程非安全的。因为 HashTable 
 
 # CourrentHashMap
 
-`Java 7`中的`ConcurrentHashMap`的底层数据结构仍然是数组和链表。与`HashMap`不同的是，`ConcurrentHashMap`最外层不是一个大的数组，而是一个`Segment`的数组。每个`Segment`包含一个与`HashMap`数据结构差不多的链表数组。整体数据结构如下图所示。
+Java 7 中的 ConcurrentHashMap 的底层数据结构仍然是数组和链表。与 HashMap 不同的是，ConcurrentHashMap 最外层不是一个大的数组，而是一个 Segment 的数组。每个 Segment 包含一个与HashMap 数据结构差不多的链表数组。整体数据结构如下图所示。
 
 ![](2.png)
 
@@ -135,7 +135,7 @@ Segment<K,V> s = (Segment<K,V>)UNSAFE.getObjectVolatile(segments, u)
 
 那为什么这么设计？
 
-`ConcurrentHashmap`和`Hashtable`都是支持并发的，这样会有一个问题，当你通过`get(k)`获取对应的`value`时，如果获取到的是`null`时，你无法判断，它是`put（k,v）`的时候`value`为`null`，还是这个`key`从来没有做过映射。`HashMap`是非并发的，可以通过`contains(key)`来做这个判断。
+ConcurrentHashmap 和 Hashtable 都是支持并发的，这样会有一个问题，当你通过 get(k) 获取对应的 value时，如果获取到的是 null 时，你无法判断，它是 put（k,v）的时候 value 为 null，还是这个 key 从来没有做过映射。HashMap 是非并发的，可以通过 contains(key) 来做这个判断。
 
 对于`TreeMap`的话`value`是可以为`null`的，对于`key`的话未实现 `Comparator` 接口时，`key` 不可以为`null`，否则抛 `NullPointerException` 异常；当实现` Comparator `接口时，若未对` null `情况进行判断，则可能抛 `NullPointerException` 异常。如果针对`null`情况实现了，可以存入，但是却不能正常使用`get()`访问，只能通过遍历去访问。
 
