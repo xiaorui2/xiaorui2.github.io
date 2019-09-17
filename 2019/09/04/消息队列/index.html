@@ -88,7 +88,8 @@
 <meta property="og:description" content="什么是消息队列消息队列（MQ）可以简单理解为：把要传输的数据放在队列中，我们不用担心谁取到了它做了什么事情，提供了一个异步的通信协议。看张图理解一下  一般我们把放到队列里面的称为 Produce（生产者）负责产生和发送消息到 Broker。 Broker：消息处理中心。负责消息存储、确认、重试等，一般其中会包含多个 queue。 从队列里面取数据的称为  Consumer（消费者）负责从 Bro">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/09/04/消息队列/1.png">
-<meta property="og:updated_time" content="2019-09-04T06:00:56.582Z">
+<meta property="og:image" content="http://yoursite.com/2019/09/04/消息队列/2.png">
+<meta property="og:updated_time" content="2019-09-16T12:18:17.427Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息队列">
 <meta name="twitter:description" content="什么是消息队列消息队列（MQ）可以简单理解为：把要传输的数据放在队列中，我们不用担心谁取到了它做了什么事情，提供了一个异步的通信协议。看张图理解一下  一般我们把放到队列里面的称为 Produce（生产者）负责产生和发送消息到 Broker。 Broker：消息处理中心。负责消息存储、确认、重试等，一般其中会包含多个 queue。 从队列里面取数据的称为  Consumer（消费者）负责从 Bro">
@@ -402,6 +403,18 @@
 <h2 id="使用消息队列的问题"><a href="#使用消息队列的问题" class="headerlink" title="使用消息队列的问题"></a>使用消息队列的问题</h2><p>无论是我们使用消息队列来做解耦、异步还是削峰，消息队列肯定不能是单机的，因为是单机的消息队列，万一这台机器挂了，那我们整个系统几乎就是不可用了。所以要弄成集群分布式的。</p>
 <p>数据丢失就是把数据写到消息队列上，系统 B 和 C 还没来得及取消息队列的数据，就挂掉了。如果没有做任何的措施，我们的数据就丢了。所以我们要把数据也需要存在别的地方。</p>
 <h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><p>Kafka 是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据。 这种动作（网页浏览，搜 索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求而通过处理日志和日志聚 合来解决。 对于像 Hadoop 的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka 的目的是通过 Hadoop 的并行加载机制来统一线上和离线的消息处理，也是为了通过集群来提供实时的消费。</p>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><p>优点：</p>
+<ul>
+<li>可扩展。Kafka集群可以透明的扩展，增加新的服务器进集群。</li>
+<li>高性能。Kafka性能远超过传统的ActiveMQ、RabbitMQ等，Kafka支持Batch操作。</li>
+<li>容错性。Kafka每个Partition数据会复制到几台服务器，当某个Broker失效时，Zookeeper将通知生产者和消费者从而使用其他的Broker。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>重复消息。Kafka保证每条消息至少送达一次，虽然几率很小，但一条消息可能被送达多次。</li>
+<li>消息乱序。Kafka某一个固定的Partition内部的消息是保证有序的，如果一个Topic有多个Partition，partition之间的消息送达不保证有序。</li>
+<li>复杂性。Kafka需要Zookeeper的支持，Topic一般需要人工创建，部署和维护比一般MQ成本更高</li>
+</ul>
 <h2 id="Kafka的一些概念"><a href="#Kafka的一些概念" class="headerlink" title="Kafka的一些概念"></a>Kafka的一些概念</h2><p>broker：一台 Kafka 服务器是一个 broker，一个集群由多个 broker 组成，一个 broker 可以容纳多个 topic。</p>
 <p>topic：可以理解为一个 MQ 消息队列的名字，即为逻辑上的 queue。</p>
 <p>partition：partition 是物理上的概念，每个 topic 包含一个或多个 partition，每个 partition 是个有序队列，创建topic 时可指定 partition 数量。每个 partition 对应于一个文件夹，该文件夹下存储该 partition 的数据和索引文件</p>
@@ -418,6 +431,11 @@
 <li>High-Level API ：使用 Zookeeper 来管理 offset，自动获取 last offset，consumer 负载均衡、broker 宕机都是自动化管理的。省心</li>
 <li>Low-Level API ：需要自己去管理 offset，还有 leader 的迁移、broker 宕机等情况。灵活 </li>
 </ul>
+<h2 id="kafka消费者消费消息的流程"><a href="#kafka消费者消费消息的流程" class="headerlink" title="kafka消费者消费消息的流程"></a>kafka消费者消费消息的流程</h2><p>消息的消费模型有两种，推送模型（push）和拉取模型（pull）。</p>
+<p>基于推送模型（push）的消息系统，有消息代理记录消费者的消费状态。消息代理在将消息推送到消费者后，标记这条消息已经消费，但这种方式无法很好地保证消费被处理。</p>
+<p>kafka采用拉取模型，由消费者自己记录消费状态，每个消费者互相独立地顺序拉取每个分区的消息。如下图所示，有两个消费者（不同消费者组）拉取同一个主题的消息，消费者A的消费进度是3，消费者B的消费进度是6。消费者拉取的最大上限通过最高水位控制，生产者最新写入的消息如果还没有达到备份数量，对消费者是不可见的。这种由消费者控制偏移量的优点是：消费者可以按照任意的顺序消费消息。比如，消费者可以重置到旧的偏移量，重新处理之前已经消费过的消息；或者直接跳到最近的位置，从当前的时刻开始消费。Kafka的生产者发布的所有消息会一致保存在Kafka集群中，不管消息有没有被消费。用户可以通过设置保留时间来清理过期的数据，比如，设置保留策略为两天。那么，在消息发布之后，它可以被不同的消费者消费，在两天之后，过期的消息就会自动清理掉。</p>
+<p>消费者是以consumer group消费者组的方式工作，由一个或者多个消费者组成一个组，共同消费一个topic。每个分区在同一时间只能由group中的一个消费者读取，但是多个group可以同时消费这个partition。在图中，有一个由三个消费者组成的group，有一个消费者读取主题中的两个分区，另外两个分别读取一个分区。某个消费者读取某个分区，也可以叫做某个消费者是某个分区的拥有者。在这种情况下，消费者可以通过水平扩展的方式同时读取大量的消息。另外，如果一个消费者失败了，那么其他的group成员会自动负载均衡读取之前失败的消费者读取的分区。</p>
+<p><img src="2.png" alt></p>
 <h2 id="为什么-Kafka-吞吐量高"><a href="#为什么-Kafka-吞吐量高" class="headerlink" title="为什么 Kafka 吞吐量高"></a>为什么 Kafka 吞吐量高</h2><p>因为它是顺序写磁盘，媲美内存随机访问的性能。顺序写磁盘的性能是随机写入的性能的 6000 倍的提升，磁盘不再是瓶颈点。</p>
 <h2 id="kafka-如何保证消息有序"><a href="#kafka-如何保证消息有序" class="headerlink" title="kafka 如何保证消息有序"></a>kafka 如何保证消息有序</h2><ul>
 <li>kafka topic 只设置一个 partition 分区  </li>
@@ -564,7 +582,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">99</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -628,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是消息队列"><span class="nav-number">1.</span> <span class="nav-text">什么是消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点用处"><span class="nav-number">1.1.</span> <span class="nav-text">特点用处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种模式"><span class="nav-number">1.2.</span> <span class="nav-text">两种模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方式"><span class="nav-number">1.3.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用消息队列的问题"><span class="nav-number">1.4.</span> <span class="nav-text">使用消息队列的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka"><span class="nav-number">2.</span> <span class="nav-text">Kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka的一些概念"><span class="nav-number">2.1.</span> <span class="nav-text">Kafka的一些概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partition-删除策略"><span class="nav-number">2.2.</span> <span class="nav-text">partition 删除策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写入可靠性保障（分布式一致性问题）"><span class="nav-number">2.3.</span> <span class="nav-text">写入可靠性保障（分布式一致性问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种消费模式"><span class="nav-number">2.4.</span> <span class="nav-text">两种消费模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么-Kafka-吞吐量高"><span class="nav-number">2.5.</span> <span class="nav-text">为什么 Kafka 吞吐量高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka-如何保证消息有序"><span class="nav-number">2.6.</span> <span class="nav-text">kafka 如何保证消息有序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和传统的MQ对比有什么区别"><span class="nav-number">2.7.</span> <span class="nav-text">和传统的MQ对比有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息丢失场景"><span class="nav-number">2.8.</span> <span class="nav-text">消息丢失场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何防止数据丢失"><span class="nav-number">2.9.</span> <span class="nav-text">如何防止数据丢失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息重复解决方案"><span class="nav-number">2.10.</span> <span class="nav-text">消息重复解决方案</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是消息队列"><span class="nav-number">1.</span> <span class="nav-text">什么是消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点用处"><span class="nav-number">1.1.</span> <span class="nav-text">特点用处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种模式"><span class="nav-number">1.2.</span> <span class="nav-text">两种模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方式"><span class="nav-number">1.3.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用消息队列的问题"><span class="nav-number">1.4.</span> <span class="nav-text">使用消息队列的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka"><span class="nav-number">2.</span> <span class="nav-text">Kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点和缺点"><span class="nav-number">2.1.</span> <span class="nav-text">优点和缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka的一些概念"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka的一些概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partition-删除策略"><span class="nav-number">2.3.</span> <span class="nav-text">partition 删除策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写入可靠性保障（分布式一致性问题）"><span class="nav-number">2.4.</span> <span class="nav-text">写入可靠性保障（分布式一致性问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种消费模式"><span class="nav-number">2.5.</span> <span class="nav-text">两种消费模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka消费者消费消息的流程"><span class="nav-number">2.6.</span> <span class="nav-text">kafka消费者消费消息的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么-Kafka-吞吐量高"><span class="nav-number">2.7.</span> <span class="nav-text">为什么 Kafka 吞吐量高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka-如何保证消息有序"><span class="nav-number">2.8.</span> <span class="nav-text">kafka 如何保证消息有序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和传统的MQ对比有什么区别"><span class="nav-number">2.9.</span> <span class="nav-text">和传统的MQ对比有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息丢失场景"><span class="nav-number">2.10.</span> <span class="nav-text">消息丢失场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何防止数据丢失"><span class="nav-number">2.11.</span> <span class="nav-text">如何防止数据丢失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息重复解决方案"><span class="nav-number">2.12.</span> <span class="nav-text">消息重复解决方案</span></a></li></ol></li></ol></div>
             
 
           </div>
