@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/08/05/B树和B-树/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/05/B树和B-树/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/05/B树和B-树/3.png">
-<meta property="og:updated_time" content="2019-08-05T11:42:11.407Z">
+<meta property="og:updated_time" content="2019-09-19T05:16:00.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="B树和B+树">
 <meta name="twitter:description" content="二叉排序树它的定义如下：若左子树不空，则左子树上所有节点的值均小于它的根节点的值若右子树不空，则右子树上所有节点的值均大于它的根节点的值，它的左、右子树也分别为二叉排序数（递归生成），如下图：  这样的数据结构能够帮助我们在O(logn) 的时间复杂度找到一个树，但是有个情况是如果这颗树的结构出现问题，出现一条支路非常长的情况下，就会出现失衡这种情况。所以因此延伸出平衡二叉树。而B树和B+树是一个">
@@ -416,9 +416,14 @@
 <p><img src="3.png" alt></p>
 <p><code>B+</code>树相比<code>B</code>树的优势：<code>IO</code>次数更少；查询性能更稳定（<code>B+</code>树的查询最终必须查找到叶子结点，而<code>B</code>树只要找到匹配元素即可）；范围查询更简单（因为所有叶子节点形成有序链表）。</p>
 <h1 id="为什么数据库索引中用B-数而不用B树"><a href="#为什么数据库索引中用B-数而不用B树" class="headerlink" title="为什么数据库索引中用B+数而不用B树"></a>为什么数据库索引中用B+数而不用B树</h1><ul>
-<li><code>B+</code>树的磁盘读写代价更低同时并没有解决元素遍历的效率低下的问题，</li>
-<li><code>B+</code>树的查询效率更加稳定</li>
-<li><code>B+</code>树只需要去遍历叶子节点就可以实现整棵树的遍历。而且在数据库中基于范围的查询是非常频繁的</li>
+<li><p><code>B+</code>树的磁盘读写代价更低同时并没有解决元素遍历的效率低下的问题，</p>
+<p>B+-tree的内部节点并没有指向关键字具体信息的指针，换句话说，即分支节点没有存储数据，因此其内部节点相对B 树更小。如果把所有同一内部节点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。</p>
+</li>
+<li><p><code>B+</code>树的查询效率更加稳定</p>
+<p>在B+树中，由于分支节点并不是最终指向文件内容的节点，分支节点只是叶子节点的索引，所以对于任意关键字的查找都必须从根节点走到分支节点，所有关键字查询路径长度相同，每个数据查询效率相当。而对于B树而言，其分支节点上也保存有数据，对于每一个数据的查询所走的路径长度是不一样的，效率也不一样。</p>
+</li>
+<li><p><code>B+</code>树只需要去遍历叶子节点就可以实现整棵树的遍历。而且在数据库中基于范围的查询是非常频繁的</p>
+</li>
 </ul>
 
       
@@ -533,7 +538,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -555,7 +560,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

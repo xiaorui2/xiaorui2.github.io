@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="如何解决超卖？少卖？ 利用 Redis 的原子自增操作， 减库存然后下订单，但是服务器宕机？ 先插订单，再去减库存，就是一个订单失效。 插订单的时候加一个时间戳， 表设计？下订单？">
+<meta name="description" content="如何解决超卖？少卖？利用 Redis 的原子自增操作， 121.mysql锁机制，悲观锁InnoDB行级锁方案，思路是在数据库中设计一个状态标识位，用户在对数据进行修改前，将状态标识位标识为正在编辑的状态，这样其他用户要编辑此条记录时系统将发现有其他用户正在编辑，则拒绝其编辑的请求，类似于你在操作系统中某文件正在执行，然后你要修改该文件时，系统会提醒你该文件不可编辑或删除。不建议使用，对数据库压力">
 <meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高并发项目总结">
 <meta property="og:url" content="http://yoursite.com/2019/09/16/高并发项目总结/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="如何解决超卖？少卖？ 利用 Redis 的原子自增操作， 减库存然后下订单，但是服务器宕机？ 先插订单，再去减库存，就是一个订单失效。 插订单的时候加一个时间戳， 表设计？下订单？">
+<meta property="og:description" content="如何解决超卖？少卖？利用 Redis 的原子自增操作， 121.mysql锁机制，悲观锁InnoDB行级锁方案，思路是在数据库中设计一个状态标识位，用户在对数据进行修改前，将状态标识位标识为正在编辑的状态，这样其他用户要编辑此条记录时系统将发现有其他用户正在编辑，则拒绝其编辑的请求，类似于你在操作系统中某文件正在执行，然后你要修改该文件时，系统会提醒你该文件不可编辑或删除。不建议使用，对数据库压力">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-16T15:03:38.584Z">
+<meta property="og:updated_time" content="2019-09-19T04:47:23.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高并发项目总结">
-<meta name="twitter:description" content="如何解决超卖？少卖？ 利用 Redis 的原子自增操作， 减库存然后下订单，但是服务器宕机？ 先插订单，再去减库存，就是一个订单失效。 插订单的时候加一个时间戳， 表设计？下订单？">
+<meta name="twitter:description" content="如何解决超卖？少卖？利用 Redis 的原子自增操作， 121.mysql锁机制，悲观锁InnoDB行级锁方案，思路是在数据库中设计一个状态标识位，用户在对数据进行修改前，将状态标识位标识为正在编辑的状态，这样其他用户要编辑此条记录时系统将发现有其他用户正在编辑，则拒绝其编辑的请求，类似于你在操作系统中某文件正在执行，然后你要修改该文件时，系统会提醒你该文件不可编辑或删除。不建议使用，对数据库压力">
 
 
 
@@ -384,12 +384,24 @@
       
 
       
-        <p>如何解决超卖？少卖？</p>
-<p>利用 Redis 的原子自增操作，</p>
-<p>减库存然后下订单，但是服务器宕机？</p>
-<p>先插订单，再去减库存，就是一个订单失效。</p>
-<p>插订单的时候加一个时间戳，</p>
-<p>表设计？下订单？</p>
+        <h1 id="如何解决超卖？少卖？"><a href="#如何解决超卖？少卖？" class="headerlink" title="如何解决超卖？少卖？"></a>如何解决超卖？少卖？</h1><p>利用 Redis 的原子自增操作，</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1<span class="selector-class">.mysql</span>锁机制，悲观锁<span class="selector-tag">InnoDB</span>行级锁方案，思路是在数据库中设计一个状态标识位，用户在对数据进行修改前，将状态标识位标识为正在编辑的状态，这样其他用户要编辑此条记录时系统将发现有其他用户正在编辑，则拒绝其编辑的请求，类似于你在操作系统中某文件正在执行，然后你要修改该文件时，系统会提醒你该文件不可编辑或删除。不建议使用，对数据库压力较大，如果出现死锁会导致一直不能更新，除非<span class="selector-tag">kill</span>掉进程</span><br><span class="line">2<span class="selector-class">.mysql</span>乐观锁 不使用第三方情况下可以使用此方案，就是在数据库设计一个版本号的字段，每次修改都使其+1，这样在提交时比对提交前的版本号就知道是不是并发提交了，但是有个缺点就是只能是应用中控制，如果有跨应用修改同一条数据乐观锁就没办法了，这个时候可以考虑悲观锁</span><br></pre></td></tr></table></figure>
+
+<p>Redis预减成功而DB扣库存失败？</p>
+<p>前面的方案中会出现一个少卖的问题。Redis在预减库存的时候，在初始化的时候就放置库存的大小，redis的原子减操作保证了多少库存就会减多少，也就会在消息队列中放多少。</p>
+<p>现在考虑两种情况：</p>
+<p>1）数据库那边出现非库存原因比如网络等造成减库存失败，而这时redis已经减了。</p>
+<p>2）万一一个用户发出多个请求，而且这些请求恰巧比别的请求更早到达服务器，如果库存足够，redis就会减多次，redis提前进入卖空状态，并拒绝。不过这两种情况出现的概率都是非常低的。</p>
+<p>两种情况都会出现少卖的问题，实际上也是缓存和数据库出现不一致的问题</p>
+<p>但是我们不是非得解决不一致的问题，本身使用缓存就难以保证强一致性：</p>
+<p>在redis中设置库存比真实库存多一些就行。</p>
+<h1 id="减库存然后下订单，但是服务器宕机？"><a href="#减库存然后下订单，但是服务器宕机？" class="headerlink" title="减库存然后下订单，但是服务器宕机？"></a>减库存然后下订单，但是服务器宕机？</h1><p>改为先插订单，再去减库存，就是一个订单失效。保证用户无法自主生成orderid</p>
+<p>插订单的时候加一个时间戳，利用Redis的过期时间设置</p>
+<h1 id="单用户订单存Hash，那一个用户下了很多单怎么办？"><a href="#单用户订单存Hash，那一个用户下了很多单怎么办？" class="headerlink" title="单用户订单存Hash，那一个用户下了很多单怎么办？"></a>单用户订单存Hash，那一个用户下了很多单怎么办？</h1><p>将uid_pid拼接成key，这样就可以由集群分摊流量，但是这样的缺点就是查询单用户的所有订单比较困难</p>
+<h1 id="Redis和数据库的一致性"><a href="#Redis和数据库的一致性" class="headerlink" title="Redis和数据库的一致性"></a>Redis和数据库的一致性</h1><p>一致性要求低可以使用两次删除</p>
+<p>一致性要求高采用队列，并哈希至同一个工作线程</p>
+<p><a href="https://blog.csdn.net/qq_27384769/article/details/79499373" target="_blank" rel="noopener">redis缓存与数据库一致性问题解决</a></p>
+<p><a href="https://www.cnblogs.com/cxxjohnson/p/8519616.html" target="_blank" rel="noopener">redis系列之数据库与缓存数据一致性解决方案</a></p>
 
       
     </div>
@@ -423,6 +435,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/19/数据库读写分离/" rel="prev" title="数据库读写分离和主从同步">
+                数据库读写分离和主从同步 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -474,8 +490,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -490,7 +515,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -512,7 +537,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -544,6 +569,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何解决超卖？少卖？"><span class="nav-number">1.</span> <span class="nav-text">如何解决超卖？少卖？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#减库存然后下订单，但是服务器宕机？"><span class="nav-number">2.</span> <span class="nav-text">减库存然后下订单，但是服务器宕机？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单用户订单存Hash，那一个用户下了很多单怎么办？"><span class="nav-number">3.</span> <span class="nav-text">单用户订单存Hash，那一个用户下了很多单怎么办？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis和数据库的一致性"><span class="nav-number">4.</span> <span class="nav-text">Redis和数据库的一致性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

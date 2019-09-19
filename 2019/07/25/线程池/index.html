@@ -88,7 +88,7 @@
 <meta property="og:description" content="在平时的时候，我们使用线程的时候就去创建一个线程，但并发的线程数量很多，并且每个线程都是执行一个时间很短的任务就结束了，这样频繁创建线程就会大大降低系统的效率，因为频繁创建线程和销毁线程需要时间。所以我们会使用线程池。线程池的优势很明显，如下：  降低系统资源消耗，通过重用已存在的线程，降低线程创建和销毁造成的消耗； 提高系统响应速度，当有任务到达时，无需等待新线程的创建便能立即执行； 方便线程并">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/07/25/线程池/1.png">
-<meta property="og:updated_time" content="2019-09-15T01:43:27.981Z">
+<meta property="og:updated_time" content="2019-09-18T01:54:16.682Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="在平时的时候，我们使用线程的时候就去创建一个线程，但并发的线程数量很多，并且每个线程都是执行一个时间很短的任务就结束了，这样频繁创建线程就会大大降低系统的效率，因为频繁创建线程和销毁线程需要时间。所以我们会使用线程池。线程池的优势很明显，如下：  降低系统资源消耗，通过重用已存在的线程，降低线程创建和销毁造成的消耗； 提高系统响应速度，当有任务到达时，无需等待新线程的创建便能立即执行； 方便线程并">
@@ -471,6 +471,7 @@
 <li><code>ThreadPoolExecutor.DiscardOldestPolicy</code>：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）</li>
 <li><code>ThreadPoolExecutor.CallerRunsPolicy</code>：由调用线程处理该任务</li>
 </ul>
+<h2 id="如何自定义拒绝策略"><a href="#如何自定义拒绝策略" class="headerlink" title="如何自定义拒绝策略"></a>如何自定义拒绝策略</h2><p>在 Java 线程池中实现自定义拒绝策略，只需要实现 RejectedExecutionHandler 接口就可以了。</p>
 <h1 id="几种线程池"><a href="#几种线程池" class="headerlink" title="几种线程池"></a>几种线程池</h1><p><code>Java API</code>针对不同需求，利用<code>Executors</code>类提供了4种不同的线程池：<code>newCachedThreadPool</code>, <code>newFixedThreadPool</code>, <code>newScheduledThreadPool</code>,<code>newSingleThreadExecutor</code>。其中线程工厂的默认类为<code>DefaultThreadFactory</code>，线程饱和的默认策略为<code>ThreadPoolExecutor.AbortPolicy</code>。</p>
 <h2 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h2><p>创建一个可缓存的无界线程池，该方法无参数。当线程池中的线程空闲时间超过<code>60s</code>则会自动回收该线程，当任务超过线程池的线程数则创建新线程。线程池的大小上限为<code>Integer.MAX_VALUE</code>，可看做是无限大。</p>
 <h2 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h2><p>创建一个固定大小的线程池，该方法可指定线程池的固定大小，对于超出的线程会在<code>LinkedBlockingQueue</code>队列中等待。</p>
@@ -596,7 +597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -618,7 +619,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -660,7 +661,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一个线程池包括以下四个基本组成部分："><span class="nav-number">1.</span> <span class="nav-text">一个线程池包括以下四个基本组成部分：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java中的ThreadPoolExecutor类"><span class="nav-number">2.</span> <span class="nav-text">Java中的ThreadPoolExecutor类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池的状态"><span class="nav-number">3.</span> <span class="nav-text">线程池的状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池任务执行流程"><span class="nav-number">4.</span> <span class="nav-text">线程池任务执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池中的线程初始化"><span class="nav-number">5.</span> <span class="nav-text">线程池中的线程初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务缓存队列及排队策略"><span class="nav-number">6.</span> <span class="nav-text">任务缓存队列及排队策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务拒绝策略"><span class="nav-number">7.</span> <span class="nav-text">任务拒绝策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#几种线程池"><span class="nav-number">8.</span> <span class="nav-text">几种线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">8.1.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">8.2.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">8.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newScheduledThreadPool"><span class="nav-number">8.4.</span> <span class="nav-text">newScheduledThreadPool</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置线程池大小"><span class="nav-number">9.</span> <span class="nav-text">配置线程池大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#手写线程池"><span class="nav-number">10.</span> <span class="nav-text">手写线程池</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一个线程池包括以下四个基本组成部分："><span class="nav-number">1.</span> <span class="nav-text">一个线程池包括以下四个基本组成部分：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java中的ThreadPoolExecutor类"><span class="nav-number">2.</span> <span class="nav-text">Java中的ThreadPoolExecutor类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池的状态"><span class="nav-number">3.</span> <span class="nav-text">线程池的状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池任务执行流程"><span class="nav-number">4.</span> <span class="nav-text">线程池任务执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程池中的线程初始化"><span class="nav-number">5.</span> <span class="nav-text">线程池中的线程初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务缓存队列及排队策略"><span class="nav-number">6.</span> <span class="nav-text">任务缓存队列及排队策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务拒绝策略"><span class="nav-number">7.</span> <span class="nav-text">任务拒绝策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何自定义拒绝策略"><span class="nav-number">7.1.</span> <span class="nav-text">如何自定义拒绝策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#几种线程池"><span class="nav-number">8.</span> <span class="nav-text">几种线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">8.1.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">8.2.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">8.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newScheduledThreadPool"><span class="nav-number">8.4.</span> <span class="nav-text">newScheduledThreadPool</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置线程池大小"><span class="nav-number">9.</span> <span class="nav-text">配置线程池大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#手写线程池"><span class="nav-number">10.</span> <span class="nav-text">手写线程池</span></a></li></ol></div>
             
 
           </div>

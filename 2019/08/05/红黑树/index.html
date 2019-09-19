@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="二叉查找树它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。  为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。 红黑树特性 满足二叉树的型组织 每个节点或者是黑色，或者是红色。 根节点是黑色。 每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！] 如果一个节点是红色的，则">
+<meta name="description" content="二叉查找树它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。  为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。 平衡二叉树（AVL树）： 平衡二叉树又称为AVL树，是一种特殊的二叉排序树。其左右子树都是平衡二叉树，且左右子树高度之差的绝对值不超过1。一句话表述为：以树中所有结点为根的树的左右子树高度之差的绝对值不超">
 <meta name="keywords" content="我不怕经历挫折，我只怕自己投降。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="红黑树">
 <meta property="og:url" content="http://yoursite.com/2019/08/05/红黑树/index.html">
 <meta property="og:site_name" content="九八年生于晚秋">
-<meta property="og:description" content="二叉查找树它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。  为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。 红黑树特性 满足二叉树的型组织 每个节点或者是黑色，或者是红色。 根节点是黑色。 每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！] 如果一个节点是红色的，则">
+<meta property="og:description" content="二叉查找树它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。  为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。 平衡二叉树（AVL树）： 平衡二叉树又称为AVL树，是一种特殊的二叉排序树。其左右子树都是平衡二叉树，且左右子树高度之差的绝对值不超过1。一句话表述为：以树中所有结点为根的树的左右子树高度之差的绝对值不超">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/08/05/红黑树/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/05/红黑树/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/05/红黑树/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/05/红黑树/4.png">
-<meta property="og:updated_time" content="2019-08-05T11:42:16.325Z">
+<meta property="og:updated_time" content="2019-09-19T05:17:09.053Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="红黑树">
-<meta name="twitter:description" content="二叉查找树它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。  为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。 红黑树特性 满足二叉树的型组织 每个节点或者是黑色，或者是红色。 根节点是黑色。 每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！] 如果一个节点是红色的，则">
+<meta name="twitter:description" content="二叉查找树它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。  为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。 平衡二叉树（AVL树）： 平衡二叉树又称为AVL树，是一种特殊的二叉排序树。其左右子树都是平衡二叉树，且左右子树高度之差的绝对值不超过1。一句话表述为：以树中所有结点为根的树的左右子树高度之差的绝对值不超">
 <meta name="twitter:image" content="http://yoursite.com/2019/08/05/红黑树/1.png">
 
 
@@ -392,6 +392,10 @@
         <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>它不为空树时，它左子树上所有的元素都小于根节点的元素，而根节点右子树上所有的元素都大于根节点的元素。</p>
 <p><img src="1.png" alt></p>
 <p>为了保证二叉查找树不失衡（出现线性查找的情况），就有了平衡的二叉查找树：红黑树。</p>
+<p>平衡二叉树（AVL树）：</p>
+<p>平衡二叉树又称为AVL树，是一种特殊的二叉排序树。其左右子树都是平衡二叉树，且左右子树高度之差的绝对值<br>不超过1。一句话表述为：以树中所有结点为根的树的左右子树高度之差的绝对值不超过1。将二叉树上结点的左子树深度减去右子树深度的值称为平衡因子BF，那么平衡二叉树上的所有结点的平衡因子只可能是-1、0和1。只要二叉树上有一个结点的平衡因子的绝对值大于1，则该二叉树就是不平衡的。</p>
+<p>红黑树：</p>
+<p>红黑树是一种二叉查找树，但在每个节点增加一个存储位表示节点的颜色，可以是红或黑（非红即黑）。通过对任何一条从根到叶子的路径上各个节点着色的方式的限制，红黑树确保没有一条路径会比其它路径长出两倍，因此，红黑树是一种弱平衡二叉树，相对于要求严格的AVL树来说，它的旋转次数少，所以对于搜索，插入，删除操作较多的情况下，通常使用红黑树。</p>
 <h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
 <li>满足二叉树的型组织</li>
 <li>每个节点或者是黑色，或者是红色。</li>
@@ -532,7 +536,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -554,7 +558,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

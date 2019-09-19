@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/06/29/数据库事务和隔离级别/2.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/29/数据库事务和隔离级别/3.png">
 <meta property="og:image" content="http://yoursite.com/2019/06/29/数据库事务和隔离级别/4.png">
-<meta property="og:updated_time" content="2019-09-11T07:58:28.871Z">
+<meta property="og:updated_time" content="2019-09-19T12:59:16.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库事务和隔离级别">
 <meta name="twitter:description" content="事务在计算机语言中，一般指访问并更新数据库中的一个程序执行单元。 事务具有的四个特点，称为ACID。在数据库的并发访问中，为了保证数据的读取正确性，设置的事务的隔离级别。 事务的四个特点 原子性：原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚。因此事务的操作如果成功就必须要完全应用到数据库，如果操作失败则不能对数据库有任何影响。 一致性：一致性是指事务必须使数据库从一个一致性状态">
@@ -413,6 +413,7 @@
 <p>以上四种隔离级别最高的是<code>Serializable</code>级别，最低的是<code>Read uncommitted</code>级别，当然级别越高，执行效率就越低。</p>
 <p>在<code>MySQL</code>数据库中，支持上面四种隔离级别，默认的为<code>Repeatable read</code> (可重复读)；而在<code>Oracle</code>数据库中，只支持<code>Serializable</code> (串行化)级别和<code>Read committed</code> (读已提交)这两种级别，其中默认的为<code>Read committed</code>级别。</p>
 <h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><p>锁表，读锁和写锁阻塞</p>
+<p><a href="https://juejin.im/post/5cb2e3b46fb9a0686e40c5cb" target="_blank" rel="noopener">看解释</a></p>
 
       
     </div>
@@ -532,7 +533,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -554,7 +555,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

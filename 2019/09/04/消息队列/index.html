@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/09/04/消息队列/1.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/04/消息队列/2.png">
-<meta property="og:updated_time" content="2019-09-16T12:18:17.427Z">
+<meta property="og:updated_time" content="2019-09-19T08:41:26.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息队列">
 <meta name="twitter:description" content="什么是消息队列消息队列（MQ）可以简单理解为：把要传输的数据放在队列中，我们不用担心谁取到了它做了什么事情，提供了一个异步的通信协议。看张图理解一下  一般我们把放到队列里面的称为 Produce（生产者）负责产生和发送消息到 Broker。 Broker：消息处理中心。负责消息存储、确认、重试等，一般其中会包含多个 queue。 从队列里面取数据的称为  Consumer（消费者）负责从 Bro">
@@ -463,6 +463,8 @@
 <p>生产者（ack=all 代表至少成功发送一次)</p>
 <p>消费者 （offset 手动提交，业务逻辑成功处理后，提交 offset）</p>
 <p>落表（主键或者唯一索引的方式，避免重复数据）</p>
+<h2 id="主节点选择方案"><a href="#主节点选择方案" class="headerlink" title="主节点选择方案"></a>主节点选择方案</h2><p>Kafka 主节点挂掉了之后可以从备用的节点开始新一轮选主，主节点选举说的就是这个选举的过程，使用 zookeeper 可以协助完成这个过程。</p>
+<p>所有的 Kafka Broker节点一起去 Zookeeper上注册一个临时节点，因为只有一个 Kafka Broker会注册成功，其他的都会失败，所以这个成功在Zookeeper上注册临时节点的这个Kafka Broker会成为Kafka Broker Controller，其他的 Kafka broker 叫 Kafka Broker follower。（这个过程叫 Controller 在 ZooKeeper 注册 Watch）。这个Controller 会监听其他的 Kafka Broker 的所有信息，如果这个kafka broker controller 宕机了，在 zookeeper 上 面的那个临时节点就会消失，此时所有的 kafka broker 又会一起去 Zookeeper 上注册一个临时节点</p>
 
       
     </div>
@@ -582,7 +584,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +606,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -646,7 +648,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是消息队列"><span class="nav-number">1.</span> <span class="nav-text">什么是消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点用处"><span class="nav-number">1.1.</span> <span class="nav-text">特点用处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种模式"><span class="nav-number">1.2.</span> <span class="nav-text">两种模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方式"><span class="nav-number">1.3.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用消息队列的问题"><span class="nav-number">1.4.</span> <span class="nav-text">使用消息队列的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka"><span class="nav-number">2.</span> <span class="nav-text">Kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点和缺点"><span class="nav-number">2.1.</span> <span class="nav-text">优点和缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka的一些概念"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka的一些概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partition-删除策略"><span class="nav-number">2.3.</span> <span class="nav-text">partition 删除策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写入可靠性保障（分布式一致性问题）"><span class="nav-number">2.4.</span> <span class="nav-text">写入可靠性保障（分布式一致性问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种消费模式"><span class="nav-number">2.5.</span> <span class="nav-text">两种消费模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka消费者消费消息的流程"><span class="nav-number">2.6.</span> <span class="nav-text">kafka消费者消费消息的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么-Kafka-吞吐量高"><span class="nav-number">2.7.</span> <span class="nav-text">为什么 Kafka 吞吐量高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka-如何保证消息有序"><span class="nav-number">2.8.</span> <span class="nav-text">kafka 如何保证消息有序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和传统的MQ对比有什么区别"><span class="nav-number">2.9.</span> <span class="nav-text">和传统的MQ对比有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息丢失场景"><span class="nav-number">2.10.</span> <span class="nav-text">消息丢失场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何防止数据丢失"><span class="nav-number">2.11.</span> <span class="nav-text">如何防止数据丢失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息重复解决方案"><span class="nav-number">2.12.</span> <span class="nav-text">消息重复解决方案</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是消息队列"><span class="nav-number">1.</span> <span class="nav-text">什么是消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特点用处"><span class="nav-number">1.1.</span> <span class="nav-text">特点用处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种模式"><span class="nav-number">1.2.</span> <span class="nav-text">两种模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方式"><span class="nav-number">1.3.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用消息队列的问题"><span class="nav-number">1.4.</span> <span class="nav-text">使用消息队列的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka"><span class="nav-number">2.</span> <span class="nav-text">Kafka</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点和缺点"><span class="nav-number">2.1.</span> <span class="nav-text">优点和缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka的一些概念"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka的一些概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partition-删除策略"><span class="nav-number">2.3.</span> <span class="nav-text">partition 删除策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写入可靠性保障（分布式一致性问题）"><span class="nav-number">2.4.</span> <span class="nav-text">写入可靠性保障（分布式一致性问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种消费模式"><span class="nav-number">2.5.</span> <span class="nav-text">两种消费模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka消费者消费消息的流程"><span class="nav-number">2.6.</span> <span class="nav-text">kafka消费者消费消息的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么-Kafka-吞吐量高"><span class="nav-number">2.7.</span> <span class="nav-text">为什么 Kafka 吞吐量高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka-如何保证消息有序"><span class="nav-number">2.8.</span> <span class="nav-text">kafka 如何保证消息有序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和传统的MQ对比有什么区别"><span class="nav-number">2.9.</span> <span class="nav-text">和传统的MQ对比有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息丢失场景"><span class="nav-number">2.10.</span> <span class="nav-text">消息丢失场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何防止数据丢失"><span class="nav-number">2.11.</span> <span class="nav-text">如何防止数据丢失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息重复解决方案"><span class="nav-number">2.12.</span> <span class="nav-text">消息重复解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主节点选择方案"><span class="nav-number">2.13.</span> <span class="nav-text">主节点选择方案</span></a></li></ol></li></ol></div>
             
 
           </div>
