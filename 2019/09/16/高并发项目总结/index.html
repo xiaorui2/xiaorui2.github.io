@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="九八年生于晚秋">
 <meta property="og:description" content="如何解决超卖？少卖？利用 Redis 的原子自增操作， 121.mysql锁机制，悲观锁InnoDB行级锁方案，思路是在数据库中设计一个状态标识位，用户在对数据进行修改前，将状态标识位标识为正在编辑的状态，这样其他用户要编辑此条记录时系统将发现有其他用户正在编辑，则拒绝其编辑的请求，类似于你在操作系统中某文件正在执行，然后你要修改该文件时，系统会提醒你该文件不可编辑或删除。不建议使用，对数据库压力">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-19T04:47:23.428Z">
+<meta property="og:updated_time" content="2019-09-23T10:33:27.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高并发项目总结">
 <meta name="twitter:description" content="如何解决超卖？少卖？利用 Redis 的原子自增操作， 121.mysql锁机制，悲观锁InnoDB行级锁方案，思路是在数据库中设计一个状态标识位，用户在对数据进行修改前，将状态标识位标识为正在编辑的状态，这样其他用户要编辑此条记录时系统将发现有其他用户正在编辑，则拒绝其编辑的请求，类似于你在操作系统中某文件正在执行，然后你要修改该文件时，系统会提醒你该文件不可编辑或删除。不建议使用，对数据库压力">
@@ -402,6 +402,29 @@
 <p>一致性要求高采用队列，并哈希至同一个工作线程</p>
 <p><a href="https://blog.csdn.net/qq_27384769/article/details/79499373" target="_blank" rel="noopener">redis缓存与数据库一致性问题解决</a></p>
 <p><a href="https://www.cnblogs.com/cxxjohnson/p/8519616.html" target="_blank" rel="noopener">redis系列之数据库与缓存数据一致性解决方案</a></p>
+<h1 id="应对高并发"><a href="#应对高并发" class="headerlink" title="应对高并发"></a>应对高并发</h1><p>浏览器部分</p>
+<ul>
+<li>浏览器缓存，减少请求</li>
+<li>一个域名能打开的链接就那么些，多个子域名部署，图片文件独立服务器减少请求数据量</li>
+<li>减少浏览器cookie大小</li>
+</ul>
+<p>服务器部分：</p>
+<p>Nginx </p>
+<ul>
+<li>应用集群，负载均衡</li>
+<li>分布式缓存+应用本地缓存</li>
+<li>jvm 参数调优，像tomcat优化</li>
+<li>消息队列</li>
+</ul>
+<p>数据库部分：</p>
+<ul>
+<li>数据库设计优化，SQL优化</li>
+<li>分库分表</li>
+<li>读写分离</li>
+</ul>
+<p>流量削峰：</p>
+<p>有两种：丢弃用户和不丢弃用户</p>
+<p>不丢弃有排队（通过队列把同步变异步），答题，分层过滤（漏斗模型</p>
 
       
     </div>
@@ -579,7 +602,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何解决超卖？少卖？"><span class="nav-number">1.</span> <span class="nav-text">如何解决超卖？少卖？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#减库存然后下订单，但是服务器宕机？"><span class="nav-number">2.</span> <span class="nav-text">减库存然后下订单，但是服务器宕机？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单用户订单存Hash，那一个用户下了很多单怎么办？"><span class="nav-number">3.</span> <span class="nav-text">单用户订单存Hash，那一个用户下了很多单怎么办？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis和数据库的一致性"><span class="nav-number">4.</span> <span class="nav-text">Redis和数据库的一致性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何解决超卖？少卖？"><span class="nav-number">1.</span> <span class="nav-text">如何解决超卖？少卖？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#减库存然后下订单，但是服务器宕机？"><span class="nav-number">2.</span> <span class="nav-text">减库存然后下订单，但是服务器宕机？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单用户订单存Hash，那一个用户下了很多单怎么办？"><span class="nav-number">3.</span> <span class="nav-text">单用户订单存Hash，那一个用户下了很多单怎么办？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis和数据库的一致性"><span class="nav-number">4.</span> <span class="nav-text">Redis和数据库的一致性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应对高并发"><span class="nav-number">5.</span> <span class="nav-text">应对高并发</span></a></li></ol></div>
             
 
           </div>
